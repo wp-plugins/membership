@@ -15,15 +15,13 @@ Simple to use and massively flexible - this will meet all of your membership sit
 
 So if you'd like to create a site like GigaOm, Izzy Video, PSD Tuts, now you can do that with ease!
 
-Essentially Membership lite allows you to transform your WordPress site into a fully functional membership site - where you can provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
-
-So, you can use Membership lite to create...
+= So, you can use Membership lite to create... =
 
 A WordPress membership site, offering resources, forums, downloads, videos, support and more... with two different levels of membership and complete customizations.
 
 Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
 
-How does it work... well, it's really easy.
+= How does it work... well, it's really easy. =
 
 Simply follow the instructions in the installation and configuration guide
 
@@ -58,8 +56,6 @@ For example, adding gateways is easy - and we'll be adding plenty more - all you
 The WPMU DEV Membership plugin makes it very easy to create and manage a membership site for both free and paid subscribers.
 
 Whilst the plugin handles a lot of the work, you will need to spend some time thinking through the structure of your site and how you want to set-up and categorise your content before installing and activating the Membership plugin.
-
-The purpose of these instructions are to guide you through some of the important (or even just desirable) steps, and get you up and running (and making money) as quickly and painlessly as possible.
 
 = What is a membership site =
 A membership site can take many guises, from Gigaom Pro which protects long articles and research, through to Izzy video which protects individual videos.
