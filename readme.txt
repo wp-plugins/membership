@@ -1,5 +1,6 @@
 === Membership lite ===
 Contributors: WPMUDEV
+Author: WPMUDEV
 Tags: membership, api, checkout, framework, member, members, members only, paypal, register
 Requires at least: 3.0.1
 Tested up to: 3.0.1
