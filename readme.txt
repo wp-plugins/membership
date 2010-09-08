@@ -4,7 +4,7 @@ Author: WPMUDEV
 Tags: membership, api, checkout, framework, member, members, members only, paypal, register
 Requires at least: 3.0.1
 Tested up to: 3.0.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Membership allows you to transform your WordPress site into a fully functional membership site.
 
