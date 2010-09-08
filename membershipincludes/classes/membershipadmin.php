@@ -2524,7 +2524,7 @@ if(!class_exists('membershipadmin')) {
 				</div>
 
 				<div class="alignright actions">
-					<? if(M_can_add_level() ) {?>
+					<?php if(M_can_add_level() ) {?>
 					<input type="button" class="button-secondary addnewlevelbutton" value="<?php _e('Add New'); ?>" name="addnewlevel">
 					<?php } ?>
 				</div>
