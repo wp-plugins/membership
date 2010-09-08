@@ -1,13 +1,13 @@
 <?php
 /*
-Plugin Name: Membership lite framework
-Version: 1.0
-Plugin URI: http://premium.wpmudev.org
-Description: A Membership system plugin
-Author: Barry (Incsub)
+Plugin Name: Membership lite
+Version: 1.0.1
+Plugin URI: http://premium.wpmudev.org/project/membership
+Description: The most powerful, easy to use and flexible membership plugin for WordPress, Multisite and BuddyPress sites available. Offer downloads, posts, pages, forums and more to paid members.
+Author: Barry (Incsub/WPMU DEV)
 Author URI: http://de.caffeinated.com
 
-Copyright 2010  (email: admin@incsub.com)
+Copyright 2010 Incsub
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
