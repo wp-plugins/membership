@@ -25,7 +25,7 @@ Multiple membership sites on a WordPress MultiSite install - so any user of your
 
 Simply follow the instructions in the installation and configuration guide
 
-You'll then be able to create Membership 'Levels' which can access different types of content, ranging from 'free' (i.e users just visiting the site) to any number of paid levels.
+You'll then be able to create Membership 'Levels' which can access different types of content, including 'free' (i.e users just visiting the site) and/or paid levels.
 
 You can control access to:
 
