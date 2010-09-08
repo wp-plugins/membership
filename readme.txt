@@ -1,26 +1,35 @@
 === Membership lite ===
 Contributors: WPMUDEV
 Author: WPMUDEV
-Tags: membership, api, checkout, framework, member, members, members only, paypal, register
+Tags: membership, api, checkout, framework, member, members, members only, paypal, register, buddypress, multisite
 Requires at least: 3.0.1
 Tested up to: 3.0.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Membership allows you to transform your WordPress site into a fully functional membership site.
 
 == Description ==
 
 Membership allows you to transform your WordPress site into a fully functional membership site - where you can provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
+Simple to use and massively flexible - this will meet all of your membership sites needs. So if you'd like to create a site like GigaOm, Izzy Video, PSD Tuts, now you can do that with ease!
 
-Simple to use and massively flexible - this will meet all of your membership sites needs.
+= You can use Membership lite to create... =
+* A WordPress membership site, offering resources, forums, downloads, videos, support and more... with two different levels of membership and complete customizations.
+* Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
 
-So if you'd like to create a site like GigaOm, Izzy Video, PSD Tuts, now you can do that with ease!
+= Membership Pro =
+Membership lite is a fully functional but limited version of our <a href='http://premium.wpmudev.org/project/membership'>full Membership plugin</a>.
+This lite version supports a maximum of two membership levels and two subscription levels, as well as a basic set of rules to get you started. This is
+enough for most basic membership sites.
 
-= So, you can use Membership lite to create... =
+Our full version includes many more features:
 
-A WordPress membership site, offering resources, forums, downloads, videos, support and more... with two different levels of membership and complete customizations.
+* **Unlimited** membership levels!
+* **Unlimited** subscription levels!
+* **BuddyPress rules** - limit and protect access to groups, group creation, pages, blogs, private messageing
+* **Administration area rules** - control blog creation (limit number per level), dashboard widgets, menus and sub-menus, available plugins.
 
-Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
+<a href='http://premium.wpmudev.org/project/membership'>**Upgrade to the full version now &raquo;**</a>
 
 = How does it work... well, it's really easy. =
 
@@ -41,15 +50,15 @@ You can control access to:
 
 And you can also create two different levels of subscriptions, for example you can decide to:
 
-Offer free memberships that turn into paid subscriptions after x days
-Finite or indefinite subscriptions
-Serial renewing subscriptions
-Subscriptions that renew every 5, 10, 30, 90 etc. days
-And plenty more...
+* Offer free memberships that turn into paid subscriptions after x days
+* Finite or indefinite subscriptions
+* Serial renewing subscriptions
+* Subscriptions that renew every 5, 10, 30, 90 etc. days
+* And plenty more...
 
 Perhaps the best thing about this plugin though - besides it's ease of use and flexibility - is that it's as much a framework as anything else.
 
-You can add multiple different gateways and functionality straight into it with ease - any half decent WordPress developer should be able to do exactly that!
+Using our powerful but simple APIs you can add different gateways and rules straight into it with ease - any half decent WordPress developer should be able to do exactly that!
 
 For example, adding gateways is easy - and we'll be adding plenty more - all you need to do is create a gateway along the lines of one that we supply and you'll be good to go.
 
@@ -75,7 +84,7 @@ We have put together an in-depth <a href='http://premium.wpmudev.org/project/mem
 1.  Download the plugin file
 2.  Unzip the file into a folder on your hard drive
 
-**Standard WP / WPMS (for blog by blog access)**
+**Standard WP/WPMS (for blog by blog access)**
 
 1.	Upload the membership folder and all it contents to /wp-content/plugins folder on your site
 2.	The path to the main plugin file is wp-content/plugins/membership/membership.php
@@ -100,14 +109,19 @@ Otherwise, if you are running a live site and enabled the plugin in your Members
 **The Admin user**
 The membership system can initially be administered by the admin user and is always disabled on the front end of your site for this user, you can add other users to the membership administration group by editing them in WordPress and ticking the Membership admin box at the bottom of the User Edit page.
 
-**More Instructions on setup**
-More instructions and screenshots on how to configure the Membership plugin can be found on the <a href='http://premium.wpmudev.org/project/membership/installation/'>WPMUDEV site</a>.
+= More Instructions on setup =
+More instructions and screenshots on how to configure the Membership plugin can be found on the <a href='http://premium.wpmudev.org/project/membership/installation/'>WPMU DEV site</a>.
+
+= Need help getting started? =
+We provide comprehensive and guaranteed support on the <a href='http://premium.wpmudev.org/forums/tags/membership'>WPMU DEV forums</a> and <a href='http://premium.wpmudev.org/live-support/'>live chat</a>.
 
 == Frequently Asked Questions ==
 
 = How easy is it to set up? =
-
 We have an indepth step by step guide to getting the plugin initially setup and configured <a href='http://premium.wpmudev.org/project/membership/installation/'>here</a>.
+
+= Get Support =
+We provide comprehensive and guaranteed support on the <a href='http://premium.wpmudev.org/forums/tags/membership'>WPMU DEV forums</a> and <a href='http://premium.wpmudev.org/live-support/'>live chat</a> only.
 
 == Screenshots ==
 
