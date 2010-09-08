@@ -1337,7 +1337,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" class="search-form">
 				<p class="search-box">
-					<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+					<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 					<label for="membership-search-input" class="screen-reader-text"><?php _e('Search Members','membership'); ?>:</label>
 					<input type="text" value="<?php echo esc_attr($s); ?>" name="s" id="membership-search-input">
 					<input type="submit" class="button" value="<?php _e('Search Members','membership'); ?>">
@@ -1348,7 +1348,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" id="members-filter">
 
-				<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+				<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 
 				<div class="tablenav">
 
@@ -2485,7 +2485,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" class="search-form">
 				<p class="search-box">
-					<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+					<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 					<label for="membership-search-input" class="screen-reader-text"><?php _e('Search Memberships','membership'); ?>:</label>
 					<input type="text" value="<?php echo esc_attr($s); ?>" name="s" id="membership-search-input">
 					<input type="submit" class="button" value="<?php _e('Search Memberships','membership'); ?>">
@@ -2496,7 +2496,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" id="posts-filter">
 
-				<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+				<input type='hidden' name='page' value='<?phpecho esc_attr($page); ?>' />
 
 				<div class="tablenav">
 
@@ -3046,7 +3046,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" class="search-form">
 				<p class="search-box">
-					<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+					<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 					<label for="subscription-search-input" class="screen-reader-text"><?php _e('Search Memberships','membership'); ?>:</label>
 					<input type="text" value="<?php echo esc_attr($s); ?>" name="s" id="subscription-search-input">
 					<input type="submit" class="button" value="<?php _e('Search Subscriptions','membership'); ?>">
@@ -3057,7 +3057,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" id="posts-filter">
 
-				<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+				<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 
 				<div class="tablenav">
 
@@ -3339,7 +3339,7 @@ if(!class_exists('membershipadmin')) {
 
 				<form method="get" action="?page=<?php echo esc_attr($page); ?>" id="posts-filter">
 
-				<input type='hidden' name='page' value='<? echo esc_attr($page); ?>' />
+				<input type='hidden' name='page' value='<?php echo esc_attr($page); ?>' />
 
 				<div class="tablenav">
 
