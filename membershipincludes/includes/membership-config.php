@@ -19,7 +19,7 @@ define( 'MEMBERSHIP_VIEW_COMMENTS', false);
 // Use a global table system - experimental
 define( 'MEMBERSHIP_GLOBAL_TABLES', false);
 
-// Use a global table system - experimental
+// The WP user that can always administer the plugin
 define( 'MEMBERSHIP_MASTER_ADMIN', 'admin');
 
 ?>
