@@ -1,7 +1,7 @@
 === Membership lite ===
 Contributors: WPMUDEV
 Author: WPMUDEV
-Tags: membership, api, checkout, framework, member, members, members only, paypal, register, buddypress, multisite
+Tags: membership, api, checkout, framework, member, members, members only, paypal, register, buddypress, multisite, wordpress membership plugin
 Requires at least: 3.0.1
 Tested up to: 3.0.1
 Stable tag: 1.0.1

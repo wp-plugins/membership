@@ -97,7 +97,7 @@ if(!class_exists('membershipadmin')) {
 				$user = wp_get_current_user();
 			}
 			// Add in our new capability
-			if($user->user_login == MEMBERSHIP_MASTER_ADMIN && !$user->has_cap('membershipadmin')) {
+			if($user->has_cap('administrator') && !$user->has_cap('membershipadmin')) {
 				$user->add_cap('membershipadmin');
 			}
 
