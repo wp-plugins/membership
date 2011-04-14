@@ -13,6 +13,8 @@ function load_membership_plugins() {
 		}
 	}
 
+	do_action( 'membership_plugins_loaded' );
+
 }
 
 function set_membership_url($base) {
@@ -127,7 +129,84 @@ function membership_db_prefix(&$wpdb, $table, $useprefix = true) {
 
 }
 
+function M_can_add_pings() {
+
+	global $M_add_ping;
+
+	return $M_add_ping;
+}
+
+function M_set_ping_operations( $pings ) {
+
+	global $M_add_ping;
+
+	$user = wp_get_current_user();
+
+	if(count($pings) >= 2) {
+		$M_add_ping = false;
+		$user->remove_cap('M_add_ping');
+	} else {
+		$M_add_ping = true;
+		$user->add_cap('M_add_ping');
+	}
+}
+
+function M_can_add_level() {
+
+	global $M_add_level;
+
+	return $M_add_level;
+}
+
+function M_set_level_operations( $levels ) {
+
+	global $M_add_level;
+
+	$user = wp_get_current_user();
+
+	if(count($levels) >= 2) {
+		$M_add_level = false;
+		$user->remove_cap('M_add_level');
+	} else {
+		$M_add_level = true;
+		$user->add_cap('M_add_level');
+	}
+}
+
+function M_can_add_sub() {
+
+	global $M_add_subscription;
+
+	return $M_add_subscription;
+}
+
+function M_set_sub_operations( $subs ) {
+
+	global $M_add_subscription;
+
+	$user = wp_get_current_user();
+	if(count($subs) >= 2) {
+		$M_add_subscription = false;
+		$user->remove_cap('M_add_subscription');
+	} else {
+		$M_add_subscription = true;
+		$user->add_cap('M_add_subscription');
+	}
+}
+
 // Template based functions
+function current_member() {
+
+	$user = wp_get_current_user();
+	$member = new M_Membership( $user->ID );
+
+	if(!empty($member)) {
+		return $member;
+	} else {
+		return false;
+	}
+
+}
 
 function current_user_is_member() {
 
@@ -181,49 +260,6 @@ function current_user_on_subscription( $sub_id ) {
 
 }
 
-function M_can_add_level() {
-
-	global $M_add_level;
-
-	return $M_add_level;
-}
-
-function M_set_level_operations( $levels ) {
-
-	global $M_add_level;
-
-	$user = wp_get_current_user();
-
-	if(count($levels) >= 2) {
-		$M_add_level = false;
-		$user->remove_cap('M_add_level');
-	} else {
-		$M_add_level = true;
-		$user->add_cap('M_add_level');
-	}
-}
-
-function M_can_add_sub() {
-
-	global $M_add_subscription;
-
-	return $M_add_subscription;
-}
-
-function M_set_sub_operations( $subs ) {
-
-	global $M_add_subscription;
-
-	$user = wp_get_current_user();
-	if(count($subs) >= 2) {
-		$M_add_subscription = false;
-		$user->remove_cap('M_add_subscription');
-	} else {
-		$M_add_subscription = true;
-		$user->add_cap('M_add_subscription');
-	}
-}
-
 // Functions
 if(!function_exists('M_register_rule')) {
 	function M_register_rule($rule_name, $class_name, $section) {
@@ -246,6 +282,25 @@ if(!function_exists('M_register_rule')) {
 		}
 
 	}
+}
+
+function M_remove_old_plugin( $plugins ) {
+
+	if(array_key_exists('membership/membership.php', $plugins) && !in_array('membership.php', (array) array_map('basename', wp_get_active_and_valid_plugins() ))) {
+		unset($plugins['membership/membership.php']);
+	}
+
+	return $plugins;
+}
+
+function get_last_transaction_for_user_and_sub($user_id, $sub_id) {
+
+	global $wpdb;
+
+	$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'subscription_transaction') . " WHERE transaction_user_ID = %d and transaction_subscription_ID = %d ORDER BY transaction_stamp DESC LIMIT 0,1", $user_id, $sub_id );
+
+	return $wpdb->get_row( $sql );
+
 }
 
 ?>

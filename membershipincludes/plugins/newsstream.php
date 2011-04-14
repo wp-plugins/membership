@@ -88,7 +88,7 @@ function membership_record_user_expire($sub_id, $user_id) {
 }
 add_action( 'membership_expire_subscription', 'membership_record_user_expire', 10, 2 );
 
-function membership_record_sub_drop($sub_id, $user_id) {
+function membership_record_sub_drop($sub_id, $level_id, $user_id) {
 
 	global $wpdb;
 
@@ -97,13 +97,14 @@ function membership_record_sub_drop($sub_id, $user_id) {
 	// Get the information
 	$user = new WP_User( $user_id );
 	$sub = new M_Subscription( $sub_id );
+	$level = new M_Level( $level_id );
 
-	$message = sprintf(__( '<strong>%s</strong> has left subscription <strong>%s</strong>','membership' ), $user->display_name, $sub->sub_name() );
+	$message = sprintf(__( '<strong>%s</strong> has left level <strong>%s</strong> on subscription <strong>%s</strong>','membership' ), $user->display_name, $level->level_title(), $sub->sub_name() );
 
 	$wpdb->insert( $table, array( 'newsitem' => $message, 'newsdate' => current_time('mysql') ) );
 
 }
-add_action( 'membership_drop_subscription', 'membership_record_sub_drop', 10, 2 );
+add_action( 'membership_drop_subscription', 'membership_record_sub_drop', 10, 3 );
 
 function membership_record_level_drop($level_id, $user_id) {
 
@@ -122,7 +123,7 @@ function membership_record_level_drop($level_id, $user_id) {
 }
 add_action( 'membership_drop_level', 'membership_record_level_drop', 10, 2 );
 
-function membership_record_sub_move($fromsub_id, $tosub_id, $tolevel_id, $to_order, $user_id) {
+function membership_record_sub_move($fromsub_id, $fromlevel_id, $tosub_id, $tolevel_id, $to_order, $user_id) {
 
 	global $wpdb;
 
@@ -132,14 +133,15 @@ function membership_record_sub_move($fromsub_id, $tosub_id, $tolevel_id, $to_ord
 	$user = new WP_User( $user_id );
 	$fromsub = new M_Subscription( $fromsub_id );
 	$tosub = new M_Subscription( $tosub_id );
+	$fromlevel = new M_Level( $fromlevel_id );
 	$level = new M_Level( $tolevel_id );
 
-	$message = sprintf(__( '<strong>%s</strong> has moved from subscription <strong>%s</strong> to level <strong>%s</strong> on subscription <strong>%s</strong>','membership' ), $user->display_name, $fromsub->sub_name(), $level->level_title(), $tosub->sub_name()  );
+	$message = sprintf(__( '<strong>%s</strong> has moved from level <strong>%s</strong> on subscription <strong>%s</strong> to level <strong>%s</strong> on subscription <strong>%s</strong>','membership' ), $user->display_name, $fromlevel->level_title(), $fromsub->sub_name(), $level->level_title(), $tosub->sub_name()  );
 
 	$wpdb->insert( $table, array( 'newsitem' => $message, 'newsdate' => current_time('mysql') ) );
 
 }
-add_action( 'membership_move_subscription', 'membership_record_sub_move', 10, 5 );
+add_action( 'membership_move_subscription', 'membership_record_sub_move', 10, 6 );
 
 function membership_record_level_move($fromlevel_id, $tolevel_id, $user_id) {
 

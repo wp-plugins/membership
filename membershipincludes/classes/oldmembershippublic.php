@@ -28,7 +28,7 @@ if(!class_exists('membershippublic')) {
 			add_action( 'plugins_loaded', array(&$this, 'load_textdomain'));
 
 			// Set up Actions
-			add_action( 'init', array(&$this, 'initialise_plugin'), 1 );
+			add_action( 'init', array(&$this, 'initialise_plugin') );
 			add_filter( 'query_vars', array(&$this, 'add_queryvars') );
 			add_action( 'generate_rewrite_rules', array(&$this, 'add_rewrites') );
 
@@ -43,9 +43,6 @@ if(!class_exists('membershippublic')) {
 			// add feed protection
 			add_filter('feed_link', array(&$this, 'add_feed_key'), 99, 2);
 
-			// Register
-			add_filter('register', array(&$this, 'override_register') );
-
 		}
 
 		function membershippublic() {
@@ -55,7 +52,7 @@ if(!class_exists('membershippublic')) {
 		function load_textdomain() {
 
 			$locale = apply_filters( 'membership_locale', get_locale() );
-			$mofile = membership_dir( "membershipincludes/languages/membership-$locale.mo" );
+			$mofile = membership_dir( "membershipincludes/locale/membership-$locale.mo" );
 
 			if ( file_exists( $mofile ) )
 				load_textdomain( 'membership', $mofile );
@@ -73,9 +70,6 @@ if(!class_exists('membershippublic')) {
 
 			// Create our subscription page shortcode
 			add_shortcode('subscriptionform', array(&$this, 'do_subscription_shortcode') );
-			add_shortcode('accountform', array(&$this, 'do_account_shortcode') );
-			add_shortcode('upgradeform', array(&$this, 'do_upgrade_shortcode') );
-			add_shortcode('renewform', array(&$this, 'do_renew_shortcode') );
 			add_filter('the_posts', array(&$this, 'add_subscription_styles'));
 
 			$user = wp_get_current_user();
@@ -117,9 +111,11 @@ if(!class_exists('membershippublic')) {
 			if(!empty($M_options['nocontent_page']) && $M_options['nocontent_page'] != $M_options['registration_page']) {
 				add_action('pre_get_posts', array(&$this, 'hide_nocontent_page'), 99 );
 				add_filter('get_pages', array(&$this, 'hide_nocontent_page_from_menu'), 99);
-				// add in a no posts thing - change this?
+				// add in a no posts thing
 				add_filter('the_posts', array(&$this, 'check_for_posts_existance'), 999, 2);
 			}
+
+
 
 		}
 
@@ -153,30 +149,6 @@ if(!class_exists('membershippublic')) {
 		  	$wp_rewrite->rules = array_merge($new_rules, $wp_rewrite->rules);
 
 			return $wp_rewrite;
-		}
-
-		function override_register( $link ) {
-
-			global $M_options;
-
-			if ( ! is_user_logged_in() ) {
-				if ( get_option('users_can_register') ) {
-					// get the new registration stuff.
-					if(!empty($M_options['registration_page'])) {
-						$url = get_permalink( $M_options['registration_page'] );
-						$link = preg_replace('/<a href(.+)a>/', '<a href="' . $url . '">' . __('Register', 'membership') . '</a>', $link);
-					}
-
-				}
-			} else {
-				// change to account page?
-				if(!empty($M_options['account_page'])) {
-					$url = get_permalink( $M_options['account_page'] );
-					$link = preg_replace('/<a href(.+)a>/', '<a href="' . $url . '">' . __('My Account', 'membership') . '</a>', $link);
-				}
-			}
-
-			return $link;
 		}
 
 		function add_feed_key( $output, $feed ) {
@@ -316,10 +288,12 @@ if(!class_exists('membershippublic')) {
 		}
 
 		function handle_paymentgateways($wp_query) {
+
 			if(!empty($wp_query->query_vars['paymentgateway'])) {
-				do_action( 'membership_process_payment_return', $wp_query->query_vars['paymentgateway'] );
-				// exit();
+				do_action( 'membership_handle_payment_return_' . $wp_query->query_vars['paymentgateway']);
+				exit();
 			}
+
 		}
 
 		function handle_download_protection($wp_query) {
@@ -341,12 +315,7 @@ if(!class_exists('membershippublic')) {
 						$this->output_file($file);
 					} else {
 						// check we can see it
-						if(empty($member) || !method_exists($member, 'has_level_rule')) {
-							$user = wp_get_current_user();
-							$member = new M_Membership( $user->ID );
-						}
-
-						if( method_exists($member, 'has_level_rule') && $member->has_level_rule('downloads') && $member->pass_thru( 'downloads', array( 'can_view_download' => $protected ) ) ) {
+						if( $member->has_level_rule('downloads') && $member->pass_thru( 'downloads', array( 'can_view_download' => $protected ) ) ) {
 							$file = $wp_query->query_vars['protectedfile'];
 							$this->output_file($file);
 						} else {
@@ -545,22 +514,12 @@ if(!class_exists('membershippublic')) {
 			$M_shortcode_tags = $shortcode_tags;
 
 			foreach($shortcode_tags as $key => $function) {
-				if(!in_array($key, array('subscriptionform','accountform', 'upgradeform', 'renewform'))) {
+				if($key != 'subscriptionform') {
 					$shortcode_tags[$key] = array(&$this, 'do_protected_shortcode');
 				}
 			}
 
 			return $content;
-		}
-
-		function may_be_singular($wp_query) {
-
-			if( is_archive() || is_author() || is_category() || is_tag() || is_tax() || is_search() ) {
-				return false;
-			} else {
-				return true;
-			}
-
 		}
 
 		function check_for_posts_existance($posts, $wp_query) {
@@ -579,7 +538,7 @@ if(!class_exists('membershippublic')) {
 				}
 			}
 
-			if(empty($posts) && $this->posts_actually_exist() && $this->may_be_singular($wp_query)) {
+			if(empty($posts) && $this->posts_actually_exist()) {
 				// we have nothing to see because it either doesn't exist or it's protected - move to no access page.
 				$this->show_noaccess_page($wp_query);
 			} else {
@@ -644,11 +603,9 @@ if(!class_exists('membershippublic')) {
 
 			global $M_options;
 
-			if(!empty($M_options['nocontent_page']) && $wp_query->queried_object_id != $M_options['nocontent_page']) {
 			// This function should remove the no access page from any menus
 			$wp_query->query_vars['post__not_in'][] = $M_options['nocontent_page'];
 			$wp_query->query_vars['post__not_in'] = array_unique($wp_query->query_vars['post__not_in']);
-			}
 
 
 		}
@@ -675,36 +632,70 @@ if(!class_exists('membershippublic')) {
 				return;
 			}
 
-			if(!empty($wp_query->queried_object_id) && !empty($M_options['account_page']) && $wp_query->queried_object_id == $M_options['account_page']) {
-				// We know what we are looking at, the registration page has been set and we are trying to access it
-				return;
-			}
-
-			if(!empty($wp_query->queried_object_id) && !empty($M_options['nocontent_page']) && $wp_query->queried_object_id == $M_options['nocontent_page']) {
-				return;
-			}
-
 			if(!empty($wp_query->query_vars['protectedfile']) && !$forceviewing) {
 				return;
 			}
 
-			//post_type] => nav_menu_item
-			if($wp_query->query_vars['post_type'] == 'nav_menu_item') {
-				// we've started looking at menus - implement bad bit of code until find a better method
-				define('M_REACHED_MENU', 'yup');
+			if(!empty($M_options['nocontent_page'])) {
+				// grab the content form the no content page
+				$post = get_post( $M_options['nocontent_page'] );
+			} else {
+				$post = new stdClass;
+				$post->post_author = 1;
+				$post->post_name = 'membershipnoaccess';
+				add_filter('the_permalink',create_function('$permalink', 'return "' . get_option('home') . '";'));
+				$post->guid = get_bloginfo('wpurl');
+				$post->post_title = esc_html(stripslashes($M_options['protectedmessagetitle']));
+				$post->post_content = stripslashes($M_options['protectedmessage']);
+				$post->ID = -1;
+				$post->post_status = 'publish';
+				$post->post_type = 'post';
+				$post->comment_status = 'closed';
+				$post->ping_status = 'open';
+				$post->comment_count = 0;
+				$post->post_date = current_time('mysql');
+				$post->post_date_gmt = current_time('mysql', 1);
 			}
 
-			// If still here then we need to redirect to the no-access page
-			if(!empty($M_options['nocontent_page']) && $wp_query->queried_object_id != $M_options['nocontent_page'] && !defined('M_REACHED_MENU')) {
-				// grab the content form the no content page
-				$url = get_permalink( (int) $M_options['nocontent_page'] );
+			if(!isset($M_options['page_template']) || $M_options['page_template'] == 'default') {
+				$M_options['page_template'] = 'page.php';
+			}
 
-				wp_safe_redirect( $url );
-				exit;
+			if (file_exists(TEMPLATEPATH . '/' . $M_options['page_template'])) {
 
-				//$post = get_post( $M_options['nocontent_page'] );
-			} else {
+				if(empty($M_options['protectedmessagetitle'])) {
+					$M_options['protectedmessagetitle'] = __('No access to this content','membership');
+				}
 
+				/**
+				 * What we are going to do here, is create a fake post.  A post
+				 * that doesn't actually exist. We're gonna fill it up with
+				 * whatever values you want.  The content of the post will be
+				 * the output from your plugin.  The questions and answers.
+				 */
+				/**
+				 * Clear out any posts already stored in the $wp_query->posts array.
+				 */
+				$wp_query->posts = array();
+				$wp_query->post_count = 0;
+
+				// Reset $wp_query
+				$wp_query->posts[] = $post;
+				$wp_query->post_count = 1;
+				$wp_query->is_home = false;
+
+				/**
+				 * And load up the template file.
+				 */
+				status_header('404');
+				ob_start('template');
+				load_template(TEMPLATEPATH . '/' . 'page.php');
+				ob_end_flush();
+
+				/**
+				 * YOU MUST DIE AT THE END.  BAD THINGS HAPPEN IF YOU DONT
+				 */
+				die();
 			}
 
 		}
@@ -728,43 +719,6 @@ if(!class_exists('membershippublic')) {
 
 		// Shortcodes
 
-		function show_account_page( $content = null ) {
-
-			global $bp, $profileuser, $user, $user_id;
-
-			if(!is_user_logged_in()) {
-				return apply_filters('membership_account_form_not_logged_in', $content );
-			}
-
-			require_once(ABSPATH . 'wp-admin/includes/user.php');
-
-			$user = wp_get_current_user();
-
-			$user_id = $user->ID;
-
-			$profileuser = get_user_to_edit($user_id);
-
-			$content = '';
-
-			$content = apply_filters('membership_account_form_before_content', $content);
-
-			ob_start();
-			if( defined('MEMBERSHIP_ACCOUNT_FORM') && file_exists( MEMBERSHIP_ACCOUNT_FORM ) ) {
-				include_once( MEMBERSHIP_ACCOUNT_FORM );
-			} elseif(!empty($bp) && file_exists( apply_filters('membership_override_bpaccount_form', membership_dir('membershipincludes/includes/bp.account.form.php')) )) {
-				include_once( apply_filters('membership_override_bpaccount_form', membership_dir('membershipincludes/includes/bp.account.form.php')) );
-			} elseif( file_exists( apply_filters('membership_override_account_form', membership_dir('membershipincludes/includes/account.form.php')) ) ) {
-				include_once( apply_filters('membership_override_account_form', membership_dir('membershipincludes/includes/account.form.php')) );
-			}
-			$content .= ob_get_contents();
-			ob_end_clean();
-
-			$content = apply_filters('membership_account_form_after_content', $content);
-
-			return $content;
-
-		}
-
 		function show_subpage_one($error = false) {
 
 			global $bp;
@@ -774,12 +728,12 @@ if(!class_exists('membershippublic')) {
 			$content = apply_filters('membership_subscription_form_registration_before_content', $content);
 
 			ob_start();
-			if( defined('MEMBERSHIP_REGISTRATION_FORM') && file_exists( MEMBERSHIP_REGISTRATION_FORM ) ) {
-				include_once( MEMBERSHIP_REGISTRATION_FORM );
-			} elseif(!empty($bp) && file_exists( apply_filters('membership_override_bpregistration_form', membership_dir('membershipincludes/includes/bp.registration.form.php')) )) {
-				include_once( apply_filters('membership_override_bpregistration_form', membership_dir('membershipincludes/includes/bp.registration.form.php')) );
-			} elseif( file_exists( apply_filters('membership_override_registration_form', membership_dir('membershipincludes/includes/registration.form.php')) ) ) {
-				include_once( apply_filters('membership_override_registration_form', membership_dir('membershipincludes/includes/registration.form.php')) );
+			if( defined('membership_registration_form') && file_exists( membership_registration_form ) ) {
+				include_once( membership_registration_form );
+			} elseif(!empty($bp) && file_exists( membership_dir('membershipincludes/includes/bp.registration.form.php') )) {
+				include_once( membership_dir('membershipincludes/includes/bp.registration.form.php') );
+			} elseif( file_exists( membership_dir('membershipincludes/includes/registration.form.php') ) ) {
+				include_once( membership_dir('membershipincludes/includes/registration.form.php') );
 			}
 			$content .= ob_get_contents();
 			ob_end_clean();
@@ -797,10 +751,10 @@ if(!class_exists('membershippublic')) {
 			$content = apply_filters('membership_subscription_form_before_content', $content, $user_id);
 
 			ob_start();
-			if( defined('MEMBERSHIP_SUBSCRIPTION_FORM') && file_exists( MEMBERSHIP_SUBSCRIPTION_FORM ) ) {
-				include_once( MEMBERSHIP_SUBSCRIPTION_FORM );
-			} elseif(file_exists( apply_filters('membership_override_subscription_form', membership_dir('membershipincludes/includes/subscription.form.php')) )) {
-				include_once( apply_filters('membership_override_subscription_form', membership_dir('membershipincludes/includes/subscription.form.php')) );
+			if( defined('membership_subscription_form') && file_exists( membership_subscription_form ) ) {
+				include_once( membership_subscription_form );
+			} elseif(file_exists( membership_dir('membershipincludes/includes/subscription.form.php') )) {
+				include_once( membership_dir('membershipincludes/includes/subscription.form.php') );
 			}
 			$content .= ob_get_contents();
 			ob_end_clean();
@@ -818,10 +772,10 @@ if(!class_exists('membershippublic')) {
 			$content = apply_filters('membership_subscription_form_member_before_content', $content, $user_id);
 
 			ob_start();
-			if( defined('MEMBERSHIP_MEMBER_FORM') && file_exists( MEMBERSHIP_MEMBER_FORM ) ) {
-				include_once( MEMBERSHIP_MEMBER_FORM );
-			} elseif(file_exists( apply_filters('membership_override_member_form', membership_dir('membershipincludes/includes/member.form.php')) )) {
-				include_once( apply_filters('membership_override_member_form', membership_dir('membershipincludes/includes/member.form.php')) );
+			if( defined('membership_member_form') && file_exists( membership_member_form ) ) {
+				include_once( membership_member_form );
+			} elseif(file_exists( membership_dir('membershipincludes/includes/member.form.php') )) {
+				include_once( membership_dir('membershipincludes/includes/member.form.php') );
 			}
 			$content .= ob_get_contents();
 			ob_end_clean();
@@ -832,113 +786,14 @@ if(!class_exists('membershippublic')) {
 
 		}
 
-		function show_upgrade_page() {
-
-			$content = '';
-
-			$content = apply_filters('membership_upgrade_form_member_before_content', $content, $user_id);
-
-			ob_start();
-			if( defined('MEMBERSHIP_UPGRADE_FORM') && file_exists( MEMBERSHIP_UPGRADE_FORM ) ) {
-				include_once( MEMBERSHIP_UPGRADE_FORM );
-			} elseif(file_exists( apply_filters('membership_override_upgrade_form', membership_dir('membershipincludes/includes/upgrade.form.php')) )) {
-				include_once( apply_filters('membership_override_upgrade_form', membership_dir('membershipincludes/includes/upgrade.form.php')) );
-			}
-			$content .= ob_get_contents();
-			ob_end_clean();
-
-			$content = apply_filters('membership_upgrade_form_member_after_content', $content, $user_id );
-
-			return $content;
-
-		}
-
-		function show_renew_page() {
-
-			global $M_options;
-
-			$content = '';
-
-			$content = apply_filters('membership_renew_form_member_before_content', $content, $user_id);
-
-			ob_start();
-			if( defined('MEMBERSHIP_RENEW_FORM') && file_exists( MEMBERSHIP_RENEW_FORM ) ) {
-				include_once( MEMBERSHIP_RENEW_FORM );
-			} elseif(file_exists( apply_filters('membership_override_renew_form', membership_dir('membershipincludes/includes/renew.form.php')) )) {
-				include_once( apply_filters('membership_override_renew_form', membership_dir('membershipincludes/includes/renew.form.php')) );
-			}
-			$content .= ob_get_contents();
-			ob_end_clean();
-
-			$content = apply_filters('membership_renew_form_member_after_content', $content, $user_id );
-
-			return $content;
-
-		}
-
-		function do_renew_shortcode($atts, $content = null, $code = "") {
-
-			global $wp_query;
-
-			$error = array();
-
-			$page = addslashes($_REQUEST['action']);
-
-			$M_options = get_option('membership_options', array());
-
-			$content = $this->show_renew_page();
-
-			$content = apply_filters('membership_renew_form', $content);
-
-			return $content;
-
-		}
-
-		function do_upgrade_shortcode($atts, $content = null, $code = "") {
-
-			global $wp_query;
-
-			$error = array();
-
-			$page = addslashes($_REQUEST['action']);
-
-			$M_options = get_option('membership_options', array());
-
-			$content = $this->show_upgrade_page();
-
-			$content = apply_filters('membership_upgrade_form', $content);
-
-			return $content;
-
-		}
-
-		function do_account_shortcode($atts, $content = null, $code = "") {
-
-			global $wp_query;
-
-			$error = array();
-
-			$page = addslashes($_REQUEST['action']);
-
-			$M_options = get_option('membership_options', array());
-
-			$content = $this->show_account_page( $content );
-
-			$content = apply_filters('membership_account_form', $content);
-
-			return $content;
-
-		}
-
 		function do_subscription_shortcode($atts, $content = null, $code = "") {
 
 			global $wp_query;
 
+			$content = '';
 			$error = array();
 
 			$page = addslashes($_REQUEST['action']);
-
-			$M_options = get_option('membership_options', array());
 
 			switch($page) {
 
@@ -997,20 +852,13 @@ if(!class_exists('membershippublic')) {
 											$error[] = $userid->get_error_message();
 										} else {
 											$member = new M_Membership( $user_id );
-											if(empty($M_options['enableincompletesignups']) || $M_options['enableincompletesignups'] != 'yes') {
-												$member->deactivate();
-											}
+											$member->deactivate();
 
-											if( has_action('membership_susbcription_form_registration_notification') ) {
-												do_action('membership_susbcription_form_registration_notification', $user_id, $_POST['password']);
-											} else {
-												wp_new_user_notification($user_id, $_POST['password']);
-											}
-
+											wp_new_user_notification($user_id, $_POST['password']);
 										}
 									}
 
-									do_action( 'membership_subscription_form_registration_process', $error, $user_id );
+									do_action( 'membership_subscription_form_registration_process', $error );
 
 									if(!empty($error)) {
 										$content .= "<div class='error'>";
@@ -1097,15 +945,9 @@ if(!class_exists('membershippublic')) {
 											$error[] = $userid->get_error_message();
 										} else {
 											$member = new M_Membership( $user_id );
-											if(empty($M_options['enableincompletesignups']) || $M_options['enableincompletesignups'] != 'yes') {
-												$member->deactivate();
-											}
+											$member->deactivate();
 
-											if( has_action('membership_susbcription_form_registration_notification') ) {
-												do_action('membership_susbcription_form_registration_notification', $user_id, $_POST['password']);
-											} else {
-												wp_new_user_notification($user_id, $_POST['signup_password']);
-											}
+											wp_new_user_notification($user_id, $_POST['signup_password']);
 
 											foreach((array) $meta_array as $field_id => $field_content) {
 												if(function_exists('xprofile_set_field_data')) {
@@ -1116,7 +958,7 @@ if(!class_exists('membershippublic')) {
 										}
 									}
 
-									do_action( 'membership_subscription_form_registration_process', $error, $user_id );
+									do_action( 'membership_subscription_form_registration_process', $error );
 
 									if(!empty($error)) {
 										$content .= "<div class='error'>";
@@ -1172,22 +1014,6 @@ if(!class_exists('membershippublic')) {
 				if(strstr($post->post_content, '[subscriptionform]') !== false) {
 					// The shortcode is in a post on this page, add the header
 					wp_enqueue_style('subscriptionformcss', membership_url('membershipincludes/css/subscriptionform.css'));
-				}
-				if(strstr($post->post_content, '[accountform]') !== false) {
-					// The shortcode is in a post on this page, add the header
-					wp_enqueue_style('accountformcss', membership_url('membershipincludes/css/accountform.css'));
-					wp_enqueue_script('accountformjs', membership_url('membershipincludes/js/accountform.js'), array('jquery'));
-				}
-				if(strstr($post->post_content, '[upgradeform]') !== false) {
-					// The shortcode is in a post on this page, add the header
-					wp_enqueue_style('upgradeformcss', membership_url('membershipincludes/css/upgradeform.css'));
-				}
-				if(strstr($post->post_content, '[renewform]') !== false) {
-					// The shortcode is in a post on this page, add the header
-					wp_enqueue_style('renewformcss', membership_url('membershipincludes/css/renewform.css'));
-					wp_enqueue_script('renewformjs', membership_url('membershipincludes/js/renewform.js'), array('jquery'));
-					wp_localize_script( 'renewformjs', 'membership', array( 'unsubscribe' => __('Are you sure you want to unsubscribe from this subscription?','membership'), 'deactivatelevel' => __('Are you sure you want to deactivate this level?','membership') ) );
-
 				}
 			}
 

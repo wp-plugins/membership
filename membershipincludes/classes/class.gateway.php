@@ -9,6 +9,7 @@ if(!class_exists('M_Gateway')) {
 		// Class Identification
 		var $gateway = 'Not Set';
 		var $title = 'Not Set';
+		var $issingle = false;
 
 		// Tables
 		var $tables = array('subscription_transaction');
@@ -26,6 +27,9 @@ if(!class_exists('M_Gateway')) {
 
 			// Actions and Filters
 			add_filter('M_gateways_list', array(&$this, 'gateways_list'));
+
+			add_action( 'membership_process_payment_return', array(&$this, 'process_payment_return') );
+			add_action( 'membership_record_user_gateway', array(&$this, 'record_user_gateway') );
 
 		}
 
@@ -178,8 +182,6 @@ if(!class_exists('M_Gateway')) {
 				// Insert
 				$this->db->insert( $this->subscription_transaction, $data );
 			}
-
-
 
 		}
 
@@ -366,6 +368,39 @@ if(!class_exists('M_Gateway')) {
 			<?php
 		}
 
+		function process_payment_return( $gateway ) {
+			if( apply_filters( 'membership_override_payment_return_' . $gateway, false ) ) {
+				return;
+			}
+
+			// Payment return
+			do_action( 'membership_handle_payment_return_' . $gateway );
+		}
+
+		function record_user_gateway( $user_id ) {
+			update_user_meta( $user_id, 'membership_signup_gateway', $this->gateway );
+			if($this->issingle) {
+				update_user_meta( $user_id, 'membership_signup_gateway_is_single', 'yes' );
+			} else {
+				update_user_meta( $user_id, 'membership_signup_gateway_is_single', 'no' );
+			}
+
+		}
+
+		function display_upgrade_button($pricing, $subscription, $user_id, $fromsub_id = false) {
+			// By default there is no default button available
+			echo "<form class=''>";
+			echo "<input type='submit' value=' " . __('Upgrades not available', 'membership') . " ' disabled='disabled' />";
+			echo "</form>";
+		}
+
+		function display_cancel_button($subscription, $pricing, $user_id) {
+			// By default there is no default button available
+			echo '<form class="unsubbutton" action="" method="post">';
+			echo "<input type='button' value=' " . __('Unsubscribe not available', 'membership') . " ' disabled='disabled' />";
+			echo "</form>";
+		}
+
 	}
 
 }
@@ -379,6 +414,18 @@ function M_register_gateway($gateway, $class) {
 	}
 
 	$M_Gateways[$gateway] = new $class;
+
+}
+
+function M_get_class_for_gateway($gateway) {
+
+	global $M_Gateways;
+
+	if(isset($M_Gateways[$gateway])) {
+		return $M_Gateways[$gateway];
+	} else {
+		return false;
+	}
 
 }
 

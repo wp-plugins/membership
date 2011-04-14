@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Membership lite
-Version: 1.0.2
-Plugin URI: http://premium.wpmudev.org/project/membership
+Plugin Name: Membership
+Version: 2.0
+Plugin URI: http://premium.wpmudev.org/project/wordpress-membership-lite
 Description: The most powerful, easy to use and flexible membership plugin for WordPress, Multisite and BuddyPress sites available. Offer downloads, posts, pages, forums and more to paid members.
 Author: Barry (Incsub/WPMU DEV)
-Author URI: http://de.caffeinated.com
+Author URI: http://caffeinated.com
 
 Copyright 2010 Incsub
 
@@ -34,13 +34,14 @@ set_membership_dir(__FILE__);
 
 if(is_admin()) {
 	// Administration interface
-
 	// Load required classes
 	require_once('membershipincludes/classes/class.rule.php');
 	require_once('membershipincludes/classes/class.gateway.php');
 	require_once('membershipincludes/classes/class.level.php');
 	require_once('membershipincludes/classes/class.subscription.php');
 	require_once('membershipincludes/classes/class.membership.php');
+	require_once('membershipincludes/classes/class.urlgroup.php');
+	require_once('membershipincludes/classes/class.ping.php');
 	// Set up the default rules
 	require_once('membershipincludes/includes/default.rules.php');
 	require_once('membershipincludes/includes/default.admin.rules.php');
@@ -51,13 +52,14 @@ if(is_admin()) {
 
 } else {
 	// Public interface
-
 	// Load required classes
 	require_once('membershipincludes/classes/class.rule.php');
 	require_once('membershipincludes/classes/class.gateway.php');
 	require_once('membershipincludes/classes/class.level.php');
 	require_once('membershipincludes/classes/class.subscription.php');
 	require_once('membershipincludes/classes/class.membership.php');
+	require_once('membershipincludes/classes/class.urlgroup.php');
+	require_once('membershipincludes/classes/class.ping.php');
 	// Set up the default rules
 	require_once('membershipincludes/includes/default.rules.php');
 
