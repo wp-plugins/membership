@@ -188,8 +188,6 @@ if(!class_exists('membershipadmin')) {
 				}
 			}
 
-			//add_users_page( __('Membership details','membership'), __('Membership details','membership'), 'read', "mymembership", array(&$this,'handle_profile_member_page'));
-
 		}
 
 		// Admin area protection
