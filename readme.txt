@@ -139,7 +139,7 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
-= 2.0 =
+= 2.0.2 =
 * Bug fixes
 
 = 2.0 =
