@@ -1600,12 +1600,16 @@ if(!class_exists('membershipadmin')) {
 										echo implode(", ", $rows);
 									}
 
-									$actions = array();
-									$actions['add'] = "<span class='edit'><a href='?page={$page}&amp;action=addsub&amp;member_id={$user_object->ID}'>" . __('Add', 'membership') . "</a></span>";
+									if($user_object->has_cap('membershipadmin')) {
+										$actions = array();
+									} else {
+										$actions = array();
+										$actions['add'] = "<span class='edit'><a href='?page={$page}&amp;action=addsub&amp;member_id={$user_object->ID}'>" . __('Add', 'membership') . "</a></span>";
 
-									if(!empty($subs)) {
-										$actions['move'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=movesub&amp;member_id=" . $user_object->ID . "", 'movesub-member-' . $user_object->ID) . "'>" . __('Move', 'membership') . "</a></span>";
-										$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=dropsub&amp;member_id=" . $user_object->ID . "", 'dropsub-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
+										if(!empty($subs)) {
+											$actions['move'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=movesub&amp;member_id=" . $user_object->ID . "", 'movesub-member-' . $user_object->ID) . "'>" . __('Move', 'membership') . "</a></span>";
+											$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=dropsub&amp;member_id=" . $user_object->ID . "", 'dropsub-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
+										}
 									}
 									?>
 									<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
@@ -1627,12 +1631,16 @@ if(!class_exists('membershipadmin')) {
 										}
 										echo implode(", ", $rows);
 									}
-									$actions = array();
-									$actions['add'] = "<span class='edit'><a href='?page={$page}&amp;action=addlevel&amp;member_id={$user_object->ID}'>" . __('Add', 'membership') . "</a></span>";
+									if($user_object->has_cap('membershipadmin')) {
+										$actions = array();
+									} else {
+										$actions = array();
+										$actions['add'] = "<span class='edit'><a href='?page={$page}&amp;action=addlevel&amp;member_id={$user_object->ID}'>" . __('Add', 'membership') . "</a></span>";
 
-									if(!empty($levels)) {
-										$actions['move'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=movelevel&amp;member_id=" . $user_object->ID . "", 'movelevel-member-' . $user_object->ID) . "'>" . __('Move', 'membership') . "</a></span>";
-										$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=droplevel&amp;member_id=" . $user_object->ID . "", 'droplevel-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
+										if(!empty($levels)) {
+											$actions['move'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=movelevel&amp;member_id=" . $user_object->ID . "", 'movelevel-member-' . $user_object->ID) . "'>" . __('Move', 'membership') . "</a></span>";
+											$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=droplevel&amp;member_id=" . $user_object->ID . "", 'droplevel-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
+										}
 									}
 									?>
 									<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
@@ -4063,7 +4071,7 @@ if(!class_exists('membershipadmin')) {
 			?>
 			<div class='wrap'>
 				<div class="icon32" id="icon-link-manager"><br></div>
-				<h2><?php _e('Pings Histry','membership'); ?></h2>
+				<h2><?php _e('Pings History','membership'); ?></h2>
 
 				<?php
 				if ( isset($_GET['msg']) ) {
@@ -4077,7 +4085,8 @@ if(!class_exists('membershipadmin')) {
 
 				$columns = array(	"name" 		=> 	__('Ping Name','membership'),
 									"url"		=>	__('URL','membership'),
-									"status"	=>	__('Status', 'membership')
+									"status"	=>	__('Status', 'membership'),
+									"date"		=>	__('Date', 'membership')
 								);
 
 				$columns = apply_filters('membership_pingscolumns', $columns);
@@ -4146,6 +4155,11 @@ if(!class_exists('membershipadmin')) {
 											}
 										}
 										//echo $ping->ping_url();
+										?>
+									</td>
+									<td class="column-name">
+										<?php
+										echo mysql2date( "Y-m-j H:i:s", $h->ping_sent );
 										?>
 									</td>
 							    </tr>
@@ -4487,7 +4501,7 @@ if(!class_exists('membershipadmin')) {
 
 			$sql = $this->db->prepare( "SELECT level_id, count(*) AS number FROM {$this->membership_relationships} WHERE level_id != 0 GROUP BY level_id" );
 
-			$this->db->update( $this->membership_levels, array('level_count' => 0), array() );
+			$this->db->query( $this->db->prepare( "UPDATE {$this->membership_levels} SET level_count = 0") );
 
 			$levels = $this->db->get_results($sql);
 			if($levels) {
@@ -4502,7 +4516,7 @@ if(!class_exists('membershipadmin')) {
 
 			$sql = $this->db->prepare( "SELECT sub_id, count(*) AS number FROM {$this->membership_relationships} WHERE sub_id != 0 GROUP BY sub_id" );
 
-			$this->db->update( $this->subscriptions, array('sub_count' => 0), array() );
+			$this->db->query( $this->db->prepare( "UPDATE {$this->subscriptions} SET sub_count = 0") );
 
 			$subs = $this->db->get_results($sql);
 			if($subs) {
