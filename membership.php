@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Membership
-Version: 2.0.2
+Version: 2.0.3
 Plugin URI: http://premium.wpmudev.org/project/wordpress-membership-lite
 Description: The most powerful, easy to use and flexible membership plugin for WordPress, Multisite and BuddyPress sites available. Offer downloads, posts, pages, forums and more to paid members.
 Author: Barry (Incsub/WPMU DEV)

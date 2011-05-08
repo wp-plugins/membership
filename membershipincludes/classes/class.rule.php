@@ -7,8 +7,8 @@ if(!class_exists('M_Rule')) {
 		var $name = 'none';
 		var $label = 'None Set';
 
-		// Is this an admin side rule?
-		var $adminside = false;
+		// The area of the rule - public, admin or core
+		var $rulearea = 'public';
 
 		function __construct() {
 			$this->on_creation();
@@ -50,7 +50,11 @@ if(!class_exists('M_Rule')) {
 
 		// Getters and Setters
 		function is_adminside() {
-			return $this->adminside;
+			if( in_array($this->rulearea, array('admin', 'core')) ) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 

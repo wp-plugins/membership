@@ -4,6 +4,8 @@ class M_Blogcreation extends M_Rule {
 	var $name = 'blogcreation';
 	var $label = 'Blog Creation';
 
+	var $rulearea = 'core';
+
 	function admin_main($data) {
 		if(!$data) $data = array();
 		?>
@@ -23,7 +25,7 @@ class M_Mainmenus extends M_Rule {
 
 	var $name = 'mainmenus';
 	var $label = 'Main Menus';
-	var $adminside = true;
+	var $rulearea = 'admin';
 
 	function admin_main($data) {
 		if(!$data) $data = array();
@@ -44,7 +46,7 @@ class M_Submenus extends M_Rule {
 
 	var $name = 'submenus';
 	var $label = 'Sub Menus';
-	var $adminside = true;
+	var $rulearea = 'admin';
 
 	function admin_main($data) {
 		if(!$data) $data = array();
@@ -66,7 +68,7 @@ class M_Dashboardwidgets extends M_Rule {
 
 	var $name = 'dashboard';
 	var $label = 'Dashboard Widgets';
-	var $adminside = true;
+	var $rulearea = 'admin';
 
 	function admin_main($data) {
 		if(!$data) $data = array();
@@ -88,7 +90,7 @@ class M_Plugins extends M_Rule {
 
 	var $name = 'plugins';
 	var $label = 'Plugins';
-	var $adminside = true;
+	var $rulearea = 'admin';
 
 	function admin_main($data) {
 		if(!$data) $data = array();
@@ -110,7 +112,7 @@ class M_Favouriteactions extends M_Rule {
 
 	var $name = 'favactions';
 	var $label = 'Favorite Actions';
-	var $adminside = true;
+	var $rulearea = 'admin';
 
 	function admin_main($data) {
 		if(!$data) $data = array();

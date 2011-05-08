@@ -4,6 +4,7 @@ class freesubscriptions extends M_Gateway {
 
 	var $gateway = 'freesubscriptions';
 	var $title = 'Free Subscriptions';
+	var $issingle = true;
 
 	var $defaultmessage = "<h2>Completed: Thank you for signing up</h2>\n<p>\nYour subscription to our site is now set up and you should be able to visit the members only content.\n</p>\n";
 
@@ -80,6 +81,31 @@ class freesubscriptions extends M_Gateway {
 
 		return $custom;
 
+	}
+
+	function not_yet_display_upgrade_button($subscription, $pricing, $user_id, $fromsub_id = false) {
+
+		echo '<form class="upgradebutton" action="" method="post">';
+		wp_nonce_field('upgrade-sub_' . $subscription->sub_id());
+		echo "<input type='hidden' name='action' value='upgradefree' />";
+		echo "<input type='hidden' name='gateway' value='" . $this->gateway . "' />";
+		echo "<input type='hidden' name='subscription' value='" . $subscription->sub_id() . "' />";
+		echo "<input type='hidden' name='user' value='" . $user_id . "' />";
+		echo "<input type='hidden' name='fromsub_id' value='" . $fromsub_id . "' />";
+		echo "<input type='submit' name='submit' value=' " . __('Upgrade', 'membership') . " ' />";
+		echo "</form>";
+	}
+
+	function display_cancel_button($subscription, $pricing, $user_id) {
+
+		echo '<form class="unsubbutton" action="" method="post">';
+		wp_nonce_field('cancel-sub_' . $subscription->sub_id());
+		echo "<input type='hidden' name='action' value='unsubscribe' />";
+		echo "<input type='hidden' name='gateway' value='" . $this->gateway . "' />";
+		echo "<input type='hidden' name='subscription' value='" . $subscription->sub_id() . "' />";
+		echo "<input type='hidden' name='user' value='" . $user_id . "' />";
+		echo "<input type='submit' name='submit' value=' " . __('Unsubscribe', 'membership') . " ' />";
+		echo "</form>";
 	}
 
 	function signup_free_subscription($content, $error) {

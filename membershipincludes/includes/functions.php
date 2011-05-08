@@ -194,6 +194,7 @@ function M_set_sub_operations( $subs ) {
 	}
 }
 
+
 // Template based functions
 function current_member() {
 
