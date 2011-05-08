@@ -3,7 +3,7 @@ if(!class_exists('membershipadmin')) {
 
 	class membershipadmin {
 
-		var $build = 7;
+		var $build = 8;
 		var $db;
 
 		//
@@ -51,6 +51,7 @@ if(!class_exists('membershipadmin')) {
 			add_action('load-membership_page_membershipsubs', array(&$this, 'add_admin_header_membershipsubs'));
 			add_action('load-membership_page_membershipgateways', array(&$this, 'add_admin_header_membershipgateways'));
 			add_action('load-membership_page_membershipoptions', array(&$this, 'add_admin_header_membershipoptions'));
+
 			add_action('load-membership_page_membershipurlgroups', array(&$this, 'add_admin_header_membershipurlgroups'));
 			add_action('load-membership_page_membershippings', array(&$this, 'add_admin_header_membershippings'));
 
@@ -162,11 +163,15 @@ if(!class_exists('membershipadmin')) {
 				add_submenu_page('membership', __('Membership Subscriptions','membership'), __('Edit Subscriptions','membership'), 'membershipadmin', "membershipsubs", array(&$this,'handle_subs_panel'));
 				add_submenu_page('membership', __('Membership Gateways','membership'), __('Edit Gateways','membership'), 'membershipadmin', "membershipgateways", array(&$this,'handle_gateways_panel'));
 
+
 				add_submenu_page('membership', __('Membership URL Groups','membership'), __('Edit URL Groups','membership'), 'membershipadmin', "membershipurlgroups", array(&$this,'handle_urlgroups_panel'));
 
 				add_submenu_page('membership', __('Membership Pings','membership'), __('Edit Pings','membership'), 'membershipadmin', "membershippings", array(&$this,'handle_pings_panel'));
 
 				add_submenu_page('membership', __('Membership Options','membership'), __('Edit Options','membership'), 'membershipadmin', "membershipoptions", array(&$this,'handle_options_panel'));
+
+				add_submenu_page('membership', __('Membership Repair','membership'), __('Repair Membership','membership'), 'membershipadmin', "membershiprepair", array(&$this,'handle_repair_panel'));
+
 
 				do_action('membership_add_menu_items_bottom');
 
@@ -710,8 +715,6 @@ if(!class_exists('membershipadmin')) {
 				}
 			}
 
-
-
 			switch(addslashes($action)) {
 
 				case 'toggle':	if(isset($_GET['member_id'])) {
@@ -888,6 +891,35 @@ if(!class_exists('membershipadmin')) {
 								wp_safe_redirect( add_query_arg( 'msg', 3, wp_get_original_referer() ) );
 								break;
 
+					case 'bulkmovegateway-gateway-complete':
+					case 'movegateway-gateway-complete':
+
+									check_admin_referer($action);
+									$members_id = $_POST['member_id'];
+
+									$members = explode(',', $members_id);
+									if($members) {
+										foreach($members as $member_id) {
+											$member = new M_Membership($member_id);
+
+											$fromgateway = $_POST['fromgateway'];
+											$togateway = $_POST['togateway'];
+											if(!empty($fromgateway) && !empty($togateway)) {
+
+												$relationships = $member->get_relationships();
+												foreach($relationships as $rel) {
+													if($rel->usinggateway == $fromgateway) {
+														$member->update_relationship_gateway( $rel->rel_id, $fromgateway, $togateway );
+
+													}
+												}
+											}
+										}
+									}
+
+									wp_safe_redirect( add_query_arg( 'msg', 3, wp_get_original_referer() ) );
+									break;
+
 			}
 
 		}
@@ -897,6 +929,112 @@ if(!class_exists('membershipadmin')) {
 			global $action, $page;
 
 			wp_reset_vars( array('action', 'page') );
+
+		}
+
+		function handle_member_gateway_op( $operation = 'move', $member_id = false ) {
+
+			global $action, $page, $action2, $M_Gateways;
+
+			wp_reset_vars( array('action', 'page', 'action2') );
+
+			if(empty($action) && !empty($action2)) $action = $action2;
+
+			$gateways = apply_filters('M_gateways_list', array());
+
+			$active = get_option('M_active_gateways', array());
+
+			switch($operation) {
+
+				case 'move':	$title = __('Move subscription to another gateway','membership');
+								$formdescription = __('A subscription gateway handles the payment and renewal forms displayed for a subscription. Changing this should not be undertaken lightly, it can seriously mess up the subscriptions of your members.','membership') . "<br/><br/>";
+
+								$html = "<h3>" . __('Gateway to move from for this / these member(s)','management') . "</h3>";
+								$html .= "<div class='level-details'>";
+								$html .= "<select name='fromgateway' id='fromgateway' class='wide'>\n";
+								$html .= "<option value='0'>" . __('Select the gateway to move from.','membership') . "</option>\n";
+								$html .= "<option value='admin'>" . esc_html('admin' . " - " . "admin default gateway") . "</option>\n";
+								if($gateways) {
+									foreach($gateways as $key => $gateway) {
+										if(array_key_exists($key, $active)) {
+											$html .= "<option value='" . esc_attr($key) . "'>" . esc_html($key . " - " . $gateway) . "</option>\n";
+										}
+									}
+								}
+								$html .= "</select>\n";
+								$html .= "</div>";
+
+								$html .= "<h3>" . __('Gateway to move to for this / these member(s)','management') . "</h3>";
+								$html .= "<div class='level-details'>";
+								$html .= "<select name='togateway' id='togateway' class='wide'>\n";
+								$html .= "<option value='0'>" . __('Select the gateway to move to.','membership') . "</option>\n";
+								$html .= "<option value='admin'>" . esc_html('admin' . " - " . "admin default gateway") . "</option>\n";
+								reset($gateways);
+								if($gateways) {
+									foreach($gateways as $key => $gateway) {
+										if(array_key_exists($key, $active)) {
+											$html .= "<option value='" . esc_attr($key) . "'>" . esc_html($key . " - " . $gateway) . "</option>\n";
+										}
+									}
+								}
+								$html .= "</select>\n";
+								$html .= "</div>";
+
+								$button = "Move";
+								break;
+
+			}
+
+			?>
+			<div class='wrap nosubsub'>
+				<div class="icon32" id="icon-users"><br></div>
+				<h2><?php echo $title; ?></h2>
+				<form action='admin.php?page=<?php echo $page; ?>' method='post'>
+
+					<div class='level-liquid-left'>
+
+						<div id='level-left'>
+							<div id='edit-level' class='level-holder-wrap'>
+								<div class='sidebar-name no-movecursor'>
+									<h3><?php echo esc_html($title); ?></h3>
+								</div>
+								<div class='level-holder'>
+									<br />
+									<p class='description'><?php echo $formdescription;  ?></p>
+									<?php
+										echo $html;
+									?>
+
+									<div class='buttons'>
+										<?php
+											wp_original_referer_field(true, 'previous'); wp_nonce_field($action . '-gateway-complete');
+										?>
+										<a href='?page=<?php echo $page; ?>' class='cancellink' title='Cancel add'><?php _e('Cancel', 'membership'); ?></a>
+										<input type='submit' value='<?php _e($button, 'membership'); ?>' class='button' />
+										<input type='hidden' name='action' value='<?php esc_attr_e($action . '-gateway-complete'); ?>' />
+										<?php
+											if(is_array($member_id)) {
+												?>
+												<input type='hidden' name='member_id' value='<?php esc_attr_e(implode(',',$member_id)); ?>' />
+												<?php
+											} else {
+												?>
+												<input type='hidden' name='member_id' value='<?php esc_attr_e($member_id); ?>' />
+												<?php
+											}
+
+										?>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div> <!-- level-liquid-left -->
+
+				</form>
+			</div> <!-- wrap -->
+			<?php
 
 		}
 
@@ -1310,6 +1448,23 @@ if(!class_exists('membershipadmin')) {
 									}
 									break;
 
+				case 'bulkmovegateway':
+									if(isset($_GET['users'])) {
+										check_admin_referer('bulk-members');
+										$this->handle_member_gateway_op('move', $_GET['users']);
+										return;
+									}
+									break;
+
+				case 'movegateway':
+									if(isset($_GET['member_id'])) {
+										$member_id = (int) $_GET['member_id'];
+										check_admin_referer('movegateway-member-' . $member_id);
+										$this->handle_member_gateway_op('move', $member_id);
+										return;
+									}
+									break;
+
 				case 'edit':	if(isset($_GET['level_id'])) {
 									$level_id = (int) $_GET['level_id'];
 									$this->handle_level_edit_form($level_id);
@@ -1435,6 +1590,10 @@ if(!class_exists('membershipadmin')) {
 						<option value="bulkmovelevel"><?php _e('Move level','membership'); ?></option>
 						<option value="bulkdroplevel"><?php _e('Drop level','membership'); ?></option>
 					</optgroup>
+
+					<optgroup label="<?php _e('Gateways','membership'); ?>">
+						<option value="bulkmovegateway"><?php _e('Move gateway','membership'); ?></option>
+					</optgroup>
 				</select>
 				<input type="submit" class="button-secondary action" id="doaction" name="doaction" value="<?php _e('Apply'); ?>">
 
@@ -1509,7 +1668,9 @@ if(!class_exists('membershipadmin')) {
 										"email" 	=> 	__('E-mail','membership'),
 										"active"	=>	__('Active','membership'),
 										"sub"		=>	__('Subscription','membership'),
-										"level"		=>	__('Membership Level','membership')
+										"level"		=>	__('Membership Level','membership'),
+										"expires"	=>	__('Expires', 'membership'),
+										"gateway"	=>	__('Gateway', 'membership')
 									);
 
 					$columns = apply_filters('members_columns', $columns);
@@ -1572,7 +1733,7 @@ if(!class_exists('membershipadmin')) {
 										} else {
 											$actions['activate'] = "<span class='edit activate'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=toggle&amp;member_id=" . $user_object->ID . "", 'toggle-member_' . $user_object->ID) . "'>" . __('Activate', 'membership') . "</a></span>";
 										}
-										$actions['history'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=history&amp;member_id=" . $user_object->ID . "", 'history-member_' . $user_object->ID) . "'>" . __('History', 'membership') . "</a></span>";
+										//$actions['history'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=history&amp;member_id=" . $user_object->ID . "", 'history-member_' . $user_object->ID) . "'>" . __('History', 'membership') . "</a></span>";
 									?>
 									<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
 								</td>
@@ -1611,6 +1772,7 @@ if(!class_exists('membershipadmin')) {
 											$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=dropsub&amp;member_id=" . $user_object->ID . "", 'dropsub-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
 										}
 									}
+
 									?>
 									<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
 								</td>
@@ -1631,6 +1793,7 @@ if(!class_exists('membershipadmin')) {
 										}
 										echo implode(", ", $rows);
 									}
+
 									if($user_object->has_cap('membershipadmin')) {
 										$actions = array();
 									} else {
@@ -1642,8 +1805,46 @@ if(!class_exists('membershipadmin')) {
 											$actions['drop'] = "<span class='edit delete'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=droplevel&amp;member_id=" . $user_object->ID . "", 'droplevel-member-' . $user_object->ID) . "'>" . __('Drop', 'membership') . "</a></span>";
 										}
 									}
+
 									?>
 									<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
+								</td>
+								<td <?php echo $style; ?>>
+									<?php
+										$subs = $user_object->get_relationships();
+										if($subs) {
+											$exps = array();
+											foreach($subs as $sub) {
+												$exps[] = date("Y-m-d H:i", mysql2date("U", $sub->expirydate));
+											}
+											echo implode(", ", $exps);
+										}
+
+									?>
+								</td>
+								<td <?php echo $style; ?>>
+									<?php
+										$subs = $user_object->get_relationships();
+										if($subs) {
+											$gates = array();
+											foreach($subs as $sub) {
+												$gates[] = $sub->usinggateway;
+											}
+											echo implode(", ", $gates);
+
+											if($user_object->has_cap('membershipadmin')) {
+												$actions = array();
+											} else {
+												$actions = array();
+												$actions['move'] = "<span class='edit'><a href='" . wp_nonce_url("?page=" . $page. "&amp;action=movegateway&amp;member_id=" . $user_object->ID . "", 'movegateway-member-' . $user_object->ID) . "'>" . __('Move', 'membership') . "</a></span>";
+
+											}
+
+											?>
+											<div class="row-actions"><?php echo implode(" | ", $actions); ?></div>
+											<?php
+										}
+									?>
 								</td>
 							</tr>
 							<?php
@@ -1670,6 +1871,10 @@ if(!class_exists('membershipadmin')) {
 						<option value="bulkaddlevel"><?php _e('Add level','membership'); ?></option>
 						<option value="bulkmovelevel"><?php _e('Move level','membership'); ?></option>
 						<option value="bulkdroplevel"><?php _e('Drop level','membership'); ?></option>
+					</optgroup>
+
+					<optgroup label="<?php _e('Gateways','membership'); ?>">
+						<option value="bulkmovegateway"><?php _e('Move gateway','membership'); ?></option>
 					</optgroup>
 				</select>
 				<input type="submit" class="button-secondary action" id="doaction2" name="doaction2" value="Apply">
@@ -2432,6 +2637,7 @@ if(!class_exists('membershipadmin')) {
 			// check levels
 			$this->get_all_levels();
 
+
 			if(isset($_GET['doaction']) || isset($_GET['doaction2'])) {
 				if(addslashes($_GET['action']) == 'delete' || addslashes($_GET['action2']) == 'delete') {
 					$action = 'bulk-delete';
@@ -2451,7 +2657,6 @@ if(!class_exists('membershipadmin')) {
 									$level = new M_Level($id);
 
 									if(!M_can_add_level()) {
-										echo "here";
 										wp_safe_redirect( add_query_arg( 'msg', 4,  'admin.php?page=' . $page ) );
 									} else {
 										if($level->add()) {
@@ -2773,7 +2978,7 @@ if(!class_exists('membershipadmin')) {
 				</div>
 				<div class="alignright actions">
 					<?php if(M_can_add_level() ) {?>
-					<input type="button" class="button-secondary addnewlevelbutton" value="<?php _e('Add New'); ?>" name="addnewlevel">
+					<input type="button" class="button-secondary addnewlevelbutton" value="<?php _e('Add New'); ?>" name="addnewlevel2">
 					<?php } ?>
 				</div>
 				<br class="clear">
@@ -2821,7 +3026,7 @@ if(!class_exists('membershipadmin')) {
 						<?php
 					} else {
 						?>
-						<h2><?php echo __('Edit ','membership') . " - " . esc_html($sub->sub_name); ?></h2>
+						<h2><?php echo __('Edit ','membership') . " - " . esc_html(stripslashes($sub->sub_name)); ?></h2>
 						<?php
 					}
 				?>
@@ -2841,15 +3046,15 @@ if(!class_exists('membershipadmin')) {
 
 						<div id='edit-sub' class='sub-holder-wrap'>
 							<div class='sidebar-name no-movecursor'>
-								<h3><?php echo esc_html($sub->sub_name); ?></h3>
+								<h3><?php echo esc_html(stripslashes($sub->sub_name)); ?></h3>
 							</div>
 							<div class='sub-holder'>
 								<div class='sub-details'>
 								<label for='sub_name'><?php _e('Subscription name','membership'); ?></label>
-								<input class='wide' type='text' name='sub_name' id='sub_name' value='<?php echo esc_attr($sub->sub_name); ?>' />
+								<input class='wide' type='text' name='sub_name' id='sub_name' value='<?php echo esc_attr(stripslashes($sub->sub_name)); ?>' />
 
 								<label for='sub_name'><?php _e('Subscription description','membership'); ?></label>
-								<textarea class='wide' name='sub_description' id='sub_description'><?php echo esc_html($sub->sub_description); ?></textarea>
+								<textarea class='wide' name='sub_description' id='sub_description'><?php echo esc_html(stripslashes($sub->sub_description)); ?></textarea>
 
 								<?php do_action('membership_subscription_form_after_details', $sub->id); ?>
 
@@ -3214,7 +3419,7 @@ if(!class_exists('membershipadmin')) {
 
 				<div class="alignright actions">
 					<?php if(M_can_add_sub()) {?>
-					<input type="button" class="button-secondary addnewsubbutton" value="<?php _e('Add New'); ?>" name="addnewlevel">
+					<input type="button" class="button-secondary addnewsubbutton" value="<?php _e('Add New'); ?>" name="addnewsub">
 					<?php } ?>
 				</div>
 
@@ -3274,7 +3479,7 @@ if(!class_exists('membershipadmin')) {
 								<tr valign="middle" class="alternate" id="sub-<?php echo $sub->id; ?>">
 									<th class="check-column" scope="row"><input type="checkbox" value="<?php echo $sub->id; ?>" name="subcheck[]"></th>
 									<td class="column-name">
-										<strong><a title="Subscription ID: <?php echo esc_attr($sub->id); ?>" href="?page=<?php echo $page; ?>&amp;action=edit&amp;sub_id=<?php echo $sub->id; ?>" class="row-title"><?php echo esc_html($sub->sub_name); ?></a></strong>
+										<strong><a title="Subscription ID: <?php echo esc_attr($sub->id); ?>" href="?page=<?php echo $page; ?>&amp;action=edit&amp;sub_id=<?php echo $sub->id; ?>" class="row-title"><?php echo esc_html(stripslashes($sub->sub_name)); ?></a></strong>
 										<?php
 											$actions = array();
 											//$actions['id'] = "<strong>" . __('ID : ', 'membership') . $sub->id . "</strong>";
@@ -3348,7 +3553,7 @@ if(!class_exists('membershipadmin')) {
 				</div>
 				<div class="alignright actions">
 					<?php if(M_can_add_sub()) {?>
-					<input type="button" class="button-secondary addnewsubbutton" value="<?php _e('Add New'); ?>" name="addnewlevel2">
+					<input type="button" class="button-secondary addnewsubbutton" value="<?php _e('Add New'); ?>" name="addnewsub2">
 					<?php } ?>
 				</div>
 				<br class="clear">
@@ -4258,6 +4463,7 @@ if(!class_exists('membershipadmin')) {
 				</div>
 				<?php } ?>
 
+
 				<br class="clear">
 				</div>
 
@@ -4348,6 +4554,7 @@ if(!class_exists('membershipadmin')) {
 					<input type="button" class="button-secondary addnewpingbutton" value="<?php _e('Add New'); ?>" name="addnewgroup2">
 				</div>
 				<?php } ?>
+
 				<br class="clear">
 				</div>
 
@@ -4582,6 +4789,7 @@ if(!class_exists('membershipadmin')) {
 
 			return $levels;
 		}
+
 
 		//subscriptions
 
@@ -4830,10 +5038,12 @@ if(!class_exists('membershipadmin')) {
 				<select name='joiningping'>
 					<option value='' <?php selected($joinping,''); ?>><?php _e('None', 'membership'); ?></option>
 					<?php
-						foreach($pings as $ping) {
+						if(!empty($pings)) {
+							foreach($pings as $ping) {
 							?>
 							<option value='<?php echo $ping->id; ?>' <?php selected($joinping, $ping->id); ?>><?php echo stripslashes($ping->pingname); ?></option>
 							<?php
+							}
 						}
 					?>
 				</select><br/>
@@ -4842,10 +5052,12 @@ if(!class_exists('membershipadmin')) {
 				<select name='leavingping'>
 					<option value='' <?php selected($leaveping,''); ?>><?php _e('None', 'membership'); ?></option>
 					<?php
-						foreach($pings as $ping) {
+						if(!empty($pings)) {
+							foreach($pings as $ping) {
 							?>
 							<option value='<?php echo $ping->id; ?>' <?php selected($leaveping, $ping->id); ?>><?php echo stripslashes($ping->pingname); ?></option>
 							<?php
+							}
 						}
 					?>
 				</select>
@@ -4882,10 +5094,12 @@ if(!class_exists('membershipadmin')) {
 				<select name='joiningping'>
 					<option value='' <?php selected($joinping,''); ?>><?php _e('None', 'membership'); ?></option>
 					<?php
-						foreach($pings as $ping) {
+						if(!empty($pings)) {
+							foreach($pings as $ping) {
 							?>
 							<option value='<?php echo $ping->id; ?>' <?php selected($joinping, $ping->id); ?>><?php echo stripslashes($ping->pingname); ?></option>
 							<?php
+							}
 						}
 					?>
 				</select><br/>
@@ -4894,16 +5108,70 @@ if(!class_exists('membershipadmin')) {
 				<select name='leavingping'>
 					<option value='' <?php selected($leaveping,''); ?>><?php _e('None', 'membership'); ?></option>
 					<?php
-						foreach($pings as $ping) {
+						if(!empty($pings)) {
+							foreach($pings as $ping) {
 							?>
 							<option value='<?php echo $ping->id; ?>' <?php selected($leaveping, $ping->id); ?>><?php echo stripslashes($ping->pingname); ?></option>
 							<?php
+							}
 						}
 					?>
 				</select>
 				</div>
 			<?php
 
+		}
+
+		// Database repair functions
+		function handle_repair_panel() {
+			global $action, $page, $M_options;
+
+			wp_reset_vars( array('action', 'page') );
+
+			?>
+			<div class='wrap nosubsub'>
+				<div class="icon32" id="icon-tools"><br></div>
+				<h2><?php _e('Repair Membership','membership'); ?></h2>
+
+				<?php
+				if ( isset($_GET['msg']) ) {
+					echo '<div id="message" class="updated fade"><p>' . $messages[(int) $_GET['msg']] . '</p></div>';
+					$_SERVER['REQUEST_URI'] = remove_query_arg(array('message'), $_SERVER['REQUEST_URI']);
+				}
+				?>
+
+				<p><?php _e('If you are having problems with your membership site, or have recently upgraded and are seeing strange behaviour then try the membership check below to see if there are any issues with your table structure. Click on the repair button if you want to repair any issues found (back up your database first).','membership'); ?></p>
+				<p>
+				<?php echo "<a href='" . wp_nonce_url("?page=" . $page. "&amp;verify=yes", 'verify-membership') . "' class='button'>" . __('Verify Membership Tables','membership') . "</a>&nbsp;&nbsp;"; ?>
+				<?php echo "<a href='" . wp_nonce_url("?page=" . $page. "&amp;repair=yes", 'repair-membership') . "' class='button'>" . __('Repair Membership Tables','membership') . "</a>"; ?>
+				</p>
+
+				<?php
+					if(isset($_GET['verify'])) {
+						check_admin_referer('verify-membership');
+						include_once(membership_dir('membershipincludes/classes/upgrade.php') );
+
+						?>
+						<p><strong><?php _e('Verifying','membership'); ?></strong></p>
+						<?php
+
+						M_verify_tables();
+					}
+
+					if(isset($_GET['repair'])) {
+						check_admin_referer('repair-membership');
+						include_once(membership_dir('membershipincludes/classes/upgrade.php') );
+
+						?>
+						<p><strong><?php _e('Verifying and Repairing','membership'); ?></strong></p>
+						<?php
+
+						M_repair_tables();
+					}
+
+				?>
+			</div> <!-- wrap -->
+			<?php
 		}
 
 	}
