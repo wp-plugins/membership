@@ -9,6 +9,8 @@ Membership allows you to transform your WordPress site into a fully functional m
 
 == Description ==
 
+[youtube http://www.youtube.com/watch?v=-Yb9iGhqDWs&hd=1]
+
 Membership allows you to transform your WordPress site into a fully functional membership site - where you can provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
 Simple to use and massively flexible - this will meet all of your membership sites needs. So if you'd like to create a site like GigaOm, Izzy Video, PSD Tuts, now you can do that with ease!
 
@@ -29,8 +31,6 @@ Our full version includes many more features:
 * **Administration area rules** - control blog creation (limit number per level), dashboard widgets, menus and sub-menus, available plugins.
 
 <a href='http://premium.wpmudev.org/project/membership'>**Upgrade to the full version now &raquo;**</a>
-
-[youtube http://www.youtube.com/watch?v=-Yb9iGhqDWs&hd=1]
 
 = How does it work... well, it's really easy. =
 
