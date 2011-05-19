@@ -6,6 +6,7 @@ Plugin URI: http://premium.wpmudev.org/project/wordpress-membership-lite
 Description: The most powerful, easy to use and flexible membership plugin for WordPress, Multisite and BuddyPress sites available. Offer downloads, posts, pages, forums and more to paid members.
 Author: Barry (Incsub/WPMU DEV)
 Author URI: http://caffeinatedb.com
+WDP ID: 214
 
 Copyright 2010 Incsub
 

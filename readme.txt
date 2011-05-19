@@ -30,6 +30,8 @@ Our full version includes many more features:
 
 <a href='http://premium.wpmudev.org/project/membership'>**Upgrade to the full version now &raquo;**</a>
 
+[youtube http://www.youtube.com/watch?v=-Yb9iGhqDWs&hd=1]
+
 = How does it work... well, it's really easy. =
 
 Simply follow the instructions in the installation and configuration guide
