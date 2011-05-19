@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Membership
-Version: 2.0.3
+Version: 2.0.4
 Plugin URI: http://premium.wpmudev.org/project/wordpress-membership-lite
 Description: The most powerful, easy to use and flexible membership plugin for WordPress, Multisite and BuddyPress sites available. Offer downloads, posts, pages, forums and more to paid members.
 Author: Barry (Incsub/WPMU DEV)
@@ -45,7 +45,6 @@ if(is_admin()) {
 	require_once('membershipincludes/classes/class.ping.php');
 	// Set up the default rules
 	require_once('membershipincludes/includes/default.rules.php');
-	require_once('membershipincludes/includes/default.admin.rules.php');
 
 	require_once('membershipincludes/classes/membershipadmin.php');
 

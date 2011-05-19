@@ -170,9 +170,6 @@ if(!class_exists('membershipadmin')) {
 
 				add_submenu_page('membership', __('Membership Options','membership'), __('Edit Options','membership'), 'membershipadmin', "membershipoptions", array(&$this,'handle_options_panel'));
 
-				add_submenu_page('membership', __('Membership Repair','membership'), __('Repair Membership','membership'), 'membershipadmin', "membershiprepair", array(&$this,'handle_repair_panel'));
-
-
 				do_action('membership_add_menu_items_bottom');
 
 				// Move the menu to the top of the page
@@ -2637,7 +2634,6 @@ if(!class_exists('membershipadmin')) {
 			// check levels
 			$this->get_all_levels();
 
-
 			if(isset($_GET['doaction']) || isset($_GET['doaction2'])) {
 				if(addslashes($_GET['action']) == 'delete' || addslashes($_GET['action2']) == 'delete') {
 					$action = 'bulk-delete';
@@ -2665,7 +2661,6 @@ if(!class_exists('membershipadmin')) {
 											wp_safe_redirect( add_query_arg( 'msg', 4,  'admin.php?page=' . $page ) );
 										}
 									}
-
 								} else {
 									wp_safe_redirect( add_query_arg( 'msg', 4,  'admin.php?page=' . $page ) );
 								}
@@ -3201,7 +3196,6 @@ if(!class_exists('membershipadmin')) {
 											wp_safe_redirect( add_query_arg( 'msg', 4, 'admin.php?page=' . $page ) );
 										}
 									}
-
 								} else {
 									wp_safe_redirect( add_query_arg( 'msg', 4, 'admin.php?page=' . $page ) );
 								}
@@ -4463,7 +4457,6 @@ if(!class_exists('membershipadmin')) {
 				</div>
 				<?php } ?>
 
-
 				<br class="clear">
 				</div>
 
@@ -4554,7 +4547,6 @@ if(!class_exists('membershipadmin')) {
 					<input type="button" class="button-secondary addnewpingbutton" value="<?php _e('Add New'); ?>" name="addnewgroup2">
 				</div>
 				<?php } ?>
-
 				<br class="clear">
 				</div>
 
@@ -4789,7 +4781,6 @@ if(!class_exists('membershipadmin')) {
 
 			return $levels;
 		}
-
 
 		//subscriptions
 
@@ -5120,58 +5111,6 @@ if(!class_exists('membershipadmin')) {
 				</div>
 			<?php
 
-		}
-
-		// Database repair functions
-		function handle_repair_panel() {
-			global $action, $page, $M_options;
-
-			wp_reset_vars( array('action', 'page') );
-
-			?>
-			<div class='wrap nosubsub'>
-				<div class="icon32" id="icon-tools"><br></div>
-				<h2><?php _e('Repair Membership','membership'); ?></h2>
-
-				<?php
-				if ( isset($_GET['msg']) ) {
-					echo '<div id="message" class="updated fade"><p>' . $messages[(int) $_GET['msg']] . '</p></div>';
-					$_SERVER['REQUEST_URI'] = remove_query_arg(array('message'), $_SERVER['REQUEST_URI']);
-				}
-				?>
-
-				<p><?php _e('If you are having problems with your membership site, or have recently upgraded and are seeing strange behaviour then try the membership check below to see if there are any issues with your table structure. Click on the repair button if you want to repair any issues found (back up your database first).','membership'); ?></p>
-				<p>
-				<?php echo "<a href='" . wp_nonce_url("?page=" . $page. "&amp;verify=yes", 'verify-membership') . "' class='button'>" . __('Verify Membership Tables','membership') . "</a>&nbsp;&nbsp;"; ?>
-				<?php echo "<a href='" . wp_nonce_url("?page=" . $page. "&amp;repair=yes", 'repair-membership') . "' class='button'>" . __('Repair Membership Tables','membership') . "</a>"; ?>
-				</p>
-
-				<?php
-					if(isset($_GET['verify'])) {
-						check_admin_referer('verify-membership');
-						include_once(membership_dir('membershipincludes/classes/upgrade.php') );
-
-						?>
-						<p><strong><?php _e('Verifying','membership'); ?></strong></p>
-						<?php
-
-						M_verify_tables();
-					}
-
-					if(isset($_GET['repair'])) {
-						check_admin_referer('repair-membership');
-						include_once(membership_dir('membershipincludes/classes/upgrade.php') );
-
-						?>
-						<p><strong><?php _e('Verifying and Repairing','membership'); ?></strong></p>
-						<?php
-
-						M_repair_tables();
-					}
-
-				?>
-			</div> <!-- wrap -->
-			<?php
 		}
 
 	}
