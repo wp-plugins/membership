@@ -5,14 +5,14 @@ Requires at least: 3.1
 Tested up to: 3.1.2
 Stable tag: 2.0.4
 
-Membership allows you to transform your WordPress site into a fully functional membership site.
+Membership transforms your WordPress website into a fully functional membership site.
 
 == Description ==
 
 [youtube http://www.youtube.com/watch?v=-Yb9iGhqDWs&hd=1]
 
-Membership allows you to transform your WordPress site into a fully functional membership site - where you can provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
-Simple to use and massively flexible - this will meet all of your membership sites needs. So if you'd like to create a site like GigaOm, Izzy Video, PSD Tuts, now you can do that with ease!
+Membership transforms your WordPress website into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
+Simple to use, flexible - this plugin will meet all of your membership site needs. Want to create a site like GigaOm, Izzy Video, PSD Tuts? Now you can do it, easy!
 
 = You can use Membership lite to create... =
 * A WordPress membership site, offering resources, forums, downloads, videos, support and more... with two different levels of membership and complete customizations.
@@ -20,8 +20,7 @@ Simple to use and massively flexible - this will meet all of your membership sit
 
 = Membership Pro =
 Membership lite is a fully functional but limited version of our <a href='http://premium.wpmudev.org/project/membership'>full Membership plugin</a>.
-This lite version supports a maximum of two membership levels and two subscription levels, as well as a basic set of rules to get you started. This is
-enough for most basic membership sites.
+This lite version supports a maximum of two membership levels and two subscription levels, as well as a basic set of rules to get you started. This is enough for most basic membership sites.
 
 Our full version includes many more features:
 
@@ -49,7 +48,7 @@ You can control access to:
 * Galleries
 * And **any content or functionality** (like forums!), via multiple different shortcodes
 
-And you can also create two different levels of subscriptions, for example you can decide to:
+And you can create two different levels of subscriptions. For example you could:
 
 * Offer free memberships that turn into paid subscriptions after x days
 * Finite or indefinite subscriptions
@@ -57,16 +56,16 @@ And you can also create two different levels of subscriptions, for example you c
 * Subscriptions that renew every 5, 10, 30, 90 etc. days
 * And plenty more...
 
-Perhaps the best thing about this plugin though - besides it's ease of use and flexibility - is that it's as much a framework as anything else.
+All this, and more. Membership is as much a **framework** as anything else.
 
-Using our powerful but simple APIs you can add different gateways and rules straight into it with ease - any half decent WordPress developer should be able to do exactly that!
+Using our powerful but simple APIs you can easily add different gateways and rules - any half decent WordPress developer should be able to do exactly that!
 
 For example, adding gateways is easy - and we'll be adding plenty more - all you need to do is create a gateway along the lines of one that we supply and you'll be good to go.
 
 = Building a Membership Site =
-The WPMU DEV Membership plugin makes it very easy to create and manage a membership site for both free and paid subscribers.
+The WPMU DEV Membership plugin makes it  easy to create and manage a membership site for both free and paid subscribers.
 
-Whilst the plugin handles a lot of the work, you will need to spend some time thinking through the structure of your site and how you want to set-up and categorise your content before installing and activating the Membership plugin.
+Whilst the plugin handles a lot of the work, you will need to spend some time thinking through the structure of your site and how you want to set-up and categorize your content before installing and activating the Membership plugin.
 
 = What is a membership site =
 A membership site can take many guises, from Gigaom Pro which protects long articles and research, through to Izzy video which protects individual videos.
@@ -76,7 +75,7 @@ In all cases though, a membership site contains a minimum of two levels of conte
 *	**Free (or teaser) content**, which is accessible to everyone and is used to entice potential new members into subscribing (and also help with SEO)
 *	**Members only content**, which is only accessible to those who have an active (paid or free) subscription to the site.
 
-We have put together an in-depth <a href='http://premium.wpmudev.org/project/membership/installation/'>instructions guide</a> to help you through using standard WordPress categories to mark posts / content as being accessible to either free users or members only, and then go into some of the more advanced features that allow you to protect individual uploads and distinct sections of a posts content.
+We have put together an in-depth <a href='http://premium.wpmudev.org/project/membership/installation/'>instructions guide</a> to help you through using standard WordPress categories to mark posts / content as being accessible to either free users or members only. Then we go into some of the more advanced features that allow you to protect individual uploads and distinct sections of a posts content.
 
 == Installation ==
 
@@ -97,7 +96,7 @@ We have put together an in-depth <a href='http://premium.wpmudev.org/project/mem
 3.  Click on Activate under Membership lite system
 
 **Enabling your membership plugin**
-By default, the membership plugin is disabled when first installed and when you go your Membership dashboard you will see it says Disabled.
+By default, the membership plugin is disabled when first installed and when you go your Membership Dashboard you will see it says Disabled.
 
 You need to leave this as disabled until you have at least:
 
@@ -105,7 +104,7 @@ You need to leave this as disabled until you have at least:
 2.	Created and activated a basic level to use for strangers
 3.	Assigned the stranger level in Membership > Edit Options panel
 
-Otherwise, if you are running a live site and enabled the plugin in your Membership dashboard all content will be automatically protected until you have set up the stranger level.
+If you are running a live site and enable the plugin in your Membership dashboard all content will be automatically protected until you have set up the stranger level.
 
 **The Admin user**
 The membership system can initially be administered by the admin user and is always disabled on the front end of your site for this user, you can add other users to the membership administration group by editing them in WordPress and ticking the Membership admin box at the bottom of the User Edit page.
