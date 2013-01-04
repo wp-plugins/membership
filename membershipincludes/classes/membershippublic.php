@@ -589,7 +589,7 @@ if(!class_exists('membershippublic')) {
 
 		function posts_actually_exist() {
 
-			$sql = $this->db->prepare( "SELECT count(*) FROM {$this->db->posts} WHERE post_type = 'post' AND post_status = 'publish'" );
+			$sql = $this->db->prepare( "SELECT count(*) FROM {$this->db->posts} WHERE post_type = %s AND post_status = %s", 'post', 'publish' );
 
 			if($this->db->get_var( $sql ) > 0) {
 				return true;
@@ -1216,7 +1216,7 @@ if(!class_exists('membershippublic')) {
 
 		function queue_user( $user_login, $user_pass, $user_email, $user_meta = '' ) {
 
-			$sql = $this->db->prepare( "INSERT INTO {$this->user_queue} (user_login, user_pass, user_email, user_timestamp, user_meta) VALUES " );
+			$sql = "INSERT INTO {$this->user_queue} (user_login, user_pass, user_email, user_timestamp, user_meta) VALUES ";
 			$sql .= $this->db->prepare( "( %s, %s, %s, %d, %s )", $user_login, wp_hash_password( $user_pass ), $user_email, time(), serialize($user_meta) );
 			$sql .= $this->db->prepare( " ON DUPLICATE KEY UPDATE user_timestamp = %d", time());
 
@@ -1240,7 +1240,7 @@ if(!class_exists('membershippublic')) {
 
 			$orderby[] = 'id ASC';
 
-			$sql = $this->db->prepare( "SELECT * FROM {$this->subscriptions}");
+			$sql = "SELECT * FROM {$this->subscriptions}";
 
 			if(!empty($where)) {
 				$sql .= " WHERE " . implode(' AND ', $where);

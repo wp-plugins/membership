@@ -114,7 +114,7 @@ class membershipleveltext extends WP_Widget {
 
 		global $wpdb;
 
-		$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'membership_levels') . " WHERE level_active = 1;");
+		$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'membership_levels') . " WHERE level_active = %d", 1);
 
 		return $wpdb->get_results($sql);
 
@@ -250,7 +250,7 @@ class membershipsubtext extends WP_Widget {
 
 		global $wpdb;
 
-		$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'subscriptions') . " WHERE sub_active = 1");
+		$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'subscriptions') . " WHERE sub_active = %d", 1);
 
 		return $wpdb->get_results($sql);
 

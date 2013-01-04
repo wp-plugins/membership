@@ -371,7 +371,7 @@ if(!class_exists('membershipadmin')) {
 
 		function build_signup_stats() {
 
-			$sql = $this->db->prepare( "SELECT YEAR(startdate) as year, MONTH(startdate)as month, DAY(startdate) as day, count(*) AS signedup FROM {$this->membership_relationships} WHERE startdate > DATE_SUB(CURDATE(), INTERVAL 10 DAY) GROUP BY YEAR(startdate), MONTH(startdate), DAY(startdate) ORDER BY startdate DESC" );
+			$sql = "SELECT YEAR(startdate) as year, MONTH(startdate)as month, DAY(startdate) as day, count(*) AS signedup FROM {$this->membership_relationships} WHERE startdate > DATE_SUB(CURDATE(), INTERVAL 10 DAY) GROUP BY YEAR(startdate), MONTH(startdate), DAY(startdate) ORDER BY startdate DESC";
 
 			$results = $this->db->get_results( $sql );
 
@@ -412,7 +412,7 @@ if(!class_exists('membershipadmin')) {
 
 		function build_levels_stats() {
 
-			$sql = $this->db->prepare( "SELECT l.id, l.level_title, count(m.rel_id) as users FROM {$this->membership_levels} as l, {$this->membership_relationships} as m WHERE l.id = m.level_id GROUP BY l.id, l.level_title ORDER BY users DESC" );
+			$sql = "SELECT l.id, l.level_title, count(m.rel_id) as users FROM {$this->membership_levels} as l, {$this->membership_relationships} as m WHERE l.id = m.level_id GROUP BY l.id, l.level_title ORDER BY users DESC";
 
 			$results = $this->db->get_results( $sql );
 
@@ -436,7 +436,7 @@ if(!class_exists('membershipadmin')) {
 
 		function build_subs_stats() {
 
-			$sql = $this->db->prepare( "SELECT s.id, s.sub_name, count(m.rel_id) as users FROM {$this->subscriptions} as s, {$this->membership_relationships} as m WHERE s.id = m.sub_id GROUP BY s.id, s.sub_name ORDER BY users DESC" );
+			$sql = "SELECT s.id, s.sub_name, count(m.rel_id) as users FROM {$this->subscriptions} as s, {$this->membership_relationships} as m WHERE s.id = m.sub_id GROUP BY s.id, s.sub_name ORDER BY users DESC";
 
 			$results = $this->db->get_results( $sql );
 
@@ -625,7 +625,7 @@ if(!class_exists('membershipadmin')) {
 				echo "<table style='width: 100%;'>";
 				echo "<tbody>";
 
-					$usercount = $this->db->get_var( $this->db->prepare("SELECT count(*) FROM {$this->db->users} INNER JOIN {$this->db->usermeta} ON {$this->db->users}.ID = {$this->db->usermeta}.user_id WHERE {$this->db->usermeta}.meta_key = '{$this->db->prefix}capabilities'") );
+					$usercount = $this->db->get_var( "SELECT count(*) FROM {$this->db->users} INNER JOIN {$this->db->usermeta} ON {$this->db->users}.ID = {$this->db->usermeta}.user_id WHERE {$this->db->usermeta}.meta_key = '{$this->db->prefix}capabilities'" );
 
 					echo "<tr>";
 						echo "<td>" . __('Total Users', 'membership') . "</td>";
@@ -3919,7 +3919,7 @@ if(!class_exists('membershipadmin')) {
 
 		function get_urlgroups() {
 
-			$sql = $this->db->prepare( "SELECT * FROM {$this->urlgroups} ORDER BY id ASC" );
+			$sql = "SELECT * FROM {$this->urlgroups} ORDER BY id ASC";
 
 			$results = $this->db->get_results( $sql );
 
@@ -4274,7 +4274,7 @@ if(!class_exists('membershipadmin')) {
 		}
 
 		function get_pings() {
-			$sql = $this->db->prepare( "SELECT * FROM {$this->pings} ORDER BY id ASC" );
+			$sql = "SELECT * FROM {$this->pings} ORDER BY id ASC";
 
 			$results = $this->db->get_results( $sql );
 
@@ -4727,9 +4727,9 @@ if(!class_exists('membershipadmin')) {
 
 		function update_levelcounts() {
 
-			$sql = $this->db->prepare( "SELECT level_id, count(*) AS number FROM {$this->membership_relationships} WHERE level_id != 0 GROUP BY level_id" );
+			$sql = $this->db->prepare( "SELECT level_id, count(*) AS number FROM {$this->membership_relationships} WHERE level_id != %d GROUP BY level_id", 0 );
 
-			$this->db->query( $this->db->prepare( "UPDATE {$this->membership_levels} SET level_count = 0") );
+			$this->db->query( $this->db->prepare( "UPDATE {$this->membership_levels} SET level_count = %d", 0 ) );
 
 			$levels = $this->db->get_results($sql);
 			if($levels) {
@@ -4742,9 +4742,9 @@ if(!class_exists('membershipadmin')) {
 
 		function update_subcounts() {
 
-			$sql = $this->db->prepare( "SELECT sub_id, count(*) AS number FROM {$this->membership_relationships} WHERE sub_id != 0 GROUP BY sub_id" );
+			$sql = $this->db->prepare( "SELECT sub_id, count(*) AS number FROM {$this->membership_relationships} WHERE sub_id != %d GROUP BY sub_id", 0 );
 
-			$this->db->query( $this->db->prepare( "UPDATE {$this->subscriptions} SET sub_count = 0") );
+			$this->db->query( $this->db->prepare( "UPDATE {$this->subscriptions} SET sub_count = %d", 0) );
 
 			$subs = $this->db->get_results($sql);
 			if($subs) {
@@ -4788,7 +4788,7 @@ if(!class_exists('membershipadmin')) {
 
 			}
 
-			$sql = $this->db->prepare( "SELECT * FROM {$this->membership_levels}");
+			$sql = "SELECT * FROM {$this->membership_levels}";
 
 			if(!empty($where)) {
 				$sql .= " WHERE " . implode(' AND ', $where);
@@ -4804,7 +4804,7 @@ if(!class_exists('membershipadmin')) {
 		}
 
 		function get_all_levels() {
-			$sql = $this->db->prepare( "SELECT * FROM {$this->membership_levels}");
+			$sql = "SELECT * FROM {$this->membership_levels}";
 			$levels = $this->db->get_results($sql);
 			M_set_level_operations( $levels );
 
@@ -4852,7 +4852,7 @@ if(!class_exists('membershipadmin')) {
 
 			}
 
-			$sql = $this->db->prepare( "SELECT * FROM {$this->subscriptions}");
+			$sql = "SELECT * FROM {$this->subscriptions}";
 
 			if(!empty($where)) {
 				$sql .= " WHERE " . implode(' AND ', $where);
@@ -4895,20 +4895,20 @@ if(!class_exists('membershipadmin')) {
 
 			}
 
-			$sql = $this->db->prepare( "SELECT s.id as sub_id, ml.id as level_id, s.*, ml.*, sl.level_order FROM {$this->subscriptions} AS s, {$this->subscriptions_levels} AS sl, {$this->membership_levels} AS ml");
+			$sql = "SELECT s.id as sub_id, ml.id as level_id, s.*, ml.*, sl.level_order FROM {$this->subscriptions} AS s, {$this->subscriptions_levels} AS sl, {$this->membership_levels} AS ml";
 
 			if(!empty($where)) {
 				$sql .= " WHERE " . implode(' AND ', $where);
 			}
 
-			$sql .= $this->db->prepare( " AND s.id = sl.sub_id AND sl.level_id = ml.id ORDER BY s.id ASC, sl.level_order ASC " );
+			$sql .= " AND s.id = sl.sub_id AND sl.level_id = ml.id ORDER BY s.id ASC, sl.level_order ASC ";
 
 			return $this->db->get_results($sql);
 
 		}
 
 		function get_all_subscriptions() {
-			$sql = $this->db->prepare( "SELECT * FROM {$this->subscriptions}");
+			$sql = "SELECT * FROM {$this->subscriptions}";
 			$subs = $this->db->get_results($sql);
 			M_set_sub_operations($subs);
 

@@ -584,7 +584,7 @@ class M_Downloads extends M_Rule {
 
 					if(!empty($mediaids)) {
 						// We have some ids so grab the information
-						$attachmentsql = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND ID IN(" . implode(",", $mediaids) . ")" );
+						$attachmentsql = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = %s AND post_status != %s AND ID IN(" . implode(",", $mediaids) . ")", 'attachment', 'trash' );
 
 						$attachments = $wpdb->get_results( $attachmentsql );
 					}
@@ -927,7 +927,7 @@ class M_URLGroups extends M_Rule {
 
 		global $wpdb;
 
-		$sql = $wpdb->prepare( "SELECT * FROM " . membership_db_prefix($wpdb, 'urlgroups') . " ORDER BY id ASC" );
+		$sql = "SELECT * FROM " . membership_db_prefix($wpdb, 'urlgroups') . " ORDER BY id ASC";
 
 		$results = $wpdb->get_results( $sql );
 

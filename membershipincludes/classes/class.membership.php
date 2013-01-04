@@ -410,7 +410,7 @@ if(!class_exists('M_Membership')) {
 			$sql = $this->db->prepare( "SELECT rel_id FROM {$this->membership_relationships} WHERE user_id = %d AND level_id = %d", $this->ID, $level_id );
 
 			if(!$include_subs) {
-				$sql .= $this->db->prepare( " AND sub_id = 0" );
+				$sql .= $this->db->prepare( " AND sub_id = %d", 0 );
 			}
 
 			$result = $this->db->get_col( $sql );
