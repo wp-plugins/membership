@@ -9,7 +9,7 @@ Membership transforms your WordPress website into a fully functional membership 
 
 == Description ==
 
-[youtube http://www.youtube.com/watch?v=-Yb9iGhqDWs&hd=1]
+[youtube http://www.youtube.com/watch?v=u-Y1-nBfx90&hd=1]
 
 Membership transforms your WordPress website into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
 Simple to use, flexible - this plugin will meet all of your membership site needs. Want to create a site like GigaOm, Izzy Video, PSD Tuts? Now you can do it, easy!
