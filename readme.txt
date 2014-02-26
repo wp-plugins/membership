@@ -2,7 +2,7 @@
 Contributors: WPMUDEV
 Tags: membership, api, checkout, framework, member, members, members only, paypal, register, buddypress, multisite, wordpress membership plugin
 Requires at least: 3.1
-Tested up to: 3.6.1
+Tested up to: 3.8.1
 Stable tag: 3.4.4.1
 
 Membership transforms your WordPress website into a fully functional membership site.
@@ -29,7 +29,7 @@ Our full version includes many more features:
 * **BuddyPress rules** - limit and protect access to groups, group creation, pages, blogs, private messageing
 * **Administration area rules** - control blog creation (limit number per level), dashboard widgets, menus and sub-menus, available plugins.
 
-<a href='http://premium.wpmudev.org/project/membership'>**Upgrade to the full version now &raquo;**</a>
+<a href='http://premium.wpmudev.org/project/membership/'>**Upgrade to the full version now &raquo;**</a>
 
 = How does it work... well, it's really easy. =
 
