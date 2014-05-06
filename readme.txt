@@ -2,14 +2,14 @@
 Contributors: WPMUDEV
 Tags: membership, api, checkout, framework, member, members, members only, paypal, register, buddypress, multisite, wordpress membership plugin
 Requires at least: 3.7
-Tested up to: 3.9
+Tested up to: 3.9.1
 Stable tag: 3.4.4.1
 
 Membership transforms your WordPress website into a fully functional membership site.
 
 == Description ==
 
-[youtube http://www.youtube.com/watch?v=u-Y1-nBfx90&hd=1]
+[youtube https://www.youtube.com/watch?v=9PgEJ8Derm4]
 
 Membership transforms your WordPress website into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
 Simple to use, flexible - this plugin will meet all of your membership site needs. Want to create a site like GigaOm, Izzy Video, PSD Tuts? Now you can do it, easy!
