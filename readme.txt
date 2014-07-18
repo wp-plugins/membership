@@ -1,6 +1,6 @@
 === Membership ===
 Contributors: WPMUDEV
-Tags: 2Checkout, 2CO, Access Control, Access-control, AIM, API, Authentication, Authorize, Authorize.NET, Authorize.NET AIM, Billing, BuddyPress, Checkout, checkout, Content Protection, Control Access, framework, Incsub, Make Money, Member, Members, Members only, Memberships, Membership, monetization, monetize, monetized social media network, Multisite, Network, Paid Club, Paid Membership, Paid Social Network, Pay Wall, Paying Members, Paying Users, Payments, Paypal, Paypal Express, Paywall, Premium, Premium Content, Protect Content, Protect Post Type, Protect Post Types, Protect URL Groups, Recurring Billing, Recurring Payment, Recurring Payments, Recurring Subscription, Recurring Subscriptions, Register, Restrict Access, Restrict Content, Security, Sell Access, Subscription, WordPress Members, WordPress Membership, WordPress Membership plugin, WPMU DEV
+Tags: 2Checkout, 2CO, Access Control, Access-control, Authentication, Authorize, Authorize.NET, Authorize.NET AIM, Billing, BuddyPress, Content Protection, Control Access, framework, Incsub, Make Money, Member, Members, Members only, Memberships, Membership, monetization, monetize, Multisite, Paid Club, Paid Membership, Pay Wall, Paying Members, Paying Users, Payments, Paypal, Paypal Express, Paywall, Premium Content, Protect Content, Protect Post Type, Protect Post Types, Protect URL Groups, Recurring Billing, Recurring Payment, Recurring Payments, Recurring Subscription, Recurring Subscriptions, Register, Restrict Access, Restrict Content, Security, Sell Access, Subscription, WordPress Members, WordPress Membership, WordPress Membership plugin, WPMU DEV
 Requires at least: 3.7
 Tested up to: 3.9.1
 Stable tag: 3.4.4.1
@@ -15,12 +15,12 @@ Membership transforms your WordPress website into a fully functional membership 
 Simple to use, flexible - this plugin will meet all of your membership site needs. Want to create a site like GigaOm, Izzy Video, PSD Tuts? Now you can do it, easy!
 
 = You can use Membership lite to create... =
-* A WordPress membership site, offering resources, forums, downloads, videos, support and more... with two different levels of membership and complete customizations.
+* A WordPress membership site, offering resources, forums, downloads, videos, support and more... with three different levels of membership and complete customizations.
 * Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
 
 = Membership Pro =
 Membership lite is a fully functional but limited version of our <a href='http://premium.wpmudev.org/project/membership'>full Membership plugin</a>.
-This lite version supports a maximum of two membership levels and two subscription levels, as well as a basic set of rules to get you started. This is enough for most basic membership sites.
+This lite version supports a maximum of three membership levels and three subscription levels, as well as a basic set of rules to get you started. This is enough for most basic membership sites.
 
 Our full version includes many more features:
 
@@ -48,7 +48,7 @@ You can control access to:
 * Galleries
 * And **any content or functionality** (like forums!), via multiple different shortcodes
 
-And you can create two different levels of subscriptions. For example you could:
+And you can create three different levels of subscriptions. For example you could:
 
 * Offer free memberships that turn into paid subscriptions after x days
 * Finite or indefinite subscriptions
