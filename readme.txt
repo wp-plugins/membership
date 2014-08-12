@@ -17,7 +17,7 @@ Simple to use, flexible - this plugin will meet all of your membership site need
 = You can use Membership lite to create... =
 * A WordPress membership site, offering resources, forums, downloads, videos, support and more... with three different levels of membership and complete customizations.
 * Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
-
+ 
 = Membership Pro =
 Membership lite is a fully functional but limited version of our <a href='http://premium.wpmudev.org/project/membership'>full Membership plugin</a>.
 This lite version supports a maximum of three membership levels and three subscription levels, as well as a basic set of rules to get you started. This is enough for most basic membership sites.
