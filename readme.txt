@@ -1,8 +1,8 @@
 === Membership ===
 Contributors: WPMUDEV
-Tags: 2Checkout, 2CO, Access Control, Access-control, Authentication, Authorize, Authorize.NET, Authorize.NET AIM, Billing, BuddyPress, Content Protection, Control Access, framework, Incsub, Make Money, Member, Members, Members only, Memberships, Membership, monetization, monetize, Multisite, Paid Club, Paid Membership, Pay Wall, Paying Members, Paying Users, Payments, Paypal, Paypal Express, Paywall, Premium Content, Protect Content, Protect Post Type, Protect Post Types, Protect URL Groups, Recurring Billing, Recurring Payment, Recurring Payments, Recurring Subscription, Recurring Subscriptions, Register, Restrict Access, Restrict Content, Security, Sell Access, Subscription, WordPress Members, WordPress Membership, WordPress Membership plugin, WPMU DEV
+Tags: Membership, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 3.4.4.1
 
 Membership transforms your WordPress website into a fully functional membership site.
