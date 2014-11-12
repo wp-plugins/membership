@@ -74,12 +74,15 @@ if(!class_exists('M_Adminbar')) {
 
 			}
 
-			$sql = $this->db->prepare( "SELECT * FROM {$this->membership_levels}",null);
+			// No need to prepare on table name
+			$sql = "SELECT * FROM {$this->membership_levels}";
 
+			// ... and these are already pretty strongly defined (and escaped where needed)...
 			if(!empty($where)) {
 				$sql .= " WHERE " . implode(' AND ', $where);
 			}
 
+			// ... so are these.
 			if(!empty($orderby)) {
 				$sql .= " ORDER BY " . implode(', ', $orderby);
 			}

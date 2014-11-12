@@ -858,7 +858,7 @@ if(!class_exists('membershippublic')) {
 
 		function posts_actually_exist() {
 
-			$sql = $this->db->prepare( "SELECT count(*) FROM {$this->db->posts} WHERE post_type = 'post' AND post_status = 'publish'" );
+			$sql = $this->db->prepare( "SELECT count(*) FROM {$this->db->posts} WHERE post_type = %s AND post_status = %s", 'post', 'publish' );
 
 			if($this->db->get_var( $sql ) > 0) {
 				return true;

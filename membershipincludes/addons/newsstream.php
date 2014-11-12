@@ -173,7 +173,8 @@ function membership_news_stream() {
 
 	$table = membership_db_prefix($wpdb, 'membership_news');
 
-	$news = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY newsdate DESC LIMIT 0, %d", 50) );
+	// Superfluous prepare, but do it anyway
+	$news = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY newsdate DESC LIMIT %d, %d", 0, 50) );
 
 	?>
 
