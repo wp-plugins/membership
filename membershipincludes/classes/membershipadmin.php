@@ -132,6 +132,11 @@ if(!class_exists('membershipadmin')) {
 
 			add_action( 'plugins_loaded', array(&$this, 'load_tutorial'), 11); //init tutorial after translation loaded
 
+
+			// Remove relationships when user gets deleted
+			add_action( 'delete_user', array(&$this, 'remove_relationships_on_delete' ) );
+
+
 		}
 
 		function membershipadmin() {
@@ -7142,6 +7147,16 @@ if(!class_exists('membershipadmin')) {
 			if (session_id() == "")
       			session_start();
 		}
+
+
+		// Remove relationship when user is deleted
+		function remove_relationships_on_delete( $user_id ) {
+			global $wpdb;
+			
+			$sql = $wpdb->prepare( "DELETE FROM ".$wpdb->prefix."m_membership_relationships WHERE user_id = %d", $user_id );
+			$wpdb->query( $sql );
+		}
+
 
 
 	}
