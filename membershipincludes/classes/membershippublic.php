@@ -1958,10 +1958,13 @@ if(!class_exists('membershippublic')) {
 								"prefix"				=>	'',
 								"wrapwith"				=>	'',
 								"wrapwithclass"			=>	'',
-								"subscription"			=>	''
+								"subscription"			=>	'',
+								"level"                 =>  1,
 							);
 
 			extract(shortcode_atts($defaults, $atts));
+
+			$level = (int) $level;
 
 			if(empty($subscription)) {
 				return '';
@@ -1983,7 +1986,7 @@ if(!class_exists('membershippublic')) {
 			}
 
 			$sub = new M_Subscription( (int) $subscription );
-			$first = $sub->get_level_at_position(1);
+			$first = $sub->get_level_at_position( $level );
 
 			if(!empty($first)) {
 				$price = $first->level_price;
@@ -2007,7 +2010,6 @@ if(!class_exists('membershippublic')) {
 					}
 				}
 			}
-
 
 			$html .= $price;
 
