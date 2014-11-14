@@ -770,7 +770,7 @@ if(!class_exists('membershippublic')) {
 
 			// If we are here then we have no custom message, or the shortcode wasn't found so just output the standard message
 			if(isset($M_options['shortcodemessage'])) {
-				return stripslashes($M_options['shortcodemessage']);
+				return stripslashes( do_shortcode($M_options['shortcodemessage']));
 			} else {
 				return '';
 			}
