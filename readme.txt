@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: Membership, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 3.4.4.2
+Stable tag: 3.4.4.3
 
 Membership transforms your WordPress website into a fully functional membership site.
 
@@ -138,6 +138,9 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 11. Highly configurable with **a lot** of options and hooks / filters available.
 
 == Changelog ==
+
+= 3.4.4.3 =
+* Fixed: Shortcodes now work on the Protected Content page.
 
 = 3.4.4.2 =
 * Modified: [subscriptionprice] shortcode now accepts new argument, level, to choose which price of the description to show.  E.g. [subscriptionprice subscription=“1” level=“1”]
