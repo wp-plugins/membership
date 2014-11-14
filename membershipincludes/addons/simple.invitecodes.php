@@ -111,7 +111,7 @@ function M_AddSimpleInviteFieldProcess( $error ) {
 
 	if(empty($thekey)) {
 
-		if(empty($error)) {
+		if(empty($error->errors)) {
 			$error = new WP_Error();
 		}
 
@@ -124,14 +124,14 @@ function M_AddSimpleInviteFieldProcess( $error ) {
 
 		if(!in_array( $thekey, $codes )) {
 
-			if(empty($error)) {
+			if(empty($error->errors)) {
 				$error = new WP_Error();
 			}
 
 			$error->add('incorrectinvitecode', __('Sorry, but we do not seem to have that code on file, please try another.','membership'));
 
 		} else {
-			if(empty($error)) {
+			if(empty($error->errors)) {
 				if($Msi_options['inviteremove'] == 'yes') {
 					$key = array_search( $thekey, $codes);
 					if($key !== false) {

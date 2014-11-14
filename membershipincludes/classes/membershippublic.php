@@ -1540,7 +1540,8 @@ if(!class_exists('membershippublic')) {
 				case 'subscriptionform':	$content = $this->output_subscriptionform();
 											break;
 
-				case 'registeruser':		if(!is_user_logged_in()) {
+				case 'registeruser':
+											if(!is_user_logged_in()) {
 												$content = $this->output_registeruser();
 											} else {
 												$content = $this->output_paymentpage();

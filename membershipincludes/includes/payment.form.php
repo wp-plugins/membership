@@ -1,6 +1,6 @@
 <?php
 
-Global $M_options;
+global $M_options;
 
 if( isset($_REQUEST['gateway']) && isset($_REQUEST['extra_form']) ) {
 	$gateway = M_get_class_for_gateway($_REQUEST['gateway']);

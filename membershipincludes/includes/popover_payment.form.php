@@ -1,6 +1,6 @@
 <?php
 
-Global $M_options;
+global $M_options;
 
 if(!$user_id) {
 	$user = wp_get_current_user();
