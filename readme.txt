@@ -9,12 +9,12 @@ Membership2 transforms your WordPress website into a fully functional membership
 
 == Description ==
 
-<strong>Harder, Better, Stronger, Faster</strong>
+<strong>Harder, Better, Stronger, Faster</strong><br />
 The best membership plugin for WordPress just got even better – meet Membership2. We completely rewrote Membership from the ground up to create a completely new, faster, more intuitive membership system.
 
 Transform WordPress into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through a flexible membership system. It’s simpler to use and more flexible than ever.
 
-<strong>Simpler, More Powerful Controls</strong>
+<strong>Simpler, More Powerful Controls</strong><br />
 With Membership2 there’s no guesswork and no messing around with confusing settings. Our setup wizard will guide you through configuring your membership site for the best results.
 
 Choose one from one of four base membership options, then configure the perfect system to fit your site’s goals.
@@ -28,12 +28,12 @@ Choose one from one of four base membership options, then configure the perfect 
 
 Use Membership2 to protect all things WordPress – pages, posts, comments, content below the “read more” tag, categories, menus, URLs, special pages, content by user role, media files, forums, downloads, videos, support...you name it
 
-<strong>Put Your Content Behind a Paywall</strong>
+<strong>Put Your Content Behind a Paywall</strong><br />
 Get paid with PayPal, Stripe, Authorize.net, or good old fashioned manual payments. And, use automated processing and you can get paid without doing a thing.
 
 Membership2 even includes 25 currency options out-of-the-box so you can take payments from just about anywhere in the world.
 
-Membership2 Pro
+<strong>Membership2 Pro</strong><br />
 Need even more? Upgrade to <a href="http://premium.wpmudev.org/project/membership/">Membership2 Pro</a> and get access to all the features available in Membership2 plus these premium add-ons:
 <ul>
 <li><strong>Fully integrated coupon system</strong> – offer special promotions and attract new users</li>
