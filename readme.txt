@@ -1,81 +1,51 @@
-=== Membership ===
+=== Membership2 ===
 Contributors: WPMUDEV
 Tags: Membership, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
 Tested up to: 4.2.2
 Stable tag: 4.0.0.0
 
-Membership transforms your WordPress website into a fully functional membership site.
+Membership2 transforms your WordPress website into a fully functional membership site.
 
 == Description ==
 
-[youtube https://www.youtube.com/watch?v=9PgEJ8Derm4]
+<strong>Harder, Better, Stronger, Faster</strong>
+The best membership plugin for WordPress just got even better – meet Membership2. We completely rewrote Membership from the ground up to create a completely new, faster, more intuitive membership system.
 
-Membership transforms your WordPress website into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through flexible membership levels and options.
-Simple to use, flexible - this plugin will meet all of your membership site needs. Want to create a site like GigaOm, Izzy Video, PSD Tuts? Now you can do it, easy!
+Transform WordPress into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through a flexible membership system. It’s simpler to use and more flexible than ever.
 
-= You can use Membership lite to create... =
-* A WordPress membership site, offering resources, forums, downloads, videos, support and more... with three different levels of membership and complete customizations.
-* Multiple membership sites on a WordPress MultiSite install - so any user of your site can have their own membership site.
- 
-= Membership Pro =
-Membership lite is a fully functional but limited version of our <a href='http://premium.wpmudev.org/project/membership'>full Membership plugin</a>.
-This lite version supports a maximum of three membership levels and three subscription levels, as well as a basic set of rules to get you started. This is enough for most basic membership sites.
+<strong>Simpler, More Powerful Controls</strong>
+With Membership2 there’s no guesswork and no messing around with confusing settings. Our setup wizard will guide you through configuring your membership site for the best results.
 
-Our full version includes many more features:
+Choose one from one of four base membership options, then configure the perfect system to fit your site’s goals.
 
-* **Unlimited** membership levels!
-* **Unlimited** subscription levels!
-* **BuddyPress rules** - limit and protect access to groups, group creation, pages, blogs, private messageing
-* **Administration area rules** - control blog creation (limit number per level), dashboard widgets, menus and sub-menus, available plugins.
+<ul>
+<li>Standard Membership</li>
+<li>Dripped Content Membership</li>
+<li>Guest Membership</li>
+<li>Default Membership</li>
+</ul>
 
-<a href='http://premium.wpmudev.org/project/membership/'>**Upgrade to the full version now &raquo;**</a>
+Use Membership2 to protect all things WordPress – pages, posts, comments, content below the “read more” tag, categories, menus, URLs, special pages, content by user role, media files, forums, downloads, videos, support...you name it
 
-= How does it work... well, it's really easy. =
+<strong>Put Your Content Behind a Paywall</strong>
+Get paid with PayPal, Stripe, Authorize.net, or good old fashioned manual payments. And, use automated processing and you can get paid without doing a thing.
 
-Simply follow the instructions in the installation and configuration guide
+Membership2 even includes 25 currency options out-of-the-box so you can take payments from just about anywhere in the world.
 
-You'll then be able to create Membership 'Levels' which can access different types of content, including 'free' (i.e users just visiting the site) and/or paid levels.
+Membership2 Pro
+Need even more? Upgrade to <a href="http://premium.wpmudev.org/project/membership/">Membership2 Pro</a> and get access to all the features available in Membership2 plus these premium add-ons:
+<ul>
+<li><strong>Fully integrated coupon system</strong> – offer special promotions and attract new users</li>
+<li><strong>Recurring payment options</strong> – set users up on an ongoing automated payment plan</li>
+<li><strong>Admin-side protection rules</strong> – protect elements inside the WordPress Dashboard</li>
+<li><strong>Custom post-type protection</strong> – protect post-types not native to WordPress core</li>
+<li><strong>Advanced media protection rules</strong> – more control when protecting media</li>
+<li><strong>Network Wide Protection</strong> – manage membership on your entire Multisite network from one place</li>
+</ul>
+<a href="http://premium.wpmudev.org/project/membership/">Upgrade to the full version now »</a>
 
-You can control access to:
-
-* Downloads
-* Categories
-* Pages
-* Posts
-* Comments
-* 'More' tags
-* Galleries
-* And **any content or functionality** (like forums!), via multiple different shortcodes
-
-And you can create three different levels of subscriptions. For example you could:
-
-* Offer free memberships that turn into paid subscriptions after x days
-* Finite or indefinite subscriptions
-* Serial renewing subscriptions
-* Subscriptions that renew every 5, 10, 30, 90 etc. days
-* And plenty more...
-
-All this, and more. Membership is as much a **framework** as anything else.
-
-Using our powerful but simple APIs you can easily add different gateways and rules - any half decent WordPress developer should be able to do exactly that!
-
-For example, adding gateways is easy - and we'll be adding plenty more - all you need to do is create a gateway along the lines of one that we supply and you'll be good to go.
-
-= Building a Membership Site =
-The WPMU DEV Membership plugin makes it  easy to create and manage a membership site for both free and paid subscribers.
-
-Whilst the plugin handles a lot of the work, you will need to spend some time thinking through the structure of your site and how you want to set-up and categorize your content before installing and activating the Membership plugin.
-
-= What is a membership site =
-A membership site can take many guises, from Gigaom Pro which protects long articles and research, through to Izzy video which protects individual videos.
-
-In all cases though, a membership site contains a minimum of two levels of content:
-
-*	**Free (or teaser) content**, which is accessible to everyone and is used to entice potential new members into subscribing (and also help with SEO)
-*	**Members only content**, which is only accessible to those who have an active (paid or free) subscription to the site.
-
-We have put together an in-depth <a href='http://premium.wpmudev.org/project/membership/installation/'>instructions guide</a> to help you through using standard WordPress categories to mark posts / content as being accessible to either free users or members only. Then we go into some of the more advanced features that allow you to protect individual uploads and distinct sections of a posts content.
+Download Membership2 today – the new standard in WordPress and Multisite membership systems.
 
 == Installation ==
 
@@ -138,6 +108,16 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 11. Highly configurable with **a lot** of options and hooks / filters available.
 
 == Changelog ==
+
+= 4.0.0.0 =
+* Plugin name changed from Protected Content to Membership2 
+* New official plugin API added (see Membership2 > Help page) 
+* New Payment gateway added: Stripe Subscriptions 
+* New option in Membership Payment settings to disable individual payment gateways. 
+* Improved payment settings page to use number-input fields instead of text-fields 
+* Fix issue where Simulation (Test) mode added HTML code to all Ajax responses 
+* Fix blank screen after submitting the password reset form 
+* Minor improvements all over the place
 
 = 3.4.4.3 =
 * Fixed: Shortcodes now work on the Protected Content page.
