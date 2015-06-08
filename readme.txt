@@ -1,21 +1,21 @@
-=== Membership2 ===
+=== Membership 2 ===
 Contributors: WPMUDEV
-Tags: Membership, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
+Tags: Membership, Membership 2, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
 Tested up to: 4.2.2
 Stable tag: 4.0.0.0
 
-Membership2 transforms your WordPress website into a fully functional membership site.
+Membership 2 transforms your WordPress website into a fully functional membership site.
 
 == Description ==
 
 <strong>Harder, Better, Stronger, Faster</strong><br />
-The best membership plugin for WordPress just got even better – meet Membership2. We completely rewrote Membership from the ground up to create a completely new, faster, more intuitive membership system.
+The best membership plugin for WordPress just got even better – meet Membership 2. We completely rewrote Membership from the ground up to create a completely new, faster, more intuitive membership system.
 
 Transform WordPress into a fully functional membership site. Provide access to downloads, online content, videos, forums, support and more through a flexible membership system. It’s simpler to use and more flexible than ever.
 
 <strong>Simpler, More Powerful Controls</strong><br />
-With Membership2 there’s no guesswork and no messing around with confusing settings. Our setup wizard will guide you through configuring your membership site for the best results.
+With Membership 2 there’s no guesswork and no messing around with confusing settings. Our setup wizard will guide you through configuring your membership site for the best results.
 
 Choose one from one of four base membership options, then configure the perfect system to fit your site’s goals.
 
@@ -26,15 +26,15 @@ Choose one from one of four base membership options, then configure the perfect 
 <li>Default Membership</li>
 </ul>
 
-Use Membership2 to protect all things WordPress – pages, posts, comments, content below the “read more” tag, categories, menus, URLs, special pages, content by user role, media files, forums, downloads, videos, support...you name it
+Use Membership 2 to protect all things WordPress – pages, posts, comments, content below the “read more” tag, categories, menus, URLs, special pages, content by user role, media files, forums, downloads, videos, support...you name it
 
 <strong>Put Your Content Behind a Paywall</strong><br />
 Get paid with PayPal, Stripe, Authorize.net, or good old fashioned manual payments. And, use automated processing and you can get paid without doing a thing.
 
-Membership2 even includes 25 currency options out-of-the-box so you can take payments from just about anywhere in the world.
+Membership 2 even includes 25 currency options out-of-the-box so you can take payments from just about anywhere in the world.
 
-<strong>Membership2 Pro</strong><br />
-Need even more? Upgrade to <a href="http://premium.wpmudev.org/project/membership/">Membership2 Pro</a> and get access to all the features available in Membership2 plus these premium add-ons:
+<strong>Membership 2 Pro</strong><br />
+Need even more? Upgrade to <a href="http://premium.wpmudev.org/project/membership/">Membership 2 Pro</a> and get access to all the features available in Membership 2 plus these premium add-ons:
 <ul>
 <li><strong>Fully integrated coupon system</strong> – offer special promotions and attract new users</li>
 <li><strong>Recurring payment options</strong> – set users up on an ongoing automated payment plan</li>
@@ -45,7 +45,7 @@ Need even more? Upgrade to <a href="http://premium.wpmudev.org/project/membershi
 </ul>
 <a href="http://premium.wpmudev.org/project/membership/">Upgrade to the full version now »</a>
 
-Download Membership2 today – the new standard in WordPress and Multisite membership systems.
+Download Membership 2 today – the new standard in WordPress and Multisite membership systems.
 
 == Installation ==
 
@@ -110,8 +110,8 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 == Changelog ==
 
 = 4.0.0.0 =
-* Plugin name changed from Protected Content to Membership2 
-* New official plugin API added (see Membership2 > Help page) 
+* Plugin name changed from Protected Content to Membership 2 
+* New official plugin API added (see Membership 2 > Help page) 
 * New Payment gateway added: Stripe Subscriptions 
 * New option in Membership Payment settings to disable individual payment gateways. 
 * Improved payment settings page to use number-input fields instead of text-fields 
