@@ -171,4 +171,69 @@ class TheLib_2_0_2_Core extends TheLib_2_0_2 {
 		return false;
 	}
 
+	/**
+	 * Converts a number from any base to another base.
+	 * The from/to base values can even be non-numeric values.
+	 *
+	 * @since  2.0.2
+	 * @api
+	 *
+	 * @param  string $number A number in the base_from base.
+	 * @param  string $base_from List of characters
+	 *         E.g. 0123456789 to convert from decimal.
+	 * @param  string $base_to List of characters to use as destination base.
+	 *         E.g. 0123456789ABCDEF to convert to hexadecimal.
+	 * @return string The converted number
+	 */
+	public function convert( $number, $base_from = '0123456789', $base_to = '0123456789ABCDEF' ) {
+		if ( $base_from == $base_to ) {
+			// No conversion needed.
+			return $number;
+		}
+
+		$retval = '';
+		$number_len = strlen( $number );
+
+		if ( '0123456789' == $base_to ) {
+			// Convert a value to normal decimal base.
+
+			$arr_base_from = str_split( $base_from, 1 );
+			$arr_number = str_split( $number, 1 );
+			$base_from_len = strlen( $base_from );
+			$retval = 0;
+			for ( $i = 1; $i <= $number_len; $i += 1 ) {
+				$retval = bcadd(
+					$retval,
+					bcmul(
+						array_search( $arr_number[$i - 1], $arr_base_from ),
+						bcpow( $base_from_len, $number_len - $i )
+					)
+				);
+			}
+		} else {
+			// Convert a value to a NON-decimal base.
+
+			if ( '0123456789' != $base_from ) {
+				// Base value is non-decimal, convert it to decimal first.
+				$base10 = $this->convert( $number, $base_from, '0123456789' );
+			} else {
+				// Base value is decimal.
+				$base10 = $number;
+			}
+
+			$arr_base_to = str_split( $base_to, 1 );
+			$base_to_len = strlen( $base_to );
+			if ( $base10 < strlen( $base_to ) ) {
+				$retval = $arr_base_to[$base10];
+			} else {
+				while ( 0 != $base10 ) {
+					$retval = $arr_base_to[bcmod( $base10, $base_to_len )] . $retval;
+					$base10 = bcdiv( $base10, $base_to_len, 0 );
+				}
+			}
+		}
+
+		return $retval;
+	}
+
 };

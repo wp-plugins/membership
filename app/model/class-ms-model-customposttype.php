@@ -421,10 +421,9 @@ class MS_Model_CustomPostType extends MS_Model {
 	 * @since  2.0.0
 	 * @return string The post-type name.
 	 */
-	protected static function _post_type( $class ) {
+	protected static function _post_type( $orig_posttype ) {
 		// Post-type is always lower case.
-		$posttype = strtolower( $class::$POST_TYPE );
-		$posttype = substr( $posttype, 0, 20 );
+		$posttype = strtolower( substr( $orig_posttype, 0, 20 ) );
 
 		return $posttype;
 	}

@@ -1,4 +1,4 @@
-/*! Membership2 - v4.0.0
+/*! Membership 2 - v4.0.01
  * https://wordpress.org/plugins/membership/
  * Copyright (c) 2015; * Licensed GPLv2+ */
 /*!------------------------------------------------------

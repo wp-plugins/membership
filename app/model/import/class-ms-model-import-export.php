@@ -249,6 +249,7 @@ class MS_Model_Import_Export extends MS_Model {
 				case MS_Model_Membership::PAYMENT_TYPE_DATE_RANGE:
 					$obj->period_start = $src->period_date_start;
 					$obj->period_end = $src->period_date_end;
+					break;
 
 			}
 

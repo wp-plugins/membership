@@ -164,6 +164,35 @@ class M2_Migration_Handler {
 		.dev-cta-wrap {
 			text-align: right;
 		}
+		.dev-cta-wrap .wpmu-button {
+			padding: 12px 20px;
+			background-color: rgba(0, 0, 0, 0);
+			text-decoration: none;
+			display: inline-block;
+			outline: none;
+			font-weight: bold;
+			font-family: Helvetica Neue, helvetica, sans-serif !important;
+			text-rendering: optimizeLegibility;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			-moz-background-clip: padding;
+			-webkit-background-clip: padding-box;
+			background-clip: padding-box;
+			-moz-box-shadow: 0 1px 0 #001c33, inset 0 1px 0 #004f8c;
+			-webkit-box-shadow: 0 1px 0 #001C33, inset 0 1px 0 #004F8C;
+			box-shadow: 0 1px 0 #001C33, inset 0 1px 0 #004F8C;
+			background-image: -moz-linear-gradient(bottom, #003866 0%, #00487f 100%);
+			background-image: -o-linear-gradient(bottom, #003866 0%, #00487f 100%);
+			background-image: -webkit-linear-gradient(bottom, #003866 0%, #00487F 100%);
+			background-image: linear-gradient(bottom, #003866 0%, #00487f 100%);
+			color: #E2ECF4;
+			font-size: 14px;
+			text-shadow: 0 -1px 0 #002A4C;
+			border: none;
+			-webkit-font-smoothing: antialiased;
+		}
+		.dev-cta-wrap .wpmu-button:hover,
 		.dev-cta-wrap .wpmu-button:focus,
 		.dev-cta-wrap .wpmu-button:active {
 			color: #FFF;
@@ -223,9 +252,7 @@ class M2_Migration_Handler {
 
 			function confirmed() {
 				message.detach();
-				<?php if ( $wpmudev_un ) : ?>
-				window.location.href = '<?php echo admin_url( '?page=membership2' ); ?>';
-				<?php endif; ?>
+				window.location.reload();
 			}
 			function postponed() {
 				message.detach();

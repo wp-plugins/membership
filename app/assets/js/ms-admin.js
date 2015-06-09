@@ -1,4 +1,4 @@
-/*! Membership2 - v4.0.0
+/*! Membership 2 - v4.0.01
  * https://wordpress.org/plugins/membership/
  * Copyright (c) 2015; * Licensed GPLv2+ */
 /*global window:false */
@@ -1876,9 +1876,12 @@ window.ms_init.view_settings_import = function init() {
 	 */
 	function allow_hide_popup() {
 		var el = jQuery( '<div style="text-align:center"></div>' ),
-			btn = jQuery( '<button type="button" class="close"></button>' );
+			btn = jQuery( '<a href="#" class="close"></a>' );
 
 		btn.text( ms_data.lang.close_progress );
+		if ( ms_data.close_link ) {
+			btn.attr( 'href', ms_data.close_link );
+		}
 		btn.addClass( 'button-primary' );
 		btn.appendTo( el );
 
@@ -2023,6 +2026,7 @@ window.ms_init.view_settings_import = function init() {
 	btn_import.click( start_import );
 
 };
+
 /*global window:false */
 /*global document:false */
 /*global ms_data:false */
@@ -2040,6 +2044,7 @@ window.ms_init.view_settings_mailchimp = function init() {
 window.ms_init.view_settings_payment = function init() {
 	function toggle_status( ev, data, response, is_err ) {
 		if ( undefined === data.gateway_id ) { return; }
+		if ( 'update_gateway' !== data.action ) { return; }
 
 		var row = jQuery( '.gateway-' + data.gateway_id );
 

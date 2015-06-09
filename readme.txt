@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: Membership, Membership 2, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
 Tested up to: 4.2.2
-Stable tag: 4.0.0.0
+Stable tag: trunk
 
 Membership 2 transforms your WordPress website into a fully functional membership site.
 
@@ -108,6 +108,17 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 11. Highly configurable with **a lot** of options and hooks / filters available.
 
 == Changelog ==
+
+= 4.0.0.1 =
+* Fix fatal error that was displayed right after update
+* Fix compatibility issues with PHP 5.2.4 - note that you still need PHP 5.3 to use the Stripe Gateways
+* Fix a major bug in the automatic import wizard that prevented the plugin from importing old Membership data
+* Fix wrong redirect during setup wizard that ended in "Not allowed to view page" errors
+* Fix the protection rule for "Friendship Request" in the BuddyPress Add-on
+* Fix a bug in the Coupons Add-on that discarded changes instead of saving them
+* Fix some PHP notices and warnings that did happen during first setup
+* Fix some typos in admin pages
+* Rename page "Protected Content" to "Protection Rules"
 
 = 4.0.0.0 =
 * Plugin name changed from Protected Content to Membership 2 

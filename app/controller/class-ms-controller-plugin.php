@@ -207,8 +207,8 @@ class MS_Controller_Plugin extends MS_Controller {
 		// Modify the main menu to handle our special_view for default item.
 		add_submenu_page(
 			self::$base_slug,
-			'Membership2',
-			'Membership2',
+			'Membership 2',
+			'Membership 2',
 			$this->capability,
 			self::$base_slug,
 			array( $this, 'handle_special_view' )
@@ -243,6 +243,10 @@ class MS_Controller_Plugin extends MS_Controller {
 			$plugin_page = self::MENU_SLUG;
 		} else {
 			$plugin_page = self::MENU_SLUG . '-' . $subpage;
+		}
+
+		if ( ! function_exists( 'get_plugin_page_hookname' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		$the_parent = 'admin.php';
@@ -311,7 +315,10 @@ class MS_Controller_Plugin extends MS_Controller {
 		);
 
 		$page_keys = array_keys( $pages );
-		$slug = $pages[ $page_keys[0] ]['slug'];
+		$slug = '';
+		if ( isset( $page_keys[0] ) && $pages[ $page_keys[0] ] ) {
+			$slug = $pages[ $page_keys[0] ]['slug'];
+		}
 		if ( empty( $slug ) ) {
 			self::$base_slug = self::MENU_SLUG;
 		} else {
@@ -326,8 +333,8 @@ class MS_Controller_Plugin extends MS_Controller {
 		 * Until this bug is closed the title (2nd argument) can't be translated
 		 */
 		add_menu_page(
-			'Membership2', // no i18n!
-			'Membership2', // no i18n!
+			'Membership 2', // no i18n!
+			'Membership 2', // no i18n!
 			$this->capability,
 			self::$base_slug,
 			null,
@@ -396,7 +403,7 @@ class MS_Controller_Plugin extends MS_Controller {
 			$pages['setup']['slug'] = 'setup';
 
 			$pages[self::MENU_SLUG] = array(
-				'title' => __( 'Protected Content', MS_TEXT_DOMAIN ),
+				'title' => __( 'Protection Rules', MS_TEXT_DOMAIN ),
 				'slug' => '',
 			);
 		}
@@ -420,7 +427,7 @@ class MS_Controller_Plugin extends MS_Controller {
 				'slug' => '',
 			),
 			'protected-content' => array(
-				'title' => __( 'Protected Content', MS_TEXT_DOMAIN ),
+				'title' => __( 'Protection Rules', MS_TEXT_DOMAIN ),
 				'slug' => 'protection',
 			),
 			'members' => array(
@@ -653,6 +660,10 @@ class MS_Controller_Plugin extends MS_Controller {
 			$slug = self::$base_slug;
 		} else {
 			$slug = self::MENU_SLUG . '-' . $slug;
+		}
+
+		if ( ! $slug ) {
+			$slug = self::MENU_SLUG;
 		}
 
 		if ( $network_slug ) {
