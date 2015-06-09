@@ -729,8 +729,13 @@ class MS_Model_Upgrade extends MS_Model {
 		// 1. See if there is a old copy of the plugin directory. Delete it.
 		if ( is_dir( $old_dir ) && is_file( $old_dir . '/protected-content.php' ) ) {
 			// Looks like the old version of this plugin is still installed. Remove it.
-			array_map( 'unlink', glob( "$old_dir/*.*" ) );
-			rmdir( $old_dir );
+			try {
+				unlink( $old_dir . '/protected-content.php' );
+				array_map( 'unlink', glob( "$old_dir/*.*" ) );
+				rmdir( $old_dir );
+			} catch( Exception $e ) {
+				// Something went wrong when removing the old plugin.
+			}
 		}
 
 		// 2. See if WordPress uses an old plugin in the DB. Update it.
@@ -1084,7 +1089,7 @@ class MS_Model_Upgrade extends MS_Model {
 			$msg = __( 'Your Membership2 data was reset!', MS_TEXT_DOMAIN );
 			lib2()->ui->admin_message( $msg );
 
-			wp_safe_redirect( MS_Controller_Plugin::get_admin_url() );
+			wp_safe_redirect( MS_Controller_Plugin::get_admin_url( 'MENU_SLUG' ) );
 			exit;
 		}
 	}
@@ -1124,7 +1129,7 @@ class MS_Model_Upgrade extends MS_Model {
 					'<p>' .
 					__( 'You now have the option to <br />(A) downgrade the plugin to an earlier version via FTP or <br />(B) to %sre-run the upgrade process%s.', MS_TEXT_DOMAIN ) .
 					'</p>',
-					'<a href="' . MS_Controller_Plugin::get_admin_url() . '">',
+					'<a href="' . MS_Controller_Plugin::get_admin_url( 'MENU_SLUG' ) . '">',
 					'</a>'
 				);
 
