@@ -6,8 +6,20 @@ Change Log:
 
 2.0.2
 ----------------------------------------------------------------------
+- Fix bug with wpmui.popup contents
+
+2.0.2
+----------------------------------------------------------------------
 - Fix javascript collision with ACF Pro plugin
 - New js element wpmuUi.progressbar()
+- New function lib2()->convert()
+- lib2()->ui->admin_message() has new styles and discardable mode
+- lib2()->html->element() regards class for hidden fields
+- lib2()->html->element() can handle new HTML5 input types: number, url, email, time, search
+- lib2()->html->element() radio-slider element can get special class 'reverse'
+- lib2()->html->element() has a new attribute called 'wrapper_class'
+- lib2()->html->plugin_list() only displays the Details link if details are present
+- lib2()->debug has many small improvements
 
 2.0.1
 ----------------------------------------------------------------------

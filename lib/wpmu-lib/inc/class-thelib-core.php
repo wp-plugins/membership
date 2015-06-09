@@ -7,7 +7,7 @@
  *
  * @since  1.0.0
  */
-class TheLib_2_0_2_Core extends TheLib_2_0_2 {
+class TheLib_2_0_3_Core extends TheLib_2_0_3 {
 
 	/**
 	 * Interface to the array component.

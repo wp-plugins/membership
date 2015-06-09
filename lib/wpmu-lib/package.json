@@ -2,7 +2,7 @@
   "name": "wpmu-lib",
   "title": "WPMU Dev code library",
   "description": "Framework to support creating WordPress plugins and themes.",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "homepage": "http://premium.wpmudev.org/",
   "author": [
     {

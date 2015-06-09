@@ -4,7 +4,7 @@
  *
  * @since 1.1.0
  */
-class TheLib_2_0_2_Html extends TheLib_2_0_2  {
+class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 
 	/* Constants for default HTML input elements. */
 	const INPUT_TYPE_HIDDEN = 'hidden';

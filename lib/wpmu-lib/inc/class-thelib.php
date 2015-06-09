@@ -4,7 +4,7 @@
  *
  * @since  1.1.0
  */
-class TheLib_2_0_2 {
+class TheLib_2_0_3 {
 
 	/**
 	 * Internal data collection used to pass arguments to callback functions.

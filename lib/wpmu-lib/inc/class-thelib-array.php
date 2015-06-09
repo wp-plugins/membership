@@ -5,7 +5,7 @@
  *
  * @since  1.1.4
  */
-class TheLib_2_0_2_Array extends TheLib_2_0_2 {
+class TheLib_2_0_3_Array extends TheLib_2_0_3 {
 
 	/**
 	 * If the specified variable is an array it will be returned. Otherwise
