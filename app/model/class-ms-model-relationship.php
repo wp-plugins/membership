@@ -1114,6 +1114,22 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 				case MS_Model_Membership::PAYMENT_TYPE_DATE_RANGE:
 					$expire_date = $membership->period_date_end;
 					break;
+
+				case MS_Model_Membership::PAYMENT_TYPE_RECURRING:
+					$period_unit = MS_Helper_Period::get_period_value(
+						$membership->pay_cycle_period,
+						'period_unit'
+					);
+					$period_type = MS_Helper_Period::get_period_value(
+						$membership->pay_cycle_period,
+						'period_type'
+					);
+					$expire_date = MS_Helper_Period::add_interval(
+						$period_unit,
+						$period_type,
+						$start_date
+					);
+					break;
 			}
 		}
 
@@ -1571,12 +1587,51 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 					$membership->period_date_end
 				);
 				break;
+
+			case MS_Model_Membership::PAYMENT_TYPE_RECURRING:
+				if ( 1 == $membership->pay_cycle_repetitions ) {
+					// Exactly 1 payment. Actually same as the "finite" type.
+					if ( $short ) {
+						$lbl = __( '<span class="price">%1$s %2$s</span> (once)', MS_TEXT_DOMAIN );
+					} else {
+						$lbl = __( 'You will pay <span class="price">%1$s %2$s</span> once.', MS_TEXT_DOMAIN );
+					}
+				} else {
+					if ( $membership->pay_cycle_repetitions > 1 ) {
+						// Fixed number of payments (more than 1)
+						if ( $short ) {
+							$lbl = __( '%4$s times <span class="price">%1$s %2$s</span> (each %3$s)', MS_TEXT_DOMAIN );
+						} else {
+							$lbl = __( 'You will make %4$s payments of <span class="price">%1$s %2$s</span>, one each %3$s.', MS_TEXT_DOMAIN );
+						}
+					} else {
+						// Indefinite number of payments
+						if ( $short ) {
+							$lbl = __( '<span class="price">%1$s %2$s</span> (each %3$s)', MS_TEXT_DOMAIN );
+						} else {
+							$lbl = __( 'You will pay <span class="price">%1$s %2$s</span> each %3$s.', MS_TEXT_DOMAIN );
+						}
+					}
+				}
+
+				$desc .= sprintf(
+					$lbl,
+					$currency,
+					$total_price,
+					MS_Helper_Period::get_period_desc( $membership->pay_cycle_period ),
+					$membership->pay_cycle_repetitions
+				);
+				break;
 		}
 
 		if ( $this->is_trial_eligible() && 0 != $total_price ) {
 			if ( 0 == absint( $trial_price ) ) {
 				if ( $short ) {
-					$lbl = __( 'on %4$s', MS_TEXT_DOMAIN );
+					if ( MS_Model_Membership::PAYMENT_TYPE_RECURRING == $membership->payment_type ) {
+						$lbl = __( 'after %4$s', MS_TEXT_DOMAIN );
+					} else {
+						$lbl = __( 'on %4$s', MS_TEXT_DOMAIN );
+					}
 				} else {
 					$trial_price = __( 'nothing', MS_TEXT_DOMAIN );
 					$lbl = __( 'The trial period of %1$s is for free.', MS_TEXT_DOMAIN );
@@ -2184,8 +2239,32 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 				 * renew the subscription. All other types will expire when the
 				 * end date is reached.
 				 */
+				$auto_renew = $membership->payment_type == MS_Model_Membership::PAYMENT_TYPE_RECURRING;
 				$deactivate = false;
-				$invoice = $this->get_current_invoice();
+				$invoice = null;
+
+				if ( $auto_renew && $membership->pay_cycle_repetitions > 0 ) {
+					/*
+					 * The membership has a payment-repetition limit.
+					 * When this limit is reached then we do not auto-renew the
+					 * subscription but expire it.
+					 */
+					$payments = lib2()->array->get( $this->payments );
+					if ( count( $payments ) >= $membership->pay_cycle_repetitions ) {
+						$auto_renew = false;
+					}
+				}
+
+				if ( $auto_renew ) {
+					if ( $remaining_days < $invoice_before_days ) {
+						// Create a new invoice.
+						$invoice = $this->get_next_invoice();
+					} else {
+						$invoice = $this->get_current_invoice();
+					}
+				} else {
+					$invoice = $this->get_current_invoice();
+				}
 
 				// Advanced communications Add-on.
 				if ( MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_AUTO_MSGS_PLUS ) ) {
@@ -2257,7 +2336,29 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 
 				// Subscription ended. See if we can renew it.
 				if ( $remaining_days <= 0 ) {
-					$deactivate = true;
+					if ( $auto_renew ) {
+						/*
+						 * The membership can be renewed. Try to renew it
+						 * automatically by requesting the next payment from the
+						 * payment gateway (only works if gateway supports this)
+						 */
+						$gateway = $this->get_gateway();
+						$gateway->check_card_expiration( $this );
+						$gateway->request_payment( $this );
+
+						// Check if the payment was successful.
+						$remaining_days = $this->get_remaining_period();
+
+						/*
+						 * User did not renew the membership. Give him some time
+						 * to react before restricting his access.
+						 */
+						if ( $deactivate_expired_after_days < - $remaining_days ) {
+							$deactivate = true;
+						}
+					} else {
+						$deactivate = true;
+					}
 				}
 
 				if ( $deactivate ) {

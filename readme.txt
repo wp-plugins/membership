@@ -109,6 +109,11 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
+= 4.0.0.2 =
+* Fix the import tool to import data from old Membership plugin correctly (recurring payments, subscription status and end date)
+* Fix the i18n support, the plugin is translated correctly again
+* Fix error message that was displayed when dates of dripped memberships were saved
+
 = 4.0.0.1 =
 * Fix fatal error that was displayed right after update
 * Fix compatibility issues with PHP 5.2.4 - note that you still need PHP 5.3 to use the Stripe Gateways

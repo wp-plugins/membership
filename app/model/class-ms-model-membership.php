@@ -94,6 +94,15 @@ class MS_Model_Membership extends MS_Model_CustomPostType {
 	const PAYMENT_TYPE_DATE_RANGE = 'date-range';
 
 	/**
+	 * Membership payment type constants.
+	 * The only type that auto-renews without asking the user!
+	 *
+	 * @since 1.0.0
+	 * @see $payment_type $payment_type property.
+	 */
+	const PAYMENT_TYPE_RECURRING = 'recurring';
+
+	/**
 	 * Membership type.
 	 * Default is TYPE_STANDARD.
 	 *
@@ -437,6 +446,7 @@ class MS_Model_Membership extends MS_Model_CustomPostType {
 				self::PAYMENT_TYPE_PERMANENT => __( 'One payment for permanent access', MS_TEXT_DOMAIN ),
 				self::PAYMENT_TYPE_FINITE => __( 'One payment for finite access', MS_TEXT_DOMAIN ),
 				self::PAYMENT_TYPE_DATE_RANGE => __( 'One payment for date range access', MS_TEXT_DOMAIN ),
+				self::PAYMENT_TYPE_RECURRING => __( 'Recurring payments', MS_TEXT_DOMAIN ),
 			);
 		}
 
@@ -1167,6 +1177,24 @@ class MS_Model_Membership extends MS_Model_CustomPostType {
 					__( 'From %1$s to %2$s', MS_TEXT_DOMAIN ),
 					$this->period_date_start,
 					$this->period_date_end
+				);
+				break;
+
+			case self::PAYMENT_TYPE_RECURRING:
+				$desc = __( 'Each %1$s', MS_TEXT_DOMAIN );
+
+				if ( $has_payment ) {
+					if ( 1 == $this->pay_cycle_repetitions ) {
+						$desc = __( 'Single payment', MS_TEXT_DOMAIN );
+					} elseif ( $this->pay_cycle_repetitions > 1 ) {
+						$desc .= ', ' . __( '%2$s payments', MS_TEXT_DOMAIN );
+					}
+				}
+
+				$desc = sprintf(
+					$desc,
+					MS_Helper_Period::get_period_desc( $this->pay_cycle_period ),
+					$this->pay_cycle_repetitions
 				);
 				break;
 

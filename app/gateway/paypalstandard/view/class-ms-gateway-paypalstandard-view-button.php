@@ -248,6 +248,37 @@ class MS_Gateway_Paypalstandard_View_Button extends MS_View {
 
 		$recurring = 0;
 		switch ( $membership->payment_type ) {
+			// == RECURRING PAYMENTS
+			case MS_Model_Membership::PAYMENT_TYPE_RECURRING:
+				$period_type = MS_Helper_Period::get_period_value(
+					$membership->pay_cycle_period,
+					'period_type'
+				);
+				$period_type = strtoupper( $period_type[0] );
+				$period_value = MS_Helper_Period::get_period_value(
+					$membership->pay_cycle_period,
+					'period_unit'
+				);
+				$period_value = MS_Helper_Period::validate_range(
+					$period_value,
+					$period_type
+				);
+
+				$fields['p3'] = array(
+					'id' => 'p3',
+					'type' => MS_Helper_Html::INPUT_TYPE_HIDDEN,
+					'value' => $period_value,
+				);
+				$fields['t3'] = array(
+					'id' => 't3',
+					'type' => MS_Helper_Html::INPUT_TYPE_HIDDEN,
+					'value' => $period_type,
+				);
+
+				// This makes the payments recurring!
+				$recurring = 1;
+				break;
+
 			// == FINITE END DATE
 			case MS_Model_Membership::PAYMENT_TYPE_FINITE:
 				$period_type = MS_Helper_Period::get_period_value(

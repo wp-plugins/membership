@@ -260,19 +260,24 @@ class MS_Controller_Rule extends MS_Controller {
 
 		if ( MS_Helper_Membership::MEMBERSHIP_MSG_UPDATED == $msg ) {
 			// If everything went well then get a refershed version of the list-table.
-			$GLOBALS['hook_suffix'] = 'membership2_page_' . MS_Controller_Plugin::MENU_SLUG . '-protection';
+			$GLOBALS['hook_suffix'] = 'membership-2_page_' . MS_Controller_Plugin::MENU_SLUG . '-protection';
 			$table = apply_filters( 'ms_rule_listtable-' . $rule_type, null );
 
 			if ( $table ) {
-				$items = $table->get_model()->get_contents();
+				$args = array(
+					'offset' => isset( $_POST['offset'] ) ? $_POST['offset'] : 0,
+					'number' => isset( $_POST['number'] ) ? $_POST['number'] : 20,
+				);
+
+				$items = $table->get_model()->get_contents( $args );
 
 				if ( isset( $items[ $item_id ] ) ) {
-					echo '' . $table->display_rows( array( $items[ $item_id ] ) );
+					echo $table->display_rows( array( $items[ $item_id ] ) );
 				}
 			}
 		} else {
 			$msg .= $this->_resp_code();
-			echo '' . $msg;
+			echo $msg;
 		}
 
 		exit;

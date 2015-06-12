@@ -1,0 +1,284 @@
+Plugin Name: Membership 2
+Author: Fabio Jun, Rheinard Khorf, Philipp Stracker
+
+Change Log:
+----------------------------------------------------------------------
+
+1.0.0.4
+----------------------------------------------------------------------
+- Fix the import tool to import data from old Membership plugin correctly (recurring payments, subscription status and end date)
+- Fix the i18n support, the plugin is translated correctly again
+- Fix error message that was displayed when dates of dripped memberships were saved
+
+1.0.0.3
+----------------------------------------------------------------------
+- Add better error handling to the upgrade routine
+- Fix a major bug in the automatic import wizard that prevented the plugin from importing old Membership data
+- Fix wrong redirect during setup wizard that ended in "Not allowed to view page" errors
+- Fix some typos in admin pages
+- Fix the protection rule for "Friendship Request" in the BuddyPress Add-on
+- Fix a bug in the Coupons Add-on that discarded changes instead of saving them
+- Rename page "Protected Content" to "Protection Rules"
+
+1.0.0.2
+----------------------------------------------------------------------
+- Fix compatibility issues with PHP 5.2.4 - note that you still need PHP 5.3 to use the Stripe Gateways
+
+1.0.0.1
+----------------------------------------------------------------------
+- Fix some PHP notices and warnings that did happen during first setup
+
+Membership2 1.0.0.0
+----------------------------------------------------------------------
+- Plugin name changed from Protected Content to Membership2
+- New network-wide protection mode added (see Membership2 > Help page)
+- New official plugin API added (see Membership2 > Help page)
+- New Payment gateway added: Stripe Subscriptions
+- New option in Membership Payment settings to disable individual payment gateways.
+- Improved payment settings page to use number-input fields instead of text-fields
+- Fix issue where Simulation (Test) mode added HTML code to all Ajax responses
+- Fix blank screen after submitting the password reset form
+- Minor improvements all over the place
+
+1.1.1.6
+----------------------------------------------------------------------
+- Add wp-config option MS_NO_SHORTCODE_PREVIEW (details on the Help > Advanced Settings page)
+- Improve shortcode logic to not show duplicate login forms in rare, theme-specific cases
+- Fix bug that caused missing expiration date for admin-assigned memberships
+- Fix a rare error 'float expected but string found' in billings module
+- Fix minor issue with wrong filter parameter 
+
+1.1.1.5
+----------------------------------------------------------------------
+- Add "autofocus" attribute to login shortcode
+- Add filter "ms_model_pages_redirect_to" to customize membership redirects
+- Add new attributes to the login shortcode to customize field labels and placeholders
+- Improve the Import Tool to handle large import files without throwing memory limit exceptions
+- Improve preview of the [ms-protected-content] shortcode for admins
+- Fix various small issues with the login shortcode HTML code
+- Fix javascript collision with ACF Pro plugin
+- Fix display of invoice status in the admin Billings section
+
+1.1.1.4
+----------------------------------------------------------------------
+- Added new automatic email notification: Subscription Renewed
+- Improved descriptions of automatic email notification settings
+- Improved i18n integration in the Billings module, Invoice display and in the Account page
+- Improved the invoice and subscription workflow with Trial Memberships
+- Improved media protection to protect whole HTML output instead of post-content only
+- Improved Mailchimp integration: Firstname/Lastname are now also transfered to Mailchimp
+- Improved lots of front-end pages by adding new CSS classes that can be used to customize the layout
+- Fixed XSS vulnerability (add_query_arg/remove_query_arg)
+- Fixed bug with Stripe gateway that striped the cent amount from the charged amount
+- Fixed the Protection meta-box in post and page editor
+- Fixed the protection shortcode for Guest/Default memberships
+- Fixed bug that created duplicate invoices when processing automatic email notifications
+- Fixed bug that prevented the Signup Email notification from being sent to members
+- Fixed issues with assigning correct subscription status right after first signup
+- Fixed missing pagination in Media Protection list
+- Fixed the Auto-Opt-In option in Mailchimp integration
+- Fixed conflict with WooCommerce where category list did not show any products
+- Fixed bug in Registration workflow that allowed guests to subscribe to memberships
+- Fixed some attributes in the [ms-membership-login] shortcode, e.g. "label_" values
+- Fixed some issues in the Custom Post Type protection pages
+- Fixed bug in the Page protection page that did not display all pages in some cases
+- Fix some issues and plugin conflicts with the Member-Capability Add-on
+
+1.1.1.3
+----------------------------------------------------------------------
+- Fix wrong redirection in the [ms-register-user] shortcode
+- Fix error that preveted 100% discounted invoices from being marked as paid
+- Add a lot of options to the [ms-membership-account] shortcode (details in "Help > Shortcodes")
+- Add a timeout to refresh the price of unpaid invoices after 7 days
+
+1.1.1.2
+----------------------------------------------------------------------
+- Add compatiblity for new  Stripe Gateway API (update from 2015-02-18)
+- Add new Media Protection option to manually protect files in the Protected Content page
+- Fix the Media Protection rule, some configurations did protect too many files
+- Fix error when paying with the Authorize.net payment gateway
+- Fix an issue where a static blog-page would not display any posts
+- Fix an issue with the protection shortcode so it works for users with multiple memberships
+- Fix comment protection rules
+- Improve layout of the Registration form and validation notes
+- Add a filter to customize redirection after login: apply_filter('ms-ajax-login-redirect')
+
+1.1.1.1
+----------------------------------------------------------------------
+- Make Membership2 compatible with WangGuard plugin
+- Add some registration hooks for compatiblity with WordPress code
+
+1.1.1.0
+----------------------------------------------------------------------
+- Fix simulation of dripped content
+- Fix Protected Content section for Advanced Menu Protection rules
+- Fix the User selection when manually creating a new invoice
+- Fix More-Tag protection to correctly display the protection message
+- Fix Media Protection settings [you might need to resave permalinks]
+
+1.1.0.9
+----------------------------------------------------------------------
+- Fix bug that did not allow users to enter a limited Coupon code
+- Fix simulation mode for memberships with recurring payments
+- Fix small glitch in the Admin UI when Category Add-on is disabled
+- Fix the "Insert Variables" dropdown in Automated Email Settings
+- Fix the "More Tag" and "Comment" protection rules
+- Fix an error caused by manually creating invoices
+- Fix protection bug that caused protected posts to show in post-list
+- Improve some descriptions in Admin Settings
+
+1.1.0.8
+----------------------------------------------------------------------
+- Fix critical bug that deactivated all subscriptions for some sites
+- Fix the Member Capabilities rules
+- New Add-on "Category Protection" allows disabling the Category rules
+
+1.1.0.7
+----------------------------------------------------------------------
+- Fix bug in dripped memberships that prevented content-revealing
+- Fix bug where multiple memberships would protect each others posts
+
+1.1.0.6
+----------------------------------------------------------------------
+- Fix issue with translated version of plugin
+- Fix problems with php versions older than 5.3.0
+
+1.1.0.5
+----------------------------------------------------------------------
+- Add plugin modifiers (details in Membership2 > Help > Advanced)
+- Fix import process to not send out emails
+- Fix the IPN URL displayed in the PayPal-Standard settings
+- Restore Payment Gateway settings if lost during 1.0 to 1.1 update
+
+1.1.0.4
+----------------------------------------------------------------------
+- Fix problems in upgrade logic of dripped memberships from 1.0 to 1.1
+- Category Protection is not deactivated by "Individual Posts" Add-on
+
+1.1.0.3
+----------------------------------------------------------------------
+- Write an update log that logs any changes made to the DB
+- Improve the Member-Details popup with infos on subscription/payments
+
+1.1.0.2
+----------------------------------------------------------------------
+- Fix Add-ons "Individual Custom Posts" and "Individual Posts"
+- Create a DB snapshot before upgrading
+
+1.1.0.1
+----------------------------------------------------------------------
+- Fix problem where Protection-Shortcode was not working in 1.1
+- Fix a PHP warning that happened during upgrade to 1.1
+- Fix glitch in Add-ons page where some settings were disabled
+
+1.1
+----------------------------------------------------------------------
+- Improved and much simpler UI!
+- Better and shorter Setup wizard!
+- Membership types dropped: Tiered, Content-Type (converted to Standard)
+- New Import Tool to create export files and import data
+- New Import-From-Memberships interface
+- New Add-on: Admin Side Protection
+- New Add-on: Member Capabilities
+- New Add-on: User-Role Memberships
+- New Add-on: Taxamo (addresses EU VAT regulations)
+- New layout of the Add-on page
+- Many small bugfixes, layout improvements and much more...
+
+1.0.4.9
+----------------------------------------------------------------------
+- Fix an JavaScript error in the page front-end
+- Fix Manual gateway Purchase button to correctly display images (URL)
+
+1.0.4.8
+----------------------------------------------------------------------
+- Fix 100 % discount logic; payment gateway is skipped now
+- Fix incompatibility with E-Newsletter plugin
+- Fix incompatibility with PopUp Pro and Google Maps
+- Fix PHP warning displayed to some users when signing up to Membership
+- Some other small improvements and fixes
+
+1.0.4.7
+----------------------------------------------------------------------
+- Fix rewrite rules on plugin update/activation (solves payment-issues)
+- Fix PayPal Single settings did not save email address in rare cases
+- Fix duplicate display of BuddyPress/bbPress rules in overview
+- Fix coupons with 100% reduction are working correctly now
+- Improve the [ms-memberhship-buy] shortcode to also work for guests
+- Improve subscription to free memberships: payment screen is skipped
+
+1.0.4.6
+----------------------------------------------------------------------
+- Fix problems with plugin settings after upgrading
+- Fix issue where Front-End pages were not working (e.g. with Jetpack)
+
+1.0.4.5
+----------------------------------------------------------------------
+- Add new Help section with documentation of shortcodes
+- Fix: Membership Pages use default WordPress posts instead of URL
+- Fix: Menu items are correctly generated when a Membership is created
+- Memberships with pending payments can be cancelled by the member
+- A ton of small bugfixes and minor improvements
+
+1.0.4.4
+----------------------------------------------------------------------
+- Add individual URL group permissions on membership level
+- Add column with gateway status to the payment settings
+- Fix bug where registration did not work directly after initial setup
+- Fix caption of the "Login" button in the login page
+- Fix a lot of small issues in the Members page
+- Fix bugs with Comment protection
+- Fix BuddyPress permissions (Add-on)
+- Many small improvements and bugfixes all over the place
+
+1.0.4.3
+----------------------------------------------------------------------
+- Add new Member-Filter that displays users with pending payments
+- Fix protection of menu-items when user has multiple memberships
+- Fix permission issues with protection shortcode
+- Fix small bugs with several shortcodes
+- Remove access to registration page while plugin is disabled
+
+1.0.4.2
+----------------------------------------------------------------------
+- Add new Add-on to replace whole menus per membership-level
+- Some small bugfixes
+
+1.0.4.1
+----------------------------------------------------------------------
+- Fix error when testing memberships
+- Fix PHP notices
+
+1.0.4
+----------------------------------------------------------------------
+- Add new Add-on that allows to disable Multiple-Membership mode
+- Add new Add-on to change protection of special pages (e.g. search results)
+- Add Simulation Infos to explain which rule protected a certain page
+- Fix default protection of special pages
+- Fix assignment of private memberships via members-list
+- Fix membership status-flag in database
+- Fix access to unprotected pages is now possible
+
+1.0.3
+----------------------------------------------------------------------
+- Fix member model fields not persisting
+
+1.0.2
+----------------------------------------------------------------------
+- Add class to page body to indentify membership of the current user
+- Add option to send different email when registering for a free membership
+- Fix image-url of loading animation in one css file
+- Fix logout word showing in protected-content page
+- Fix undefined variable in members model
+- Fix credit card info text
+
+1.0.1
+----------------------------------------------------------------------
+- Fix slow Ajax Login
+- Add handler for password reset
+- Fix orphan children when deleting parent membership
+- Refactories
+
+1.0.0
+----------------------------------------------------------------------
+- Initial version.
