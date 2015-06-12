@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Membership2\n"
 "Report-Msgid-Bugs-To: http://premium.wpmudev.org/\n"
-"POT-Creation-Date: 2015-06-11 20:43+0100\n"
-"PO-Revision-Date: 2015-06-11 20:43+0100\n"
+"POT-Creation-Date: 2015-06-12 13:52+0100\n"
+"PO-Revision-Date: 2015-06-12 13:52+0100\n"
 "Last-Translator: Philipp Stracker <philipp@stracker.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -21,7 +21,6 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: release\n"
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
-"X-Poedit-SearchPathExcluded-3: app_old\n"
 
 #: app/addon/bbpress/class-ms-addon-bbpress.php:77
 msgid "bbPress Integration"
@@ -38,6 +37,7 @@ msgstr "Activate bbPress to use this Add-on"
 #: app/addon/bbpress/rule/class-ms-addon-bbpress-rule-listtable.php:50
 #: app/view/frontend/class-ms-view-frontend-payment.php:85
 #: app/view/shortcode/class-ms-view-shortcode-invoice.php:186
+#: app_old/membershipincludes/classes/membershipadmin.php:2243
 msgid "Name"
 msgstr "Name"
 
@@ -50,6 +50,14 @@ msgstr "Name"
 #: app/rule/post/class-ms-rule-post-listtable.php:70
 #: app/view/class-ms-view-help.php:1383
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:63
+#: app_old/membershipincludes/classes/membershipadmin.php:334
+#: app_old/membershipincludes/classes/membershipadmin.php:2306
+#: app_old/membershipincludes/classes/membershipadmin.php:4404
+#: app_old/membershipincludes/classes/membershipadmin.php:5029
+#: app_old/membershipincludes/classes/membershipadmin.php:5402
+#: app_old/membershipincludes/classes/membershipadmin.php:5405
+#: app_old/membershipincludes/classes/membershipadmin.php:5875
+#: app_old/membershipincludes/classes/membershipadmin.php:5878
 msgid "Edit"
 msgstr "Edit"
 
@@ -89,6 +97,8 @@ msgid "Adds BuddyPress rules in the \"Protection Rules\" page."
 msgstr "Adds BuddyPress rules in the \"Protection Rules\" page."
 
 #: app/addon/buddypress/class-ms-addon-buddypress.php:112
+#: app_old/membershipincludes/classes/membershipadmin.php:2873
+#: app_old/membershipincludes/classes/membershipadmin.php:2881
 msgid "Registration page"
 msgstr "Registration page"
 
@@ -193,7 +203,7 @@ msgstr "Enable discount coupons."
 #: app/model/class-ms-model-addon.php:475
 #: app/model/class-ms-model-addon.php:537
 msgid "Pro Version"
-msgstr "Pro Version"
+msgstr ""
 
 #: app/addon/mailchimp/class-ms-addon-mailchimp.php:113
 msgid "MailChimp Integration"
@@ -314,7 +324,9 @@ msgstr ""
 #: app/addon/redirect/class-ms-addon-redirect.php:111
 #: app/addon/taxamo/class-ms-addon-taxamo.php:180
 #: app/controller/class-ms-controller-plugin.php:443
-#: app/view/class-ms-view-help.php:141 membership.php:636
+#: app/view/class-ms-view-help.php:141
+#: app_old/membershipincludes/classes/membershipadmin.php:6715
+#: membership.php:636
 msgid "Settings"
 msgstr "Settings"
 
@@ -504,6 +516,8 @@ msgid "Addresses EU VAT regulations."
 msgstr "Addresses EU VAT regulations."
 
 #: app/class-ms-gateway.php:377
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:100
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:97
 msgid "Live Site"
 msgstr "Live Site"
 
@@ -565,10 +579,14 @@ msgid "Aruba"
 msgstr "Aruba"
 
 #: app/class-ms-gateway.php:538
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:55
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:54
 msgid "Australia"
 msgstr "Australia"
 
 #: app/class-ms-gateway.php:539
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:56
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:55
 msgid "Austria"
 msgstr "Austria"
 
@@ -593,6 +611,8 @@ msgid "Barbados"
 msgstr "Barbados"
 
 #: app/class-ms-gateway.php:545
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:57
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:56
 msgid "Belgium"
 msgstr "Belgium"
 
@@ -645,6 +665,8 @@ msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
 #: app/class-ms-gateway.php:558
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:58
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:57
 msgid "Canada"
 msgstr "Canada"
 
@@ -665,6 +687,8 @@ msgid "Chile"
 msgstr "Chile"
 
 #: app/class-ms-gateway.php:563
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:59
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:58
 msgid "China"
 msgstr "China"
 
@@ -745,6 +769,8 @@ msgid "Finland"
 msgstr "Finland"
 
 #: app/class-ms-gateway.php:583
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:60
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:59
 msgid "France"
 msgstr "France"
 
@@ -773,6 +799,8 @@ msgid "Georgia"
 msgstr "Georgia"
 
 #: app/class-ms-gateway.php:590
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:61
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:60
 msgid "Germany"
 msgstr "Germany"
 
@@ -825,6 +853,8 @@ msgid "Honduras"
 msgstr "Honduras"
 
 #: app/class-ms-gateway.php:603
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:62
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:61
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
@@ -857,6 +887,8 @@ msgid "Israel"
 msgstr "Israel"
 
 #: app/class-ms-gateway.php:611
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:63
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:62
 msgid "Italy"
 msgstr "Italy"
 
@@ -865,6 +897,8 @@ msgid "Jamaica"
 msgstr "Jamaica"
 
 #: app/class-ms-gateway.php:613
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:64
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:63
 msgid "Japan"
 msgstr "Japan"
 
@@ -961,6 +995,8 @@ msgid "Mayotte"
 msgstr "Mayotte"
 
 #: app/class-ms-gateway.php:637
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:65
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:64
 msgid "Mexico"
 msgstr "Mexico"
 
@@ -1009,6 +1045,8 @@ msgid "Nepal"
 msgstr "Nepal"
 
 #: app/class-ms-gateway.php:649
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:66
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:65
 msgid "Netherlands"
 msgstr "Netherlands"
 
@@ -1021,6 +1059,8 @@ msgid "New Caledonia"
 msgstr "New Caledonia"
 
 #: app/class-ms-gateway.php:652
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:67
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:66
 msgid "New Zealand"
 msgstr "New Zealand"
 
@@ -1081,6 +1121,8 @@ msgid "Pitcairn"
 msgstr "Pitcairn"
 
 #: app/class-ms-gateway.php:667
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:68
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:67
 msgid "Poland"
 msgstr "Poland"
 
@@ -1161,6 +1203,8 @@ msgid "Seychelles"
 msgstr "Seychelles"
 
 #: app/class-ms-gateway.php:687
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:69
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:68
 msgid "Singapore"
 msgstr "Singapore"
 
@@ -1185,6 +1229,8 @@ msgid "South Georgia And The South Sandwich Islands"
 msgstr "South Georgia And The South Sandwich Islands"
 
 #: app/class-ms-gateway.php:693
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:70
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:69
 msgid "Spain"
 msgstr "Spain"
 
@@ -1201,10 +1247,14 @@ msgid "Swaziland"
 msgstr "Swaziland"
 
 #: app/class-ms-gateway.php:697
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:71
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:70
 msgid "Sweden"
 msgstr "Sweden"
 
 #: app/class-ms-gateway.php:698
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:72
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:71
 msgid "Switzerland"
 msgstr "Switzerland"
 
@@ -1273,10 +1323,14 @@ msgid "United Arab Emirates"
 msgstr "United Arab Emirates"
 
 #: app/class-ms-gateway.php:715
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:73
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:72
 msgid "United Kingdom"
 msgstr "United Kingdom"
 
 #: app/class-ms-gateway.php:716
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:74
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:73
 msgid "United States"
 msgstr "United States"
 
@@ -1464,6 +1518,7 @@ msgstr "Sorry, your signup request has failed. Try again."
 
 #: app/controller/class-ms-controller-help.php:85
 #: app/controller/class-ms-controller-settings.php:292
+#: app_old/membershipincludes/classes/membershipadmin.php:3706
 msgid "General"
 msgstr "General"
 
@@ -1471,6 +1526,7 @@ msgstr "General"
 #: app/rule/shortcode/class-ms-rule-shortcode-listtable.php:37
 #: app/rule/shortcode/class-ms-rule-shortcode-view.php:29
 #: app/rule/shortcode/class-ms-rule-shortcode.php:21
+#: app_old/membershipincludes/includes/default.rules.php:1136
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
@@ -1534,6 +1590,8 @@ msgstr "Select an User"
 
 #: app/controller/class-ms-controller-membership.php:568
 #: app/helper/class-ms-helper-membership.php:159
+#: app_old/membershipincludes/classes/class.wizard.php:312
+#: app_old/membershipincludes/classes/class.wizard.php:398
 msgid "Finish"
 msgstr "Finish"
 
@@ -1564,6 +1622,18 @@ msgstr ""
 #: app/helper/listtable/class-ms-helper-listtable-billing.php:228
 #: app/helper/listtable/class-ms-helper-listtable-membership.php:158
 #: app/rule/url/class-ms-rule-url-listtable.php:73
+#: app_old/membershipincludes/classes/membershipadmin.php:4321
+#: app_old/membershipincludes/classes/membershipadmin.php:4412
+#: app_old/membershipincludes/classes/membershipadmin.php:4458
+#: app_old/membershipincludes/classes/membershipadmin.php:4944
+#: app_old/membershipincludes/classes/membershipadmin.php:5047
+#: app_old/membershipincludes/classes/membershipadmin.php:5099
+#: app_old/membershipincludes/classes/membershipadmin.php:5342
+#: app_old/membershipincludes/classes/membershipadmin.php:5406
+#: app_old/membershipincludes/classes/membershipadmin.php:5431
+#: app_old/membershipincludes/classes/membershipadmin.php:5815
+#: app_old/membershipincludes/classes/membershipadmin.php:5880
+#: app_old/membershipincludes/classes/membershipadmin.php:5905
 msgid "Delete"
 msgstr "Delete"
 
@@ -1579,6 +1649,13 @@ msgstr "Delete"
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:190
 #: app/view/settings/class-ms-view-settings-import.php:373
 #: app/view/shortcode/class-ms-view-shortcode-registeruser.php:19
+#: app_old/membershipincludes/classes/membershipadmin.php:1550
+#: app_old/membershipincludes/classes/membershipadmin.php:1703
+#: app_old/membershipincludes/classes/membershipadmin.php:1873
+#: app_old/membershipincludes/classes/membershipadmin.php:3992
+#: app_old/membershipincludes/classes/membershipadmin.php:3999
+#: app_old/membershipincludes/classes/membershipadmin.php:4596
+#: app_old/membershipincludes/classes/membershipadmin.php:4603
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1624,15 +1701,24 @@ msgstr "Set-up"
 #: app/helper/listtable/class-ms-helper-listtable-membership.php:49
 #: app/view/class-ms-view-help.php:125
 #: app/view/member/class-ms-view-member-list.php:42
+#: app_old/membershipincludes/classes/class.help.php:98
+#: app_old/membershipincludes/classes/membershipadmin.php:289
+#: app_old/membershipincludes/classes/membershipadmin.php:469
+#: app_old/membershipincludes/classes/membershipadmin.php:548
+#: app_old/membershipincludes/classes/membershipadmin.php:997
+#: app_old/membershipincludes/classes/membershipadmin.php:1176
+#: app_old/membershipincludes/help/help.dashboard.php:3
 msgid "Members"
 msgstr "Members"
 
 #: app/controller/class-ms-controller-plugin.php:439
 #: app/view/class-ms-view-help.php:137
+#: app_old/membershipincludes/classes/class.help.php:312
 msgid "Add-ons"
 msgstr "Add-ons"
 
 #: app/controller/class-ms-controller-plugin.php:447
+#: app_old/membershipincludes/includes/class_wd_help_tooltips.php:297
 msgid "Help"
 msgstr "Help"
 
@@ -1725,6 +1811,8 @@ msgstr "Import Tool"
 #: app/helper/listtable/class-ms-helper-listtable-member.php:415
 #: app/view/class-ms-view-help.php:355
 #: app/view/frontend/class-ms-view-frontend-profile.php:47
+#: app_old/membershipincludes/includes/account.form.php:68
+#: app_old/membershipincludes/includes/bp.account.form.php:71
 msgid "First Name"
 msgstr "First Name"
 
@@ -1733,17 +1821,23 @@ msgstr "First Name"
 #: app/helper/listtable/class-ms-helper-listtable-member.php:416
 #: app/view/class-ms-view-help.php:362
 #: app/view/frontend/class-ms-view-frontend-profile.php:53
+#: app_old/membershipincludes/includes/account.form.php:75
+#: app_old/membershipincludes/includes/bp.account.form.php:77
 msgid "Last Name"
 msgstr "Last Name"
 
 #: app/controller/class-ms-controller-shortcode.php:237
 #: app/view/class-ms-view-help.php:369
+#: app_old/membershipincludes/includes/registration.form.php:36
 msgid "Choose a Username"
 msgstr "Choose a Username"
 
 #: app/controller/class-ms-controller-shortcode.php:238
 #: app/view/class-ms-view-help.php:376
 #: app/view/frontend/class-ms-view-frontend-profile.php:59
+#: app_old/membershipincludes/includes/bp.registration.form.php:45
+#: app_old/membershipincludes/includes/popover_signup.form.php:13
+#: app_old/membershipincludes/includes/registration.form.php:43
 msgid "Email Address"
 msgstr "Email Address"
 
@@ -1753,12 +1847,21 @@ msgstr "Email Address"
 #: app/view/class-ms-view-help.php:715
 #: app/view/frontend/class-ms-view-frontend-profile.php:65
 #: app/view/shortcode/class-ms-view-shortcode-login.php:186
+#: app_old/membershipincludes/classes/membershippublic.php:1563
+#: app_old/membershipincludes/classes/membershippublic.php:1674
+#: app_old/membershipincludes/includes/popover_signup.form.php:17
+#: app_old/membershipincludes/includes/popover_signup.form.php:42
+#: app_old/membershipincludes/includes/registration.form.php:51
 msgid "Password"
 msgstr "Password"
 
 #: app/controller/class-ms-controller-shortcode.php:240
 #: app/view/class-ms-view-help.php:390
 #: app/view/frontend/class-ms-view-frontend-profile.php:71
+#: app_old/membershipincludes/includes/account.form.php:144
+#: app_old/membershipincludes/includes/bp.registration.form.php:53
+#: app_old/membershipincludes/includes/popover_signup.form.php:22
+#: app_old/membershipincludes/includes/registration.form.php:58
 msgid "Confirm Password"
 msgstr "Confirm Password"
 
@@ -1769,6 +1872,8 @@ msgstr "Register My Account"
 
 #: app/controller/class-ms-controller-shortcode.php:248
 #: app/view/class-ms-view-help.php:290
+#: app_old/membershipincludes/includes/bp.registration.form.php:22
+#: app_old/membershipincludes/includes/registration.form.php:33
 msgid "Create an Account"
 msgstr "Create an Account"
 
@@ -1821,6 +1926,14 @@ msgstr "Membership details:"
 #: app/view/settings/class-ms-view-settings-import.php:178
 #: app/view/shortcode/class-ms-view-shortcode-account.php:462
 #: app/view/shortcode/class-ms-view-shortcode-login.php:185
+#: app_old/membershipincludes/classes/membershipadmin.php:2242
+#: app_old/membershipincludes/classes/membershippublic.php:1561
+#: app_old/membershipincludes/classes/membershippublic.php:1672
+#: app_old/membershipincludes/includes/account.form.php:60
+#: app_old/membershipincludes/includes/bp.account.form.php:65
+#: app_old/membershipincludes/includes/bp.registration.form.php:41
+#: app_old/membershipincludes/includes/popover_signup.form.php:9
+#: app_old/membershipincludes/includes/popover_signup.form.php:38
 msgid "Username"
 msgstr "Username"
 
@@ -2107,55 +2220,76 @@ msgstr ""
 "(charge back). "
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:168
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:816
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:500
 msgid "Last transaction has been reversed. Reason: Payment has been refunded"
 msgstr "Last transaction has been reversed. Reason: Payment has been refunded"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:173
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:833
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:517
 msgid "Last transaction has been reversed. Reason: Payment Denied"
 msgstr "Last transaction has been reversed. Reason: Payment Denied"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:179
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:182
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:854
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:538
 msgid "Customer did not include a confirmed shipping address"
 msgstr "Customer did not include a confirmed shipping address"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:180
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:183
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:855
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:539
 msgid "Funds not captured yet"
 msgstr "Funds not captured yet"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:181
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:184
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:856
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:540
 msgid "eCheck that has not cleared yet"
 msgstr "eCheck that has not cleared yet"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:182
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:185
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:857
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:541
 msgid "Payment waiting for aproval by service provider"
 msgstr "Payment waiting for aproval by service provider"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:183
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:186
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:858
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:542
 msgid "Payment waiting for service provider to handle multi-currency process"
 msgstr "Payment waiting for service provider to handle multi-currency process"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:184
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:187
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:859
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:543
 msgid "Customer did not register or confirm his/her email yet"
 msgstr "Customer did not register or confirm his/her email yet"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:185
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:188
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:860
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:544
 msgid "Waiting for service provider to upgrade the PayPal account"
 msgstr "Waiting for service provider to upgrade the PayPal account"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:186
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:189
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:861
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:545
 msgid "Waiting for service provider to verify his/her PayPal account"
 msgstr "Waiting for service provider to verify his/her PayPal account"
 
 #: app/gateway/paypalsingle/class-ms-gateway-paypalsingle.php:191
 #: app/gateway/paypalstandard/class-ms-gateway-paypalstandard.php:195
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:865
 msgid "Last transaction is pending. Reason: "
 msgstr "Last transaction is pending. Reason: "
 
@@ -2165,16 +2299,22 @@ msgid "PayPal - The safer, easier way to pay online"
 msgstr "PayPal - The safer, easier way to pay online"
 
 #: app/gateway/paypalsingle/view/class-ms-gateway-paypalsingle-view-settings.php:37
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:43
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:42
 msgid "PayPal Email"
 msgstr "PayPal Email"
 
 #: app/gateway/paypalsingle/view/class-ms-gateway-paypalsingle-view-settings.php:46
 #: app/gateway/paypalstandard/view/class-ms-gateway-paypalstandard-view-settings.php:53
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:49
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:48
 msgid "PayPal Site"
 msgstr "PayPal Site"
 
 #: app/gateway/paypalsingle/view/class-ms-gateway-paypalsingle-view-settings.php:56
 #: app/gateway/paypalstandard/view/class-ms-gateway-paypalstandard-view-settings.php:63
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:98
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:95
 msgid "PayPal Mode"
 msgstr "PayPal Mode"
 
@@ -2378,10 +2518,33 @@ msgid "Clear search results"
 msgstr "Clear search results"
 
 #: app/helper/class-ms-helper-listtable.php:510
+#: app_old/membershipincludes/classes/membershipadmin.php:2155
+#: app_old/membershipincludes/classes/membershipadmin.php:2450
+#: app_old/membershipincludes/classes/membershipadmin.php:4320
+#: app_old/membershipincludes/classes/membershipadmin.php:4457
+#: app_old/membershipincludes/classes/membershipadmin.php:4943
+#: app_old/membershipincludes/classes/membershipadmin.php:5098
+#: app_old/membershipincludes/classes/membershipadmin.php:5341
+#: app_old/membershipincludes/classes/membershipadmin.php:5430
+#: app_old/membershipincludes/classes/membershipadmin.php:5814
+#: app_old/membershipincludes/classes/membershipadmin.php:5904
+#: app_old/membershipincludes/classes/membershipadmin.php:6628
+#: app_old/membershipincludes/classes/membershipadmin.php:6756
 msgid "Bulk Actions"
 msgstr "Bulk Actions"
 
 #: app/helper/class-ms-helper-listtable.php:536
+#: app_old/membershipincludes/classes/membershipadmin.php:2174
+#: app_old/membershipincludes/classes/membershipadmin.php:4324
+#: app_old/membershipincludes/classes/membershipadmin.php:4461
+#: app_old/membershipincludes/classes/membershipadmin.php:4948
+#: app_old/membershipincludes/classes/membershipadmin.php:5102
+#: app_old/membershipincludes/classes/membershipadmin.php:5344
+#: app_old/membershipincludes/classes/membershipadmin.php:5433
+#: app_old/membershipincludes/classes/membershipadmin.php:5817
+#: app_old/membershipincludes/classes/membershipadmin.php:5907
+#: app_old/membershipincludes/classes/membershipadmin.php:6631
+#: app_old/membershipincludes/classes/membershipadmin.php:6759
 msgid "Apply"
 msgstr "Apply"
 
@@ -2418,6 +2581,8 @@ msgstr "Select All"
 
 #: app/helper/class-ms-helper-listtable.php:1254
 #: app/view/class-ms-view-adminbar.php:91
+#: app_old/membershipincludes/classes/membershipadmin.php:3993
+#: app_old/membershipincludes/classes/membershipadmin.php:4597
 msgid "Update"
 msgstr "Update"
 
@@ -2431,10 +2596,12 @@ msgid "Membership deleted."
 msgstr "Membership deleted."
 
 #: app/helper/class-ms-helper-member.php:43
+#: app_old/membershipincludes/classes/membershipadmin.php:2097
 msgid "Member updated."
 msgstr "Member updated."
 
 #: app/helper/class-ms-helper-member.php:44
+#: app_old/membershipincludes/classes/membershipadmin.php:2102
 msgid "Member activation toggled."
 msgstr "Member activation toggled."
 
@@ -2457,10 +2624,12 @@ msgid "Membership not deleted."
 msgstr "Membership not deleted."
 
 #: app/helper/class-ms-helper-member.php:49
+#: app_old/membershipincludes/classes/membershipadmin.php:2099
 msgid "Member not updated."
 msgstr "Member not updated."
 
 #: app/helper/class-ms-helper-member.php:50
+#: app_old/membershipincludes/classes/membershipadmin.php:2103
 msgid "Member activation not toggled."
 msgstr "Member activation not toggled."
 
@@ -2545,18 +2714,34 @@ msgid "one year"
 msgstr "one year"
 
 #: app/helper/class-ms-helper-period.php:253
+#: app_old/membershipincludes/includes/functions.php:894
+#: app_old/membershipincludes/includes/functions.php:926
+#: app_old/membershipincludes/includes/functions.php:962
+#: app_old/membershipincludes/includes/functions.php:994
 msgid "day"
 msgstr "day"
 
 #: app/helper/class-ms-helper-period.php:254
+#: app_old/membershipincludes/includes/functions.php:901
+#: app_old/membershipincludes/includes/functions.php:933
+#: app_old/membershipincludes/includes/functions.php:969
+#: app_old/membershipincludes/includes/functions.php:1001
 msgid "week"
 msgstr "week"
 
 #: app/helper/class-ms-helper-period.php:255
+#: app_old/membershipincludes/includes/functions.php:908
+#: app_old/membershipincludes/includes/functions.php:940
+#: app_old/membershipincludes/includes/functions.php:976
+#: app_old/membershipincludes/includes/functions.php:1008
 msgid "month"
 msgstr "month"
 
 #: app/helper/class-ms-helper-period.php:256
+#: app_old/membershipincludes/includes/functions.php:915
+#: app_old/membershipincludes/includes/functions.php:947
+#: app_old/membershipincludes/includes/functions.php:983
+#: app_old/membershipincludes/includes/functions.php:1015
 msgid "year"
 msgstr "year"
 
@@ -2639,6 +2824,7 @@ msgid "Invoice #"
 msgstr "Invoice #"
 
 #: app/helper/listtable/class-ms-helper-listtable-billing.php:52
+#: app_old/membershipincludes/classes/class.gateway.php:253
 msgid "User"
 msgstr "User"
 
@@ -2652,6 +2838,9 @@ msgstr "User"
 #: app/view/frontend/class-ms-view-frontend-invoices.php:30
 #: app/view/member/class-ms-view-member-dialog.php:145
 #: app/view/shortcode/class-ms-view-shortcode-account.php:283
+#: app_old/membershipincludes/classes/class.adminbar.php:102
+#: app_old/membershipincludes/classes/membershipadmin.php:539
+#: app_old/membershipincludes/help/help.sidebar.php:1
 msgid "Membership"
 msgstr "Membership"
 
@@ -2664,6 +2853,8 @@ msgstr "Membership"
 #: app/view/shortcode/class-ms-view-shortcode-account.php:74
 #: app/view/shortcode/class-ms-view-shortcode-account.php:273
 #: app/view/shortcode/class-ms-view-shortcode-invoice.php:182
+#: app_old/membershipincludes/classes/class.gateway.php:257
+#: app_old/membershipincludes/classes/membershipadmin.php:5642
 msgid "Status"
 msgstr "Status"
 
@@ -2683,6 +2874,8 @@ msgid "Due date"
 msgstr "Due date"
 
 #: app/helper/listtable/class-ms-helper-listtable-billing.php:57
+#: app_old/membershipincludes/classes/membershipadmin.php:2249
+#: app_old/membershipincludes/help/help.members.php:9
 msgid "Gateway"
 msgstr "Gateway"
 
@@ -2702,6 +2895,8 @@ msgstr "Billed or Pending"
 #: app/view/frontend/class-ms-view-frontend-activities.php:17
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:209
 #: app/view/shortcode/class-ms-view-shortcode-account.php:382
+#: app_old/membershipincludes/classes/class.gateway.php:254
+#: app_old/membershipincludes/classes/membershipadmin.php:5643
 msgid "Date"
 msgstr "Date"
 
@@ -2717,6 +2912,7 @@ msgid "Event"
 msgstr "Event"
 
 #: app/helper/listtable/class-ms-helper-listtable-member.php:88
+#: app_old/membershipincludes/classes/membershipadmin.php:2244
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -2733,6 +2929,8 @@ msgid "Username / E-mail"
 msgstr "Username / E-mail"
 
 #: app/helper/listtable/class-ms-helper-listtable-member.php:414
+#: app_old/membershipincludes/includes/account.form.php:82
+#: app_old/membershipincludes/includes/bp.account.form.php:83
 msgid "Nickname"
 msgstr "Nickname"
 
@@ -2748,6 +2946,16 @@ msgstr "Type of Membership"
 #: app/model/class-ms-model-relationship.php:279
 #: app/view/class-ms-view-addon.php:60
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:44
+#: app_old/membershipincludes/classes/membershipadmin.php:2208
+#: app_old/membershipincludes/classes/membershipadmin.php:2245
+#: app_old/membershipincludes/classes/membershipadmin.php:2320
+#: app_old/membershipincludes/classes/membershipadmin.php:2503
+#: app_old/membershipincludes/classes/membershipadmin.php:4353
+#: app_old/membershipincludes/classes/membershipadmin.php:4422
+#: app_old/membershipincludes/classes/membershipadmin.php:4978
+#: app_old/membershipincludes/classes/membershipadmin.php:5057
+#: app_old/membershipincludes/classes/membershipadmin.php:6646
+#: app_old/membershipincludes/classes/membershipadmin.php:6729
 msgid "Active"
 msgstr "Active"
 
@@ -2780,6 +2988,7 @@ msgid "All logged-in users that have not signed up for any membership"
 msgstr "All logged-in users that have not signed up for any membership"
 
 #: app/helper/listtable/class-ms-helper-listtable-membership.php:227
+#: app_old/membershipincludes/classes/membershipadmin.php:5065
 msgid "Private"
 msgstr "Private"
 
@@ -2812,6 +3021,8 @@ msgstr "Everyone"
 
 #: app/helper/listtable/class-ms-helper-listtable-rule.php:136
 #: app/view/settings/class-ms-view-settings-import.php:277
+#: app_old/membershipincludes/addons/member.widget.php:138
+#: app_old/membershipincludes/addons/member.widget.php:274
 msgid "Content"
 msgstr "Content"
 
@@ -2971,6 +3182,7 @@ msgid "Mask download URL:"
 msgstr "Mask download URL:"
 
 #: app/model/class-ms-model-addon.php:461
+#: app_old/membershipincludes/classes/membershipadmin.php:3100
 msgid "Protection method"
 msgstr "Protection method"
 
@@ -3401,10 +3613,14 @@ msgid "Select a user"
 msgstr "Select a user"
 
 #: app/model/class-ms-model-member.php:915
+#: app_old/membershipincludes/classes/membershippublic.php:1562
+#: app_old/membershipincludes/classes/membershippublic.php:1673
 msgid "Email address"
 msgstr "Email address"
 
 #: app/model/class-ms-model-member.php:917
+#: app_old/membershipincludes/classes/membershippublic.php:1564
+#: app_old/membershipincludes/classes/membershippublic.php:1675
 msgid "Password confirmation"
 msgstr "Password confirmation"
 
@@ -3419,23 +3635,37 @@ msgstr ""
 
 #: app/model/class-ms-model-member.php:935
 #: app/model/class-ms-model-member.php:1477
+#: app_old/membershipincludes/classes/membershippublic.php:1576
+#: app_old/membershipincludes/classes/membershippublic.php:1687
 msgid "Please ensure the passwords match."
 msgstr "Please ensure the passwords match."
 
 #: app/model/class-ms-model-member.php:942
+#: app_old/membershipincludes/classes/membershipadmin.php:6841
+#: app_old/membershipincludes/classes/membershippublic.php:1580
+#: app_old/membershipincludes/classes/membershippublic.php:1691
 msgid "The username is not valid, sorry."
 msgstr "The username is not valid, sorry."
 
 #: app/model/class-ms-model-member.php:949
+#: app_old/membershipincludes/classes/membershipadmin.php:6845
+#: app_old/membershipincludes/classes/membershippublic.php:1584
+#: app_old/membershipincludes/classes/membershippublic.php:1695
 msgid "That username is already taken, sorry."
 msgstr "That username is already taken, sorry."
 
 #: app/model/class-ms-model-member.php:956
 #: app/model/class-ms-model-member.php:1470
+#: app_old/membershipincludes/classes/membershipadmin.php:6849
+#: app_old/membershipincludes/classes/membershippublic.php:1588
+#: app_old/membershipincludes/classes/membershippublic.php:1699
 msgid "The email address is not valid, sorry."
 msgstr "The email address is not valid, sorry."
 
 #: app/model/class-ms-model-member.php:963
+#: app_old/membershipincludes/classes/membershipadmin.php:6853
+#: app_old/membershipincludes/classes/membershippublic.php:1592
+#: app_old/membershipincludes/classes/membershippublic.php:1703
 msgid "That email address is already taken, sorry."
 msgstr "That email address is already taken, sorry."
 
@@ -3568,11 +3798,16 @@ msgid "Deny"
 msgstr "Deny"
 
 #: app/model/class-ms-model-pages.php:140
+#: app_old/membershipincludes/classes/membershipadmin.php:2688
+#: app_old/membershipincludes/classes/membershipadmin.php:7037
 msgid "Protected Content"
 msgstr "Protected Content"
 
 #: app/model/class-ms-model-pages.php:141
 #: app/view/shortcode/class-ms-view-shortcode-login.php:106
+#: app_old/membershipincludes/classes/membershipadmin.php:2669
+#: app_old/membershipincludes/classes/membershipadmin.php:7028
+#: app_old/membershipincludes/classes/membershippublic.php:221
 msgid "Register"
 msgstr "Register"
 
@@ -3581,6 +3816,8 @@ msgid "Registration Complete"
 msgstr "Registration Complete"
 
 #: app/model/class-ms-model-pages.php:143
+#: app_old/membershipincludes/classes/membershipadmin.php:2675
+#: app_old/membershipincludes/classes/membershipadmin.php:7032
 msgid "Account"
 msgstr "Account"
 
@@ -3676,6 +3913,7 @@ msgid "Membership2 Subscriptions"
 msgstr "Membership2 Subscriptions"
 
 #: app/model/class-ms-model-relationship.php:280
+#: app_old/membershipincludes/classes/class.subscription.php:556
 msgid "Trial"
 msgstr "Trial"
 
@@ -3868,80 +4106,100 @@ msgid "Relative to Subscription"
 msgstr "Relative to Subscription"
 
 #: app/model/class-ms-model-settings.php:315
+#: app_old/membershipincludes/classes/membershipadmin.php:2687
+#: app_old/membershipincludes/classes/membershipadmin.php:7036
 msgid ""
 "The content you are trying to access is only available to members. Sorry."
 msgstr ""
 "The content you are trying to access is only available to members. Sorry."
 
 #: app/model/class-ms-model-settings.php:427
+#: app_old/membershipincludes/classes/membershipadmin.php:3394
 msgid "AUD - Australian Dollar"
 msgstr "AUD - Australian Dollar"
 
 #: app/model/class-ms-model-settings.php:428
+#: app_old/membershipincludes/classes/membershipadmin.php:3395
 msgid "BRL - Brazilian Real"
 msgstr "BRL - Brazilian Real"
 
 #: app/model/class-ms-model-settings.php:429
+#: app_old/membershipincludes/classes/membershipadmin.php:3396
 msgid "CAD - Canadian Dollar"
 msgstr "CAD - Canadian Dollar"
 
 #: app/model/class-ms-model-settings.php:430
+#: app_old/membershipincludes/classes/membershipadmin.php:3397
 msgid "CHF - Swiss Franc"
 msgstr "CHF - Swiss Franc"
 
 #: app/model/class-ms-model-settings.php:431
+#: app_old/membershipincludes/classes/membershipadmin.php:3398
 msgid "CZK - Czech Koruna"
 msgstr "CZK - Czech Koruna"
 
 #: app/model/class-ms-model-settings.php:432
+#: app_old/membershipincludes/classes/membershipadmin.php:3399
 msgid "DKK - Danish Krone"
 msgstr "DKK - Danish Krone"
 
 #: app/model/class-ms-model-settings.php:433
+#: app_old/membershipincludes/classes/membershipadmin.php:3400
 msgid "EUR - Euro"
 msgstr "EUR - Euro"
 
 #: app/model/class-ms-model-settings.php:434
+#: app_old/membershipincludes/classes/membershipadmin.php:3401
 msgid "GBP - Pound Sterling"
 msgstr "GBP - Pound Sterling"
 
 #: app/model/class-ms-model-settings.php:435
+#: app_old/membershipincludes/classes/membershipadmin.php:3402
 msgid "HKD - Hong Kong Dollar"
 msgstr "HKD - Hong Kong Dollar"
 
 #: app/model/class-ms-model-settings.php:436
+#: app_old/membershipincludes/classes/membershipadmin.php:3403
 msgid "HUF - Hungarian Forint"
 msgstr "HUF - Hungarian Forint"
 
 #: app/model/class-ms-model-settings.php:437
+#: app_old/membershipincludes/classes/membershipadmin.php:3404
 msgid "ILS - Israeli Shekel"
 msgstr "ILS - Israeli Shekel"
 
 #: app/model/class-ms-model-settings.php:438
+#: app_old/membershipincludes/classes/membershipadmin.php:3405
 msgid "JPY - Japanese Yen"
 msgstr "JPY - Japanese Yen"
 
 #: app/model/class-ms-model-settings.php:439
+#: app_old/membershipincludes/classes/membershipadmin.php:3406
 msgid "MYR - Malaysian Ringgits"
 msgstr "MYR - Malaysian Ringgits"
 
 #: app/model/class-ms-model-settings.php:440
+#: app_old/membershipincludes/classes/membershipadmin.php:3407
 msgid "MXN - Mexican Peso"
 msgstr "MXN - Mexican Peso"
 
 #: app/model/class-ms-model-settings.php:441
+#: app_old/membershipincludes/classes/membershipadmin.php:3408
 msgid "NOK - Norwegian Krone"
 msgstr "NOK - Norwegian Krone"
 
 #: app/model/class-ms-model-settings.php:442
+#: app_old/membershipincludes/classes/membershipadmin.php:3409
 msgid "NZD - New Zealand Dollar"
 msgstr "NZD - New Zealand Dollar"
 
 #: app/model/class-ms-model-settings.php:443
+#: app_old/membershipincludes/classes/membershipadmin.php:3410
 msgid "PHP - Philippine Pesos"
 msgstr "PHP - Philippine Pesos"
 
 #: app/model/class-ms-model-settings.php:444
+#: app_old/membershipincludes/classes/membershipadmin.php:3411
 msgid "PLN - Polish Zloty"
 msgstr "PLN - Polish Zloty"
 
@@ -3950,26 +4208,32 @@ msgid "RUB - Russian Ruble"
 msgstr "RUB - Russian Ruble"
 
 #: app/model/class-ms-model-settings.php:446
+#: app_old/membershipincludes/classes/membershipadmin.php:3412
 msgid "SEK - Swedish Krona"
 msgstr "SEK - Swedish Krona"
 
 #: app/model/class-ms-model-settings.php:447
+#: app_old/membershipincludes/classes/membershipadmin.php:3413
 msgid "SGD - Singapore Dollar"
 msgstr "SGD - Singapore Dollar"
 
 #: app/model/class-ms-model-settings.php:448
+#: app_old/membershipincludes/classes/membershipadmin.php:3414
 msgid "TWD - Taiwan New Dollars"
 msgstr "TWD - Taiwan New Dollars"
 
 #: app/model/class-ms-model-settings.php:449
+#: app_old/membershipincludes/classes/membershipadmin.php:3415
 msgid "THB - Thai Baht"
 msgstr "THB - Thai Baht"
 
 #: app/model/class-ms-model-settings.php:450
+#: app_old/membershipincludes/classes/membershipadmin.php:3416
 msgid "USD - U.S. Dollar"
 msgstr "USD - U.S. Dollar"
 
 #: app/model/class-ms-model-settings.php:451
+#: app_old/membershipincludes/classes/membershipadmin.php:3417
 msgid "ZAR - South African Rand"
 msgstr "ZAR - South African Rand"
 
@@ -4445,10 +4709,13 @@ msgstr "Category"
 #: app/rule/category/class-ms-rule-category-listtable.php:37
 #: app/rule/category/class-ms-rule-category-view.php:30
 #: app/rule/category/class-ms-rule-category.php:22
+#: app_old/membershipincludes/includes/default.rules.php:641
 msgid "Categories"
 msgstr "Categories"
 
 #: app/rule/category/class-ms-rule-category-listtable.php:45
+#: app_old/membershipincludes/includes/default.rules.php:653
+#: app_old/membershipincludes/includes/default.rules.php:660
 msgid "Category name"
 msgstr "Category name"
 
@@ -4495,6 +4762,7 @@ msgstr "Decide how to protect Comments and More Tag contents."
 #: app/rule/page/class-ms-rule-page-view.php:28
 #: app/rule/page/class-ms-rule-page.php:22
 #: app/rule/special/class-ms-rule-special-view.php:29
+#: app_old/membershipincludes/includes/default.rules.php:322
 msgid "Pages"
 msgstr "Pages"
 
@@ -4517,10 +4785,12 @@ msgid "Basic protection (default)"
 msgstr "Basic protection (default)"
 
 #: app/rule/media/class-ms-rule-media-model.php:124
+#: app_old/membershipincludes/classes/membershipadmin.php:3106
 msgid "Complete protection"
 msgstr "Complete protection"
 
 #: app/rule/media/class-ms-rule-media-model.php:125
+#: app_old/membershipincludes/classes/membershipadmin.php:3107
 msgid "Hybrid protection"
 msgstr "Hybrid protection"
 
@@ -4644,11 +4914,21 @@ msgstr "Page"
 
 #: app/rule/page/class-ms-rule-page-listtable.php:43
 #: app/rule/special/class-ms-rule-special-listtable.php:43
+#: app_old/membershipincludes/includes/default.rules.php:346
+#: app_old/membershipincludes/includes/default.rules.php:353
 msgid "Page title"
 msgstr "Page title"
 
 #: app/rule/page/class-ms-rule-page-listtable.php:99
 #: app/rule/post/class-ms-rule-post-listtable.php:109
+#: app_old/membershipincludes/classes/membershipadmin.php:2189
+#: app_old/membershipincludes/classes/membershipadmin.php:2204
+#: app_old/membershipincludes/classes/membershipadmin.php:2211
+#: app_old/membershipincludes/classes/membershipadmin.php:2484
+#: app_old/membershipincludes/classes/membershipadmin.php:2499
+#: app_old/membershipincludes/classes/membershipadmin.php:2506
+#: app_old/membershipincludes/classes/membershipadmin.php:4337
+#: app_old/membershipincludes/classes/membershipadmin.php:4962
 msgid "Filter"
 msgstr "Filter"
 
@@ -4669,14 +4949,19 @@ msgstr "Post"
 #: app/rule/post/class-ms-rule-post-listtable.php:37
 #: app/rule/post/class-ms-rule-post-view.php:28
 #: app/rule/post/class-ms-rule-post.php:22
+#: app_old/membershipincludes/includes/default.rules.php:15
 msgid "Posts"
 msgstr "Posts"
 
 #: app/rule/post/class-ms-rule-post-listtable.php:43
+#: app_old/membershipincludes/includes/default.rules.php:35
+#: app_old/membershipincludes/includes/default.rules.php:43
 msgid "Post title"
 msgstr "Post title"
 
 #: app/rule/post/class-ms-rule-post-listtable.php:45
+#: app_old/membershipincludes/includes/default.rules.php:36
+#: app_old/membershipincludes/includes/default.rules.php:44
 msgid "Post date"
 msgstr "Post date"
 
@@ -4715,6 +5000,7 @@ msgstr "Replace or protect contents of WordPress menu locations."
 
 #: app/rule/replacemenu/class-ms-rule-replacemenu-listtable.php:44
 #: app/rule/replacemenu/class-ms-rule-replacemenu-listtable.php:76
+#: app_old/membershipincludes/includes/default.rules.php:1262
 msgid "Menu"
 msgstr "Menu"
 
@@ -4742,6 +5028,8 @@ msgstr "Replace or protect WordPress menus."
 
 #: app/rule/shortcode/class-ms-rule-shortcode-listtable.php:36
 #: app/rule/shortcode/class-ms-rule-shortcode-listtable.php:45
+#: app_old/membershipincludes/classes/membershipadmin.php:4355
+#: app_old/membershipincludes/help/help.levels.php:7
 msgid "Shortcode"
 msgstr "Shortcode"
 
@@ -4851,6 +5139,7 @@ msgid "Choose Special WordPress Pages you want to protect"
 msgstr "Choose Special WordPress Pages you want to protect"
 
 #: app/rule/url/class-ms-rule-url-listtable.php:36
+#: app_old/membershipincludes/classes/membershipadmin.php:5641
 msgid "URL"
 msgstr "URL"
 
@@ -4920,6 +5209,7 @@ msgid "Discount (%s)"
 msgstr "Discount (%s)"
 
 #: app/view/billing/class-ms-view-billing-edit.php:132
+#: app_old/membershipincludes/classes/class.gateway.php:258
 msgid "Notes"
 msgstr "Notes"
 
@@ -4928,6 +5218,11 @@ msgid "Execute status change actions on Save (add/remove membership)"
 msgstr "Execute status change actions on Save (add/remove membership)"
 
 #: app/view/billing/class-ms-view-billing-list.php:64
+#: app_old/membershipincludes/classes/membershipadmin.php:2217
+#: app_old/membershipincludes/classes/membershipadmin.php:4278
+#: app_old/membershipincludes/classes/membershipadmin.php:4901
+#: app_old/membershipincludes/classes/membershipadmin.php:5307
+#: app_old/membershipincludes/classes/membershipadmin.php:5780
 msgid "Add New"
 msgstr "Add New"
 
@@ -4944,6 +5239,12 @@ msgid "Details..."
 msgstr "Details..."
 
 #: app/view/class-ms-view-addon.php:61
+#: app_old/membershipincludes/classes/membershipadmin.php:2209
+#: app_old/membershipincludes/classes/membershipadmin.php:2322
+#: app_old/membershipincludes/classes/membershipadmin.php:2504
+#: app_old/membershipincludes/classes/membershipadmin.php:4420
+#: app_old/membershipincludes/classes/membershipadmin.php:5055
+#: app_old/membershipincludes/classes/membershipadmin.php:6731
 msgid "Inactive"
 msgstr "Inactive"
 
@@ -5030,6 +5331,7 @@ msgid "Help and documentation"
 msgstr "Help and documentation"
 
 #: app/view/class-ms-view-help.php:96
+#: app_old/membershipincludes/classes/class.help.php:84
 msgid "Overview"
 msgstr "Overview"
 
@@ -5072,6 +5374,8 @@ msgstr ""
 "visible when you have at least one paid membership</em>"
 
 #: app/view/class-ms-view-help.php:133
+#: app_old/membershipincludes/classes/membershipadmin.php:298
+#: app_old/membershipincludes/classes/membershipadmin.php:472
 msgid "Coupons"
 msgstr "Coupons"
 
@@ -5721,6 +6025,7 @@ msgid "If the invoice should contain a \"Pay\" button"
 msgstr "If the invoice should contain a \"Pay\" button"
 
 #: app/view/class-ms-view-help.php:1568
+#: app_old/membershipincludes/classes/class.adminbar.php:186
 msgid "Reset"
 msgstr "Reset"
 
@@ -6269,12 +6574,20 @@ msgstr "This membership is active"
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:128
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:139
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:149
+#: app_old/membershipincludes/classes/class.urlgroup.php:74
+#: app_old/membershipincludes/classes/class.urlgroup.php:88
+#: app_old/membershipincludes/classes/class.urlgroup.php:122
+#: app_old/membershipincludes/classes/class.urlgroup.php:134
 msgid "No"
 msgstr "No"
 
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:129
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:140
 #: app/view/membership/edit/class-ms-view-membership-edit-dialog.php:150
+#: app_old/membershipincludes/classes/class.urlgroup.php:77
+#: app_old/membershipincludes/classes/class.urlgroup.php:91
+#: app_old/membershipincludes/classes/class.urlgroup.php:124
+#: app_old/membershipincludes/classes/class.urlgroup.php:136
 msgid "Yes"
 msgstr "Yes"
 
@@ -6322,6 +6635,7 @@ msgid "Membership is %s"
 msgstr "Membership is %s"
 
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:53
+#: app_old/membershipincludes/classes/class.adminbar.php:102
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -6350,6 +6664,7 @@ msgid "View More News"
 msgstr "View More News"
 
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:132
+#: app_old/membershipincludes/addons/newsstream.php:198
 msgid "There will be some interesting news here when your site gets going."
 msgstr "There will be some interesting news here when your site gets going."
 
@@ -6359,6 +6674,7 @@ msgid "New Members (%s)"
 msgstr "New Members (%s)"
 
 #: app/view/membership/overview/class-ms-view-membership-overview-simple.php:175
+#: app_old/membershipincludes/classes/membershipadmin.php:548
 msgid "All Members"
 msgstr "All Members"
 
@@ -6456,10 +6772,21 @@ msgstr "Payment Type"
 
 #: app/view/settings/class-ms-view-settings-import.php:179
 #: app/view/shortcode/class-ms-view-shortcode-account.php:463
+#: app_old/membershipincludes/includes/account.form.php:119
+#: app_old/membershipincludes/includes/bp.account.form.php:121
 msgid "Email"
 msgstr "Email"
 
 #: app/view/settings/class-ms-view-settings-import.php:180
+#: app_old/membershipincludes/classes/class.help.php:142
+#: app_old/membershipincludes/classes/class.tutorial.php:369
+#: app_old/membershipincludes/classes/membershipadmin.php:295
+#: app_old/membershipincludes/classes/membershipadmin.php:471
+#: app_old/membershipincludes/classes/membershipadmin.php:1091
+#: app_old/membershipincludes/classes/membershipadmin.php:2158
+#: app_old/membershipincludes/classes/membershipadmin.php:2453
+#: app_old/membershipincludes/classes/membershipadmin.php:2681
+#: app_old/membershipincludes/help/help.members.php:5
 msgid "Subscriptions"
 msgstr "Subscriptions"
 
@@ -6555,6 +6882,7 @@ msgid "Automated Messages"
 msgstr "Automated Messages"
 
 #: app/view/settings/page/class-ms-view-settings-page-communications.php:165
+#: app_old/membershipincludes/help/help.communicationedit.php:6
 msgid "Message"
 msgstr "Message"
 
@@ -6571,6 +6899,8 @@ msgstr ""
 "changes?"
 
 #: app/view/settings/page/class-ms-view-settings-page-general.php:12
+#: app_old/membershipincludes/classes/class.help.php:286
+#: app_old/membershipincludes/classes/membershipadmin.php:3708
 msgid "Content Protection"
 msgstr "Content Protection"
 
@@ -6663,6 +6993,7 @@ msgid "These are shared across all memberships."
 msgstr "These are shared across all memberships."
 
 #: app/view/settings/page/class-ms-view-settings-page-payment.php:39
+#: app_old/membershipincludes/classes/membershipadmin.php:563
 msgid "Payment Gateways"
 msgstr "Payment Gateways"
 
@@ -6811,6 +7142,7 @@ msgid "Trial period"
 msgstr "Trial period"
 
 #: app/view/shortcode/class-ms-view-shortcode-invoice.php:198
+#: app_old/membershipincludes/classes/class.gateway.php:255
 msgid "Amount"
 msgstr "Amount"
 
@@ -6902,6 +7234,7 @@ msgid "Login"
 msgstr "Login"
 
 #: app/view/shortcode/class-ms-view-shortcode-registeruser.php:37
+#: app_old/membershipincludes/includes/registration.form.php:75
 msgid "Already have a user account?"
 msgstr "Already have a user account?"
 
@@ -6936,76 +7269,4050 @@ msgstr "Shortcode Options:"
 msgid "Arguments to pass to the %slogin shortcode%s"
 msgstr "Arguments to pass to the %slogin shortcode%s"
 
+#: app_old/membershipincludes/addons/integrated.wproles.php:19
+#: app_old/membershipincludes/addons/integrated.wproles.php:24
+msgid "Associated Role"
+msgstr ""
+
+#: app_old/membershipincludes/addons/integrated.wproles.php:20
+msgid ""
+"If you want a specific WP role to be assigned to users on this level select "
+"it below."
+msgstr ""
+
+#: app_old/membershipincludes/addons/integrated.wproles.php:27
+msgid "No associated role"
+msgstr ""
+
+#: app_old/membershipincludes/addons/member.widget.php:19
+#: app_old/membershipincludes/addons/member.widget.php:21
+msgid "Membership Level Text"
+msgstr ""
+
+#: app_old/membershipincludes/addons/member.widget.php:117
+msgid "Show the content below if the user is on the following level:"
+msgstr ""
+
+#: app_old/membershipincludes/addons/member.widget.php:121
+#: app_old/membershipincludes/addons/member.widget.php:257
+msgid "Non-member or not logged in"
+msgstr ""
+
+#: app_old/membershipincludes/addons/member.widget.php:134
+#: app_old/membershipincludes/addons/member.widget.php:270
+msgid "Title"
+msgstr "Title"
+
+#: app_old/membershipincludes/addons/member.widget.php:155
+#: app_old/membershipincludes/addons/member.widget.php:157
+msgid "Membership Subscription Text"
+msgstr ""
+
+#: app_old/membershipincludes/addons/member.widget.php:253
+msgid "Show the content below if the user is on the following subscription:"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:55
+#, php-format
+msgid ""
+"<strong>%s</strong> has joined level <strong>%s</strong> on subscription "
+"<strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:72
+#, php-format
+msgid "<strong>%s</strong> has joined level <strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:89
+#, php-format
+msgid "<strong>%s</strong> has left subscription <strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:107
+#, php-format
+msgid ""
+"<strong>%s</strong> has left level <strong>%s</strong> on subscription "
+"<strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:124
+#, php-format
+msgid "<strong>%s</strong> has left level <strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:144
+#, php-format
+msgid ""
+"<strong>%s</strong> has moved from level <strong>%s</strong> on subscription "
+"<strong>%s</strong> to level <strong>%s</strong> on subscription <strong>%s</"
+"strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:162
+#, php-format
+msgid ""
+"<strong>%s</strong> has moved from level <strong>%s</strong> to level "
+"<strong>%s</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/addons/newsstream.php:182
+#: app_old/membershipincludes/help/help.dashboard.php:5
+msgid "News"
+msgstr "News"
+
+#: app_old/membershipincludes/addons/repairmembership.php:20
+msgid "Advanced"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:26
+msgid "Membership Repair"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:26
+#: app_old/membershipincludes/addons/repairmembership.php:38
+#: app_old/membershipincludes/classes/class.tutorial.php:546
+msgid "Repair Membership"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:47
+msgid ""
+"If you are having problems with your membership site, or have recently "
+"upgraded and are seeing strange behaviour then try the membership check "
+"below to see if there are any issues with your table structure. Click on the "
+"repair button if you want to repair any issues found (back up your database "
+"first)."
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:49
+msgid "Verify Membership Tables"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:50
+msgid "Repair Membership Tables"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:59
+msgid "Verifying"
+msgstr ""
+
+#: app_old/membershipincludes/addons/repairmembership.php:70
+msgid "Verifying and Repairing"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:15
+msgid "Simple Invite Codes"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:17
+msgid ""
+"Use the section below to enable and require invitation codes on the "
+"registration panel."
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:22
+msgid "Require Invite Codes"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:35
+msgid "Invite Codes"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:36
+msgid "Place each available code on a new line."
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:49
+msgid "Remove Code once used"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:92
+msgid "Invite Code"
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:118
+msgid "You need to enter an invite code in order to register."
+msgstr ""
+
+#: app_old/membershipincludes/addons/simple.invitecodes.php:131
+msgid ""
+"Sorry, but we do not seem to have that code on file, please try another."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:204
+msgid "Membership2 Is Available"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:210
+msgid "The Best Membership Plugin You Ever Used!"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:213
+msgid ""
+"Membership2 is a <strong>completely rewritten plugin</strong> with a brand "
+"new user interface and new features.<br>We improved workflows and data "
+"structure to make the plugin as simple and easy to use as possible for you!"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:216
+msgid ""
+"When you update to the new version we will migrate your Subscription plans "
+"and Members to the new data structure automatically.<br>However, the "
+"protection rules cannot be migrated. So you have to manually <strong>set up "
+"all protection rules again</strong> after the update."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:217
+#, php-format
+msgid "%sRead more about the new version%s on our website!"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:222
+msgid "Remind me in a few days"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:226
+msgid "I understand. <u>Switch to Membership2 now</u>!"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class-m2-migration-handler.php:230
+msgid ""
+"When you switch to Membership2 your data is migrated and you need to set up "
+"your protection rules again. Until this is completed your content is "
+"unprotected."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.adminbar.php:103
+msgid "Click to Enable the Membership protection"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.adminbar.php:121
+#: app_old/membershipincludes/classes/class.tutorial.php:632
+msgid "Enable Membership"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.adminbar.php:146
+msgid "View site as : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.adminbar.php:148
+msgid "Membership Admin"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.adminbar.php:155
+msgid "Select a level to view your site as"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:115
+msgid "Edit &quot;"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:115
+msgid "&quot; settings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:216
+msgid " transactions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:219
+msgid "Recent transactions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:220
+msgid "Pending transactions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:221
+msgid "Future transactions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:252
+#: app_old/membershipincludes/classes/membershipadmin.php:2246
+msgid "Subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:256
+msgid "Transaction id"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:311
+msgid "Subscription not found"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:321
+msgid "User not found"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:343
+#: app_old/membershipincludes/classes/class.gateway.php:352
+msgid "None yet"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:361
+#: app_old/membershipincludes/classes/membershipadmin.php:327
+#: app_old/membershipincludes/classes/membershipadmin.php:2788
+#: app_old/membershipincludes/classes/membershipadmin.php:2889
+#: app_old/membershipincludes/classes/membershipadmin.php:6017
+#: app_old/membershipincludes/classes/membershipadmin.php:6399
+#: app_old/membershipincludes/classes/membershipadmin.php:6413
+#: app_old/membershipincludes/classes/membershipadmin.php:6455
+#: app_old/membershipincludes/classes/membershipadmin.php:6469
+msgid "None"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:372
+msgid "No Transactions have been found, patience is a virtue."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:405
+#: app_old/membershipincludes/classes/class.gateway.php:412
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:209
+msgid "Upgrades not available"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.gateway.php:419
+msgid "Unsubscribe not available"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:116
+#: app_old/membershipincludes/classes/membershipadmin.php:292
+#: app_old/membershipincludes/classes/membershipadmin.php:470
+#: app_old/membershipincludes/classes/membershipadmin.php:1068
+#: app_old/membershipincludes/classes/membershipadmin.php:2164
+#: app_old/membershipincludes/classes/membershipadmin.php:2459
+#: app_old/membershipincludes/help/help.members.php:7
+msgid "Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:122
+#: app_old/membershipincludes/classes/class.help.php:148
+#: app_old/membershipincludes/classes/class.help.php:186
+#: app_old/membershipincludes/classes/class.help.php:210
+#: app_old/membershipincludes/classes/class.help.php:238
+msgid "Adding / Editing"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:162
+#: app_old/membershipincludes/classes/class.tutorial.php:455
+#: app_old/membershipincludes/classes/membershipadmin.php:314
+#: app_old/membershipincludes/classes/membershipadmin.php:477
+#: app_old/membershipincludes/classes/membershipadmin.php:2170
+#: app_old/membershipincludes/classes/membershipadmin.php:2465
+msgid "Gateways"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:180
+#: app_old/membershipincludes/classes/class.tutorial.php:559
+#: app_old/membershipincludes/classes/membershipadmin.php:305
+#: app_old/membershipincludes/classes/membershipadmin.php:474
+#: app_old/membershipincludes/help/help.communication.php:1
+msgid "Communications"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:204
+#: app_old/membershipincludes/classes/class.tutorial.php:607
+#: app_old/membershipincludes/classes/membershipadmin.php:308
+#: app_old/membershipincludes/classes/membershipadmin.php:475
+#: app_old/membershipincludes/classes/membershipadmin.php:557
+#: app_old/membershipincludes/includes/default.rules.php:1526
+msgid "URL Groups"
+msgstr "URL Groups"
+
+#: app_old/membershipincludes/classes/class.help.php:232
+#: app_old/membershipincludes/classes/membershipadmin.php:311
+#: app_old/membershipincludes/classes/membershipadmin.php:476
+msgid "Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:244
+msgid "Ping History"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:274
+#: app_old/membershipincludes/classes/class.tutorial.php:468
+#: app_old/membershipincludes/classes/membershipadmin.php:2728
+msgid "General Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:280
+#: app_old/membershipincludes/classes/membershipadmin.php:3707
+#: app_old/membershipincludes/help/help.optionspages.php:1
+msgid "Membership Pages"
+msgstr "Membership Pages"
+
+#: app_old/membershipincludes/classes/class.help.php:292
+#: app_old/membershipincludes/classes/membershipadmin.php:3709
+msgid "Downloads / Media"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.help.php:298
+#: app_old/membershipincludes/classes/membershipadmin.php:3711
+msgid "Extras"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.membersearch.php:61
+#, php-format
+msgid "Displaying %s&#8211;%s of %s"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:98
+#: app_old/membershipincludes/classes/class.ping.php:99
+#: app_old/membershipincludes/classes/class.ping.php:145
+#: app_old/membershipincludes/classes/class.ping.php:146
+msgid "Ping name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:103
+#: app_old/membershipincludes/classes/class.ping.php:104
+#: app_old/membershipincludes/classes/class.ping.php:150
+#: app_old/membershipincludes/classes/class.ping.php:151
+msgid "Ping URL"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:108
+#: app_old/membershipincludes/classes/class.ping.php:155
+msgid "Ping data"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:112
+#: app_old/membershipincludes/classes/class.ping.php:159
+msgid ""
+"You can use the following constants within the message body to embed "
+"database information."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:117
+#: app_old/membershipincludes/classes/class.ping.php:164
+msgid "One entry per line. e.g. key=value"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:124
+#: app_old/membershipincludes/classes/class.ping.php:171
+msgid "Ping method"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:129
+#: app_old/membershipincludes/classes/class.ping.php:175
+msgid "GET"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.ping.php:132
+#: app_old/membershipincludes/classes/class.ping.php:177
+msgid "POST"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.rule.php:42
+msgid "Add this rule to the positive area of the membership level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.rule.php:42
+msgid "Add to Positive rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.rule.php:42
+msgid "Add this rule to the negative area of the membership level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.rule.php:42
+msgid "Add to Negative rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:465
+#: app_old/membershipincludes/classes/class.subscription.php:551
+msgid "Remove this level from the subscription."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:465
+#: app_old/membershipincludes/classes/class.subscription.php:551
+#: app_old/membershipincludes/includes/default.rules.php:15
+#: app_old/membershipincludes/includes/default.rules.php:322
+#: app_old/membershipincludes/includes/default.rules.php:641
+#: app_old/membershipincludes/includes/default.rules.php:858
+#: app_old/membershipincludes/includes/default.rules.php:963
+#: app_old/membershipincludes/includes/default.rules.php:1032
+#: app_old/membershipincludes/includes/default.rules.php:1136
+#: app_old/membershipincludes/includes/default.rules.php:1262
+#: app_old/membershipincludes/includes/default.rules.php:1383
+#: app_old/membershipincludes/includes/default.rules.php:1526
+msgid "Remove"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:468
+#: app_old/membershipincludes/classes/class.subscription.php:554
+msgid "Mode : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:476
+#: app_old/membershipincludes/classes/class.subscription.php:562
+msgid "Period : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:487
+#: app_old/membershipincludes/classes/class.subscription.php:573
+#: app_old/membershipincludes/classes/membershipadmin.php:3457
+#: app_old/membershipincludes/classes/membershipadmin.php:3490
+msgid "day(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:488
+#: app_old/membershipincludes/classes/class.subscription.php:574
+msgid "week(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:489
+#: app_old/membershipincludes/classes/class.subscription.php:575
+msgid "month(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:490
+#: app_old/membershipincludes/classes/class.subscription.php:576
+msgid "year(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:493
+#: app_old/membershipincludes/classes/class.subscription.php:579
+msgid "Price : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:517
+#: app_old/membershipincludes/classes/class.subscription.php:603
+msgid "Mode details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:518
+#: app_old/membershipincludes/classes/class.subscription.php:604
+msgid ""
+"<strong>Finite</strong> - user remains at this level for a set period of "
+"time before ending"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:519
+#: app_old/membershipincludes/classes/class.subscription.php:605
+msgid "<strong>Indefinite</strong> - user remains at this level for ever."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:520
+#: app_old/membershipincludes/classes/class.subscription.php:606
+msgid ""
+"<strong>Serial</strong> - user remains at this level for a set period of "
+"time and is then renewed at the same level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:521
+#: app_old/membershipincludes/classes/class.subscription.php:607
+msgid ""
+"<strong>Note:</strong> - depending on the payment gateway used, changing the "
+"price will not alter subscriptions charged to existing members."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:557
+msgid "Finite"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:558
+msgid "Indefinite"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:559
+msgid "Serial"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.subscription.php:560
+msgid "Sequential"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:56
+#: app_old/membershipincludes/classes/class.tutorial.php:59
+msgid "Membership tutorial"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:172
+#: app_old/membershipincludes/classes/class.wizard.php:209
+msgid "Welcome to Membership"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:174
+msgid ""
+"This is the membership dashboard panel where you can keep track of your "
+"sites statistics and information."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:185
+msgid "Getting started wizard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:187
+msgid ""
+"We have built a short (very short) wizard to help you get started with the "
+"plugin."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:198
+msgid "Dismissing the wizard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:200
+msgid "If you do not want to use the wizard then you can dismiss it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:213
+msgid "Membership Menu"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:215
+msgid ""
+"This is your main membership menu, you have direct access to all the areas "
+"of the plugin from here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:226
+msgid "Members screen"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:228
+msgid ""
+"This is the list of members for your site, you can control their "
+"subscriptions from here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:239
+msgid "Member filtering"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:241
+msgid ""
+"You can use the filters at the top of the list to find members with specific "
+"criteria."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:252
+msgid "Member subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:254
+msgid ""
+"You can Add, move or drop members from a subscription or level by using the "
+"links on a members row."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:265
+#: app_old/membershipincludes/classes/membershipadmin.php:551
+#: app_old/membershipincludes/classes/membershipadmin.php:4278
+#: app_old/membershipincludes/help/help.levels.php:1
+msgid "Access Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:267
+msgid ""
+"Access levels allow you to control the amount of access to content members "
+"are entitled to see."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:278
+msgid "Adding Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:280
+msgid "Click on the Add New link to create a new level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:291
+msgid "Level Title"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:293
+msgid ""
+"The Level title enables you to quickly identify a level and should be as "
+"descriptive as possible."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:304
+msgid "Level Rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:306
+msgid ""
+"Each rule allows you to specify specific content to protect or allow access "
+"to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:317
+msgid "Adding Rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:319
+msgid ""
+"To add a rule to your level, drag it to the Drop Here box. You can then "
+"select the content you want to protect / allow access to. To remove a rule "
+"you can click the Remove link in the rules title."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:330
+#: app_old/membershipincludes/classes/membershipadmin.php:3905
+#: app_old/membershipincludes/help/help.levelsedit.php:3
+msgid "Positive Rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:332
+msgid ""
+"Positive rules allow you to specify what a member on this level has access "
+"to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:343
+#: app_old/membershipincludes/classes/membershipadmin.php:3906
+#: app_old/membershipincludes/help/help.levelsedit.php:5
+msgid "Negative Rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:345
+msgid ""
+"Negative rules allow you to specify what a member does not have access to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:356
+msgid "Advanced Rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:358
+msgid ""
+"If you want to use a combination of Positive and Negative rules then you can "
+"add both in the advanced area."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:371
+msgid ""
+"Subscriptions control a members passage through your site and the length of "
+"time / amount of money they spend on each level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:382
+msgid "Adding Subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:384
+msgid "To add a subscription click on the Add New link."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:395
+#: app_old/membershipincludes/classes/membershipadmin.php:4977
+msgid "Subscription Name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:397
+msgid ""
+"The subscription name helps identify the subscription and is shown on the "
+"subscriptions list on the front end of your site."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:407
+msgid "Subscription Description"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:409
+msgid ""
+"The subscription description is shown on the front end of your site and "
+"should describe the subscription and the benefits of selecting it."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:419
+msgid "Subscription Price Text"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:421
+msgid ""
+"The subscription price text is shown on the front end of your site and "
+"should contain a description of the pricing. E.g. $35 per month"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:431
+msgid "Subscription Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:433
+msgid ""
+"The levels that you have available are shown here, to add them to this "
+"subscription you can drag them over to the Drop Here box."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:443
+msgid "Subscription Level Drop"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:445
+msgid ""
+"Drop any Levels you want to add to this subscription here, you can re-order "
+"levels by dragging them into the desired order. To remove a level from the "
+"subscription you can click on the Remove link."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:457
+msgid ""
+"A gateway controls the interface between your website and a payment "
+"provider. You should activate the gateways you want to use on your site by "
+"clicking the Activate link underneath each gateways name. The settings for "
+"each gateway can be accessed by click the Settings link under the gateways "
+"name once it is active."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:470
+msgid ""
+"This options page allows you to set the level that you wish unregistered "
+"visitors to your site to belong to, as well as the subscription that you "
+"want new subscribers to be automatically added to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:481
+#: app_old/membershipincludes/classes/membershipadmin.php:2854
+msgid "Membership Page Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:483
+msgid ""
+"This options page allows you to control and create the pages that display "
+"specific membership information, such as the registration page and the "
+"account details page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:494
+#: app_old/membershipincludes/classes/membershipadmin.php:3175
+msgid "Content Protection Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:496
+msgid ""
+"This options page allows you to create the message that is displayed when a "
+"member does not have access to shortcode and / or more tag protected content."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:507
+#: app_old/membershipincludes/classes/membershipadmin.php:3071
+msgid "Download / Media Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:509
+msgid ""
+"This options page allows you to set up a masking URL for your sites media "
+"and downloads and to create some groups that you can assign different media "
+"files to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:520
+#: app_old/membershipincludes/classes/membershipadmin.php:3555
+#: app_old/membershipincludes/classes/membershipadmin.php:3573
+msgid "Membership Admin Users"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:522
+msgid ""
+"You can add or remove membership administration rights to admin users using "
+"this page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:533
+#: app_old/membershipincludes/classes/membershipadmin.php:3362
+msgid "Extra Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:535
+msgid ""
+"This page allows you to specify, amongst other things, the global currency "
+"for your site and the period of time left until a subscription expires "
+"before they can renew."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:548
+msgid ""
+"If you have any issues with the membership plugin then you can check your "
+"database integrity using the Verify button on this page, if any issues are "
+"reported then they can be fixed by pressing the Repair button."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:561
+msgid ""
+"The communications system enables you to set up a series of messages that "
+"are sent to your members at set daily periods after they have signed up or "
+"at set days upto the date their subscriptions are due to expire."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:571
+msgid "Add Communication"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:573
+msgid ""
+"To add a new communication, click on the Add New button at the top of the "
+"page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:583
+msgid "Set period"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:585
+msgid ""
+"Specify a time period before or after a subscription starts or is due to "
+"end. Setting a period of 0 means that the message is sent immediately on "
+"signup."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:595
+msgid "Set subject and message"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:597
+msgid ""
+"You should enter the subject and content of the message in the areas "
+"provided. You can use the placeholders listed next to the message area to "
+"include details such as the member name, etc."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:609
+msgid ""
+"URL Groups allow you to specify a group of URLs on your site that you want "
+"to protect and then allow / or prevent members to access them from within a "
+"level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:620
+#: app_old/membershipincludes/classes/membershipadmin.php:560
+msgid "Remote Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:622
+msgid ""
+"A Ping is a method of sending a message to an external URL when something "
+"happens within the membership plugin (such as a member starts or ends a "
+"subscription). They are useful for things like registering users on external "
+"support forums."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.tutorial.php:634
+msgid ""
+"Once you have everything set up you should enable the membership plugins "
+"protection system."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:56
+#: app_old/membershipincludes/classes/class.urlgroup.php:57
+#: app_old/membershipincludes/classes/class.urlgroup.php:105
+#: app_old/membershipincludes/classes/class.urlgroup.php:106
+msgid "Group name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:61
+#: app_old/membershipincludes/classes/class.urlgroup.php:110
+msgid "Page URLs"
+msgstr "Page URLs"
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:64
+#: app_old/membershipincludes/classes/class.urlgroup.php:113
+msgid "You should place each page URL or expression on a new line."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:69
+#: app_old/membershipincludes/classes/class.urlgroup.php:118
+msgid "Strip query strings from URL"
+msgstr "Strip query strings from URL"
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:79
+#: app_old/membershipincludes/classes/class.urlgroup.php:126
+msgid "Remove any query string values prior to checking URL."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:83
+#: app_old/membershipincludes/classes/class.urlgroup.php:130
+msgid "Regular Expression"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.urlgroup.php:93
+#: app_old/membershipincludes/classes/class.urlgroup.php:138
+msgid "If any of the page URLs are regular expressions then set this to yes."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:192
+#: app_old/membershipincludes/classes/membershipadmin.php:2121
+#: app_old/membershipincludes/classes/membershipadmin.php:4289
+#: app_old/membershipincludes/classes/membershipadmin.php:4912
+#: app_old/membershipincludes/classes/membershipadmin.php:5321
+#: app_old/membershipincludes/classes/membershipadmin.php:5794
+#: app_old/membershipincludes/classes/membershipadmin.php:6608
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:450
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:472
+#: app_old/membershipincludes/includes/pointer-tutorials.php:436
+#: app_old/membershipincludes/includes/pointer-tutorials.php:458
+msgid "Dismiss"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:198
+#: app_old/membershipincludes/classes/class.wizard.php:316
+#: app_old/membershipincludes/classes/class.wizard.php:402
+msgid "Already know what you're doing?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:198
+#: app_old/membershipincludes/classes/class.wizard.php:316
+#: app_old/membershipincludes/classes/class.wizard.php:402
+msgid "Dismiss this message"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:213
+msgid ""
+"If you need help getting started, check out our documentation over on <a "
+"href=\"http://premium.wpmudev.org/project/membership\">WPMUDEV</a>. "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:215
+msgid ""
+"You can use the Help tabs in the upper right corner to get information on "
+"how to use your current screen. "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:216
+msgid ""
+"If you would like us to set up some basic things for you then choose an "
+"option below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:224
+msgid "Standard membership site."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:225
+msgid "Dripped content site."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:226
+msgid "Advanced."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:229
+#: app_old/membershipincludes/classes/membershipadmin.php:752
+msgid "Next Step &raquo;"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:244
+#: app_old/membershipincludes/classes/class.wizard.php:330
+msgid "Create your levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:247
+#: app_old/membershipincludes/classes/class.wizard.php:333
+msgid ""
+"A level controls what parts of your website a user has access to, so we will "
+"need to set some initial ones up. "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:248
+#: app_old/membershipincludes/classes/class.wizard.php:334
+msgid ""
+"Select the number of levels you think you will need to get started (you can "
+"add or remove them later)."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:257
+#: app_old/membershipincludes/classes/class.wizard.php:343
+msgid "Create "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:273
+#: app_old/membershipincludes/classes/class.wizard.php:359
+msgid " levels and give them the following names:"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:276
+#: app_old/membershipincludes/classes/class.wizard.php:362
+msgid "Level 1"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:277
+#: app_old/membershipincludes/classes/class.wizard.php:363
+msgid "Level 2"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:280
+#: app_old/membershipincludes/classes/class.wizard.php:366
+msgid "also create a level to control what non-members can see?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:282
+#: app_old/membershipincludes/classes/class.wizard.php:368
+msgid "Finally, I would like to use the "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:284
+#: app_old/membershipincludes/classes/class.wizard.php:370
+msgid "Select a gateway..."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:309
+#: app_old/membershipincludes/classes/class.wizard.php:395
+msgid " gateway to receive payments."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:415
+#: app_old/membershipincludes/classes/class.wizard.php:489
+msgid "Level "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:435
+#: app_old/membershipincludes/classes/class.wizard.php:502
+msgid "Visitors"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:482
+msgid "Dripped Subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:550
+msgid "Thank you"
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:556
+msgid "Thank you, we have now set up some of the initial Membership options. "
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:557
+msgid ""
+"If you would like more tips on using the system then you can now follow the "
+"tutorial pointers we have included, or check out the help guides at the top "
+"of every page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/class.wizard.php:561
+msgid "Close this wizard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:273
+#: app_old/membershipincludes/classes/membershipadmin.php:322
+#: app_old/membershipincludes/classes/membershipadmin.php:479
+msgid "Permissions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:286
+#: app_old/membershipincludes/classes/membershipadmin.php:468
+msgid "Dashboard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:302
+#: app_old/membershipincludes/classes/membershipadmin.php:473
+msgid "Purchases"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:318
+#: app_old/membershipincludes/classes/membershipadmin.php:478
+#: app_old/membershipincludes/classes/membershipadmin.php:566
+msgid "Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:368
+msgid "Post Indexer Settings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:401
+#: app_old/membershipincludes/classes/membershipadmin.php:4107
+#: app_old/membershipincludes/classes/membershipadmin.php:4702
+msgid "Cheatin&#8217; uh?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:417
+#: app_old/membershipincludes/classes/membershipadmin.php:642
+msgid "Membership Permissions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:418
+msgid "Select the areas you want this user to be able to administrate."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:423
+msgid "Current Permissions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:501
+msgid "Save all changes"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:517
+#, php-format
+msgid ""
+"The Membership plugin is not enabled. To ensure your content is protected "
+"you should <a href='%s'>enable it</a>"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:527
+msgid ""
+"You are logged in as a <strong>Membership Admin</strong> user, you will "
+"therefore see all protected content on this site."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:551
+msgid "Membership Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:554
+msgid "Membership Subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:554
+#: app_old/membershipincludes/classes/membershipadmin.php:4901
+msgid "Subscription Plans"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:557
+msgid "Membership URL Groups"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:560
+msgid "Membership Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:563
+msgid "Membership Gateways"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:566
+msgid "Membership Options"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:751
+msgid "Loading..."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:753
+msgid ""
+"Something has gone wrong with the Wizard, please try clicking the button "
+"again."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:754
+msgid "Level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:774
+msgid "Are you sure you want to delete this level?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:775
+#: app_old/membershipincludes/classes/membershippublic.php:2209
+#: app_old/membershipincludes/classes/membershippublic.php:2362
+msgid "Are you sure you want to deactivate this level?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:776
+msgid ""
+"Moving to the Positive area will remove any Negative rules you have set - is "
+"that ok?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:777
+msgid ""
+"Moving to the Negative area will remove any Positive rules you have set - is "
+"that ok?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:798
+msgid "Are you sure you want to delete this subscription?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:798
+msgid "Are you sure you want to deactivate this subscription?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:820
+msgid "Are you sure you want to deactivate this member?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:852
+msgid "Are you sure you want to delete this url group?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:863
+msgid "Are you sure you want to delete this ping and the associated history?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:997
+msgid "Signups"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1040
+msgid "Membership protection "
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1041
+msgid " is "
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1045
+msgid "disabled"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1045
+#: app_old/membershipincludes/classes/membershipadmin.php:1047
+msgid "Click here to enable the plugin"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1045
+msgid "[Enable it]"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1047
+msgid "enabled"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1047
+msgid "[Disable it]"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1052
+msgid "Member breakdown"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1112
+msgid "Member counts"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1125
+msgid "Total Members"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1132
+msgid "Deactivated Members"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1163
+msgid "Membership dashboard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1197
+#: app_old/membershipincludes/help/help.dashboard.php:7
+msgid "Statistics"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1483
+msgid "Move subscription to another gateway"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1484
+msgid ""
+"A subscription gateway handles the payment and renewal forms displayed for a "
+"subscription. Changing this should not be undertaken lightly, it can "
+"seriously mess up the subscriptions of your members."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1486
+msgid "Gateway to move from for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1489
+msgid "Select the gateway to move from."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1505
+msgid "Gateway to move to for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1508
+msgid "Select the gateway to move to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1595
+msgid "Add member to a level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1596
+#: app_old/membershipincludes/classes/membershipadmin.php:1618
+#: app_old/membershipincludes/classes/membershipadmin.php:1654
+msgid ""
+"A membership level controls the amount of access to the sites content this "
+"member will have."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1597
+msgid ""
+"By adding a membership level, you may actually be removing existing access "
+"to content."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1599
+msgid "Level to add for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1602
+#: app_old/membershipincludes/classes/membershipadmin.php:1755
+msgid "Select the level to add."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1617
+msgid "Move member to another level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1620
+msgid "Level to move from for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1623
+msgid "Select the level to move from."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1635
+msgid "Level to move to for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1638
+#: app_old/membershipincludes/classes/membershipadmin.php:1801
+msgid "Select the level to move to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1652
+msgid "Drop member from level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1655
+msgid ""
+"By removing a membership level, you may actually be increasing existing "
+"access to content."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1657
+msgid "Level to drop for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1660
+msgid "Select the level to remove."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1748
+msgid "Add member to a subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1749
+#: app_old/membershipincludes/classes/membershipadmin.php:1780
+#: app_old/membershipincludes/classes/membershipadmin.php:1825
+msgid ""
+"A subscription controls the levels a site member has access to / passes "
+"through."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1750
+msgid ""
+"Depending on your payment gateway, adding a subscription here may not set up "
+"a payment subscription."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1752
+msgid "Subscription and level to add for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1779
+msgid "Move member to another subscription level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1781
+msgid ""
+"Depending on your payment gateway, moving a subscription here may not alter "
+"a members existing payment subscription."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1783
+msgid "Subscription to move from for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1786
+msgid "Select the subscription to move from."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1798
+msgid "Subscription and Level to move to for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1823
+msgid "Drop member from subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1826
+msgid ""
+"Depending on the payment gateway, removing a subscription will not "
+"automatically cancel a payment subscription."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1828
+msgid "Subscription to drop for this / these member(s)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:1831
+msgid "Select the subscription to remove."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2095
+msgid "Member added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2096
+msgid "Member deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2098
+msgid "Member not added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2100
+msgid "Member not deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2105
+msgid "Members updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2110
+#: app_old/membershipincludes/help/help.members.php:1
+msgid "Edit Members"
+msgstr "Edit Members"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2135
+#: app_old/membershipincludes/classes/membershipadmin.php:2137
+msgid "Search Members"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2156
+#: app_old/membershipincludes/classes/membershipadmin.php:2451
+#: app_old/membershipincludes/classes/membershipadmin.php:4322
+#: app_old/membershipincludes/classes/membershipadmin.php:4459
+#: app_old/membershipincludes/classes/membershipadmin.php:4945
+#: app_old/membershipincludes/classes/membershipadmin.php:5100
+#: app_old/membershipincludes/classes/membershipadmin.php:6629
+#: app_old/membershipincludes/classes/membershipadmin.php:6757
+msgid "Toggle activation"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2159
+#: app_old/membershipincludes/classes/membershipadmin.php:2454
+msgid "Add subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2160
+#: app_old/membershipincludes/classes/membershipadmin.php:2455
+msgid "Move subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2161
+#: app_old/membershipincludes/classes/membershipadmin.php:2456
+msgid "Drop subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2165
+#: app_old/membershipincludes/classes/membershipadmin.php:2460
+msgid "Add level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2166
+#: app_old/membershipincludes/classes/membershipadmin.php:2461
+msgid "Move level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2167
+#: app_old/membershipincludes/classes/membershipadmin.php:2462
+msgid "Drop level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2171
+#: app_old/membershipincludes/classes/membershipadmin.php:2466
+msgid "Move gateway"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2177
+#: app_old/membershipincludes/classes/membershipadmin.php:2472
+msgid "Filter by subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2192
+#: app_old/membershipincludes/classes/membershipadmin.php:2487
+msgid "Filter by level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2207
+#: app_old/membershipincludes/classes/membershipadmin.php:2502
+msgid "Filter by status"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2234
+msgid "&larr; Back to All Users"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2247
+msgid "Membership Level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2248
+msgid "Level Expires"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2308
+#: app_old/membershipincludes/classes/membershipadmin.php:4408
+#: app_old/membershipincludes/classes/membershipadmin.php:5037
+#: app_old/membershipincludes/classes/membershipadmin.php:6717
+msgid "Deactivate"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2310
+#: app_old/membershipincludes/classes/membershipadmin.php:4406
+#: app_old/membershipincludes/classes/membershipadmin.php:5035
+#: app_old/membershipincludes/classes/membershipadmin.php:6720
+msgid "Activate"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2317
+#, php-format
+msgid "e-mail: %s"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2343
+#: app_old/membershipincludes/classes/membershipadmin.php:2379
+#: app_old/membershipincludes/classes/membershipadmin.php:4000
+#: app_old/membershipincludes/classes/membershipadmin.php:4604
+msgid "Add"
+msgstr "Add"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2348
+#: app_old/membershipincludes/classes/membershipadmin.php:2351
+#: app_old/membershipincludes/classes/membershipadmin.php:2384
+#: app_old/membershipincludes/classes/membershipadmin.php:2387
+#: app_old/membershipincludes/classes/membershipadmin.php:2425
+#: app_old/membershipincludes/classes/membershipadmin.php:2427
+msgid "Move"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2349
+#: app_old/membershipincludes/classes/membershipadmin.php:2352
+#: app_old/membershipincludes/classes/membershipadmin.php:2385
+#: app_old/membershipincludes/classes/membershipadmin.php:2388
+msgid "Drop"
+msgstr "Drop"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2695
+msgid "Thank you for subscribing. We hope you enjoy the content."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2696
+msgid "Welcome"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2724
+#: app_old/membershipincludes/classes/membershipadmin.php:2849
+#: app_old/membershipincludes/classes/membershipadmin.php:3067
+#: app_old/membershipincludes/classes/membershipadmin.php:3171
+#: app_old/membershipincludes/classes/membershipadmin.php:3358
+msgid "Your options have been updated."
+msgstr "Your options have been updated."
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2746
+msgid "Stranger settings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2748
+msgid ""
+"A &quot;stranger&quot; is a visitor to your website who is either not logged "
+"in, or does not have an active membership or subscription to your website."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2752
+msgid "Use membership level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2755
+msgid "None - No access to content"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2771
+msgid ""
+"If the above is set to &quot;None&quot; then you can pick the page you want "
+"strangers directed to below in the &quot;Membership Pages&quot; options."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2777
+msgid "User registration"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2779
+msgid ""
+"If you have free user registration enabled on your site, select the "
+"subscription they will be assigned to initially."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2780
+msgid ""
+"If you are using a paid subscription model - it is probably best to set this "
+"to &quot;none&quot;."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2785
+msgid "Use subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2850
+msgid "Your page has been created."
+msgstr "Your page has been created."
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2875
+msgid ""
+"This is the page a new user will be redirected to when they want to register "
+"on your site."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2876
+msgid ""
+"You can include an introduction on the page, for more advanced content "
+"around the registration form then you <strong>should</strong> include the "
+"[subscriptionform] shortcode in some location on that page. Alternatively "
+"leave the page blank for the standard Membership subscription forms."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2882
+msgid ""
+"Select a page to use for the registration form. If you do not have one "
+"already, then click on <strong>Create Page</strong> to make one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2892
+msgid "Create a default page for the registration page and assign it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2892
+#: app_old/membershipincludes/classes/membershipadmin.php:2942
+#: app_old/membershipincludes/classes/membershipadmin.php:2974
+#: app_old/membershipincludes/classes/membershipadmin.php:3006
+#: app_old/membershipincludes/classes/membershipadmin.php:3038
+msgid "Create page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2895
+#: app_old/membershipincludes/classes/membershipadmin.php:2945
+#: app_old/membershipincludes/classes/membershipadmin.php:2977
+#: app_old/membershipincludes/classes/membershipadmin.php:3009
+#: app_old/membershipincludes/classes/membershipadmin.php:3041
+msgid "view page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2895
+#: app_old/membershipincludes/classes/membershipadmin.php:2945
+#: app_old/membershipincludes/classes/membershipadmin.php:2977
+#: app_old/membershipincludes/classes/membershipadmin.php:3009
+#: app_old/membershipincludes/classes/membershipadmin.php:3041
+msgid "edit page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2902
+msgid ""
+"There are two forms of registration form available, select the one you would "
+"like to use on your site below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2907
+msgid "Form type"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2908
+msgid "Choose between the original multi-page or Pop up registration methods."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2912
+msgid "Original membership form"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2913
+msgid "Popup registration form"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2923
+#: app_old/membershipincludes/classes/membershipadmin.php:2931
+msgid "Registration completed page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2925
+msgid ""
+"When a user has signed up for membership and completed any payments "
+"required, they will be redirected to this page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2926
+msgid ""
+"You should include a welcome message on this page and some details on what "
+"to do next."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2932
+msgid ""
+"Select a page to use for the Registration completed page. If you do not have "
+"one already, then click on <strong>Create Page</strong> to make one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2939
+#: app_old/membershipincludes/classes/membershipadmin.php:2971
+#: app_old/membershipincludes/classes/membershipadmin.php:3003
+#: app_old/membershipincludes/classes/membershipadmin.php:3035
+msgid "Select a page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2942
+msgid ""
+"Create a default page for the registration completed page and assign it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2955
+#: app_old/membershipincludes/classes/membershipadmin.php:2963
+msgid "Account page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2957
+msgid ""
+"This is the page a user will be redirected to when they want to view their "
+"account or make a payment on their account."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2958
+msgid ""
+"It can be left blank to use the standard Membership interface, otherwise it "
+"can contain any content you want but <strong>should</strong> contain the "
+"[accountform] shortcode in some location."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2964
+msgid ""
+"Select a page to use for the account form. If you do not have one already, "
+"then click on <strong>Create Page</strong> to make one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2974
+msgid "Create a default page for the account page and assign it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2987
+#: app_old/membershipincludes/classes/membershipadmin.php:2995
+msgid "Subscriptions page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2989
+msgid ""
+"This is the page a user will be redirected to when they want to view their "
+"subscription details and upgrade / renew them."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2990
+msgid ""
+"It can be left blank to use the standard Membership interface, otherwise it "
+"can contain any content you want but <strong>should</strong> contain the "
+"[renewform] shortcode in some location."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:2996
+msgid ""
+"Select a page to use for the upgrade form. If you do not have one already, "
+"then click on <strong>Create Page</strong> to make one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3006
+msgid ""
+"Create a default page for the upgrade / renewal page and assign it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3019
+#: app_old/membershipincludes/classes/membershipadmin.php:3027
+msgid "Protected content page"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3021
+msgid ""
+"If a post / page / content is not available to a user, this is the page that "
+"they user will be directed to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3022
+msgid ""
+"This page will only be displayed if the user has tried to access the post / "
+"page / content directly or via a link."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3028
+msgid ""
+"Select a page to use for the Protected Content message. If you do not have "
+"one already, then click on <strong>Create Page</strong> to make one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3038
+msgid ""
+"Create a default page for the protected content page and assign it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3091
+msgid "Downloads / Media protection"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3094
+msgid ""
+"Downloads and media files can be protected by remapping their perceived "
+"location."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3095
+msgid ""
+"Note: If a user determines a files actual location on your server, there is "
+"very little we can do to prevent its download, so please be careful about "
+"giving out URLs."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3101
+msgid ""
+"The method of protection can be changed depending on your needs. Membership "
+"offers three methods, <strong>Basic</strong> masks your media directory but "
+"leaves any filenames the same, <strong>Complete</strong> masks the media "
+"directory and changes the image filename as well and <strong>Hybrid</strong> "
+"is for use if you are using a host or server that has a problem with the "
+"system (such as some installs of nginx)."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3105
+msgid "Basic protection"
+msgstr "Basic protection"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3111
+msgid "Your uploads location"
+msgstr "Your uploads location"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3112
+msgid ""
+"This is where membership thinks you have your images stored, if this is not "
+"correct then download protection may not work correctly."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3119
+msgid "Masked download URL"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3120
+msgid ""
+"This is the URL that the user will see. You can change the end part to "
+"something unique."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3133
+msgid "Protected groups"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3134
+msgid ""
+"Place each download group name on a new line, removing used groups will "
+"leave content visible to all users/members."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3194
+msgid "Shortcode protected content"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3196
+msgid ""
+"You can protect parts of a post or pages content by enclosing it in "
+"WordPress shortcodes."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3197
+msgid "Each level you create has it's own shortcode."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3203
+msgid "Legacy Shortcodes"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3204
+msgid ""
+"Each shortcode can be used to wrap protected content such as [shortcode] "
+"Protected content [/shortcode]"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3241
+msgid "No shortcodes available."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3248
+msgid "Protected content message"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3249
+msgid ""
+"This is the message that is displayed when the content protected by the "
+"shortcode can't be shown. Leave blank for no message. HTML allowed."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3272
+msgid "Admin only shortcodes"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3274
+msgid ""
+"Sometimes plugins create custom shortcodes but only register them in the "
+"public part of your site. This means that the Membership plugin admin "
+"interface will not be able to show them in the Shortcode rule."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3275
+msgid ""
+"If you find that a shortcode you want to protect is missing from the "
+"shortcode rule, then you can add it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3280
+msgid "Admin Only Shortcodes"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3281
+msgid ""
+"Place each shortcode text (without the square brackets) on a new line, "
+"removing used shortcodes could leave content visible to all users/members."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3301
+msgid "More tag default"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3303
+msgid ""
+"Content placed after the More tag in a post or page can be protected by "
+"setting the visibility below. This setting can be overridden within each "
+"individual level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3308
+msgid "Show content after the More tag"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3311
+msgid "Yes - More tag content is visible"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3312
+msgid "No - More tag content not visible"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3318
+msgid "No access message"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3319
+msgid ""
+"This is the message that is displayed when the content protected by the "
+"moretag can't be shown. Leave blank for no message. HTML allowed."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3380
+msgid "Payments currency"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3382
+msgid ""
+"This is the currency that will be used across all gateways. Note: Some "
+"gateways have a limited number of currencies available."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3387
+msgid "Payment currencys"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3437
+msgid "Membership renewal"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3439
+msgid ""
+"If you are using single payment gateways, then you should set the number of "
+"days before expiry that the renewal form is displayed on the Account page."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3445
+msgid "Renewal period limit"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3466
+msgid "Membership upgrades"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3468
+msgid ""
+"You should limit the amount of time allowed between membership upgrades in "
+"order to prevent members abusing the upgrade process."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3474
+msgid "Upgrades period limit"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3499
+msgid "Membership wizard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3501
+msgid ""
+"If you accidentally dismissed the membership wizard and would like to show "
+"it again, then check the box below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3507
+msgid "Show membership wizard"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3551
+msgid "Membership admins have been updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3575
+msgid ""
+"You can add or remove the ability for specific admin user accounts to manage "
+"the Membership plugin by checking or unchecking the boxes next to the "
+"relevant username."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3578
+msgid "User Login"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3641
+msgid ""
+"You can not remove your own permissions to manage the membership system "
+"whilst logged in."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3652
+msgid "There are no Admin users - something may have gone wrong."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3710
+msgid "Membership Admins"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3718
+msgid ""
+"You must enable Pretty Permalinks for Membership to function correctly - <a "
+"href=\"options-permalink.php\">Enable now &raquo;</a>"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3776
+msgid "Main rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3778
+msgid "Content rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3796
+#: app_old/membershipincludes/classes/membershipadmin.php:4486
+msgid " clone"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3799
+msgid "new level"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3861
+#: app_old/membershipincludes/classes/membershipadmin.php:4510
+msgid "Edit "
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3891
+msgid "Level title"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3894
+msgid "Level shortcode"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3894
+msgid ""
+"The shortcode for this level is based on the title (above). It can be used "
+"to wrap content that you only want to be seen by members on this level e.g. "
+"[levelshortcode] protected content [/levelshortcode]"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3898
+msgid "Save your level to create the shortcode"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3907
+#: app_old/membershipincludes/help/help.levelsedit.php:7
+msgid "Advanced (both)"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3911
+msgid ""
+"<strong>Warning:</strong> using both positive and negative rules on the same "
+"level can cause conflicts and unpredictable behaviour."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3915
+msgid "Positive rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3916
+msgid "These are the areas / elements that a member of this level can access."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3919
+#: app_old/membershipincludes/classes/membershipadmin.php:3945
+#: app_old/membershipincludes/classes/membershipadmin.php:4580
+msgid "Drop here"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3941
+msgid "Negative rules"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3942
+msgid ""
+"These are the areas / elements that a member of this level doesn't have "
+"access to."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3969
+msgid "Custom shortcode protected content message"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:3970
+msgid ""
+"If you want a protected content message to be displayed for this level then "
+"you can enter it here."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4261
+msgid "Membership Level added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4262
+msgid "Membership Level deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4263
+msgid "Membership Level updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4264
+msgid "Membership Level not added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4265
+msgid "Membership Level not updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4266
+msgid "Membership Level not deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4268
+msgid "Membership Level activation toggled."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4269
+msgid "Membership Level activation not toggled."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4271
+msgid "Membership Levels updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4304
+#: app_old/membershipincludes/classes/membershipadmin.php:4306
+msgid "Search Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4327
+msgid "View all Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4328
+msgid "View active Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4329
+msgid "View inactive Levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4334
+msgid "Order by Level ID"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4335
+msgid "Order by Level Name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4352
+msgid "Level Name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4354
+#: app_old/membershipincludes/classes/membershipadmin.php:4980
+#: app_old/membershipincludes/help/help.levels.php:5
+msgid "Users"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4355
+msgid ""
+"The shortcode for this level is based on the title. It can be used to wrap "
+"content that you only want to be seen by members on this level e.g. "
+"[levelshortcode] protected content [/levelshortcode], use the [not-"
+"levelshortcode] shortcodes to wrap content that should be visible to people "
+"not on a particular level."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4400
+msgid "Level ID:"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4410
+msgid "Clone"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4443
+msgid "No Membership levels where found, click above to add one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4489
+msgid "new subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4506
+msgid "Add "
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4534
+msgid "Subscription name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4537
+msgid "Subscription description"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4553
+msgid "Subscription price text"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4553
+msgid ""
+"The text you want to show as the price on the subscription form. E.G. Only "
+"$25 per month."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4561
+#: app_old/membershipincludes/classes/membershipadmin.php:4638
+msgid "Membership levels"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4562
+msgid ""
+"These are the levels that are part of this subscription and the order a user "
+"will travel through them. Any levels highlighted in red will never be "
+"reached due to the settings of previous levels."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4565
+msgid "Starting Point"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4567
+msgid ""
+"A new signup for this subscription will start here and immediately pass to "
+"the next membership level listed below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4655
+msgid "Add this level to the bottom of the membership levels list."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4655
+msgid "Add to Subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4883
+msgid "Subscription added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4884
+msgid "Subscription deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4885
+msgid "Subscription updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4886
+msgid "Subscription not added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4887
+msgid "Subscription not updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4888
+msgid "Subscription not deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4890
+msgid "Subscription activation toggled."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4891
+msgid "Subscription activation not toggled."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4893
+msgid "Subscriptions updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4927
+msgid "Search Memberships"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4929
+msgid "Search Subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4946
+msgid "Toggle public status"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4951
+msgid "View all subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4952
+msgid "View active subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4953
+msgid "View inactive subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4954
+msgid "View public subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4955
+msgid "View private subscriptions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4959
+msgid "Order by subscription ID"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4960
+msgid "Order by subscription name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:4979
+#: app_old/membershipincludes/classes/membershipadmin.php:5067
+msgid "Public"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5025
+msgid "Subscription ID:"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5032
+msgid "Activate and Make Public"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5041
+msgid "Make public"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5043
+msgid "Make private"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5084
+msgid "No Subscriptions where found, click above to add one."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5218
+#: app_old/membershipincludes/classes/membershipadmin.php:5223
+msgid "Add URL group"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5232
+msgid "Add group"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5245
+#: app_old/membershipincludes/classes/membershipadmin.php:5250
+msgid "Edit URL group"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5259
+msgid "Update group"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5292
+msgid "Group updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5293
+msgid "Group not updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5295
+msgid "Group added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5296
+msgid "Group not added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5298
+msgid "Group deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5299
+msgid "Group not deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5301
+msgid "Groups deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5307
+msgid "Edit URL Groups"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5359
+msgid "Group Name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5417
+msgid "No URL groups have been set up."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5550
+msgid "Add Ping details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5555
+#: app_old/membershipincludes/classes/membershipadmin.php:5564
+msgid "Add ping details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5577
+msgid "Edit Ping details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5582
+msgid "Edit ping details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5591
+msgid "Update ping details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5622
+msgid "Ping resent."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5623
+msgid "Ping not resent."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5628
+msgid "Pings History"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5640
+#: app_old/membershipincludes/classes/membershipadmin.php:5832
+msgid "Ping Name"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5685
+msgid "Resend as new ping"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5686
+msgid "Resend and overwrite"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5726
+msgid "No History available for this ping."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5766
+msgid "Ping details updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5767
+msgid "Ping details not updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5769
+msgid "Ping details added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5770
+msgid "Ping details not added."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5772
+#: app_old/membershipincludes/classes/membershipadmin.php:5775
+msgid "Ping details deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5773
+msgid "Ping details not deleted."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5780
+msgid "Edit Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5879
+msgid "History"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5891
+msgid "No Pings have been set up."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5925
+msgid "Membership details"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5937
+#: app_old/membershipincludes/classes/membershipadmin.php:5938
+#: app_old/membershipincludes/classes/membershipadmin.php:5988
+#: app_old/membershipincludes/classes/membershipadmin.php:5989
+msgid "Not called yet"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5941
+msgid "Select a subscription"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:5943
+msgid "Please select a subscription from the options below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6033
+msgid "Protected content group"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6036
+msgid "Is this an item you may want to restrict access to?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6321
+#: app_old/membershipincludes/classes/membershipadmin.php:6325
+msgid "Membership key"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6328
+msgid ""
+"This key is used to give you access the the members RSS feed, keep it safe "
+"and secret."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6354
+#: app_old/membershipincludes/classes/membershipadmin.php:6358
+msgid "Membership Administration"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6362
+msgid "This user has access to administer the Membership system."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6392
+msgid "Subscription Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6393
+msgid ""
+"If you want any pings to be sent when a member joins and/or leaves this "
+"subscription then set them below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6397
+#: app_old/membershipincludes/classes/membershipadmin.php:6453
+msgid "Joining Ping"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6411
+#: app_old/membershipincludes/classes/membershipadmin.php:6467
+msgid "Leaving Ping"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6448
+msgid "Level Pings"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6449
+msgid ""
+"If you want any pings to be sent when a member joins and/or leaves this "
+"level then set them below."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6583
+msgid "Gateway updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6584
+msgid "Gateway not updated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6586
+msgid "Gateway activated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6587
+msgid "Gateway not activated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6589
+msgid "Gateway deactivated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6590
+msgid "Gateway not deactivated."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6592
+msgid "Gateway activation toggled."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6597
+msgid "Edit Gateways"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6645
+msgid "Gateway Name"
+msgstr "Gateway Name"
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6716
+msgid "View transactions"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6742
+msgid "No Gateways where found for this install."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6837
+#: app_old/membershipincludes/classes/membershipadmin.php:6924
+msgid "Invalid form submission."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:6939
+msgid "User not found."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:7070
+msgid "default"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipadmin.php:7075
+msgid "downloads"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershipcron.php:54
+msgid "Every 15 Mins"
+msgstr "Every 15 Mins"
+
+#: app_old/membershipincludes/classes/membershippublic.php:229
+msgid "My Account"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:888
+msgid "No access to this content"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:1571
+#: app_old/membershipincludes/classes/membershippublic.php:1682
+#: app_old/membershipincludes/classes/membershippublic.php:1740
+msgid "Please ensure that the "
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:1571
+#: app_old/membershipincludes/classes/membershippublic.php:1682
+#: app_old/membershipincludes/classes/membershippublic.php:1740
+msgid " information is completed."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2046
+msgid "Subscribe"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2111
+#: app_old/membershipincludes/classes/membershippublic.php:2225
+#: app_old/membershipincludes/classes/membershippublic.php:2332
+#: app_old/membershipincludes/classes/membershippublic.php:2390
+msgid "Problem with registration."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2112
+#: app_old/membershipincludes/classes/membershippublic.php:2226
+#: app_old/membershipincludes/classes/membershippublic.php:2333
+#: app_old/membershipincludes/classes/membershippublic.php:2391
+msgid "Problem with Login."
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2113
+#: app_old/membershipincludes/classes/membershippublic.php:2227
+#: app_old/membershipincludes/classes/membershippublic.php:2334
+#: app_old/membershipincludes/classes/membershippublic.php:2392
+msgid "Please ensure you have completed all the fields"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2114
+#: app_old/membershipincludes/classes/membershippublic.php:2228
+#: app_old/membershipincludes/classes/membershippublic.php:2335
+#: app_old/membershipincludes/classes/membershippublic.php:2393
+msgid "Please ensure passwords match"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2115
+#: app_old/membershipincludes/classes/membershippublic.php:2229
+#: app_old/membershipincludes/classes/membershippublic.php:2336
+#: app_old/membershipincludes/classes/membershippublic.php:2394
+msgid "Please ensure you have entered an username or password"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2209
+#: app_old/membershipincludes/classes/membershippublic.php:2362
+msgid "Are you sure you want to unsubscribe from this subscription?"
+msgstr ""
+
+#: app_old/membershipincludes/classes/membershippublic.php:2442
+msgid "Could not create your user account."
+msgstr ""
+
+#: app_old/membershipincludes/classes/upgrade.php:678
+#: app_old/membershipincludes/classes/upgrade.php:727
+msgid "Checking table : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/upgrade.php:684
+#: app_old/membershipincludes/classes/upgrade.php:702
+#: app_old/membershipincludes/classes/upgrade.php:733
+#: app_old/membershipincludes/classes/upgrade.php:753
+msgid "Ok"
+msgstr "Ok"
+
+#: app_old/membershipincludes/classes/upgrade.php:687
+#: app_old/membershipincludes/classes/upgrade.php:736
+msgid "Checking fields in table : "
+msgstr ""
+
+#: app_old/membershipincludes/classes/upgrade.php:704
+msgid "Missing or Incorrect"
+msgstr ""
+
+#: app_old/membershipincludes/classes/upgrade.php:711
+msgid "Missing"
+msgstr ""
+
+#: app_old/membershipincludes/classes/upgrade.php:758
+#: app_old/membershipincludes/classes/upgrade.php:769
+msgid "Fixed"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:45
+msgid "No transactions data for the Free gateway"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:54
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:107
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:104
+msgid "Subscription button"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:92
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:198
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:678
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:317
+msgid "Upgrade"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.freesubscriptions.php:104
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:630
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:329
+msgid "Unsubscribe"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:90
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:87
+msgid "Paypal Currency"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:101
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:98
+msgid "Test Mode (Sandbox)"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:116
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:122
+msgid "Upgrade button"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:125
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:131
+msgid "Cancel button"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalexpress.php:796
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:480
+msgid ""
+"Last transaction has been reversed. Reason: Payment has been reversed "
+"(charge back)"
+msgstr ""
+
+#: app_old/membershipincludes/gateways/gateway.paypalsolo.php:113
+msgid "Renew button"
+msgstr ""
+
+#: app_old/membershipincludes/help/header.communications.php:1
+msgid ""
+"This is where you can set up an automated message to welcome your new "
+"members or to remind your members that their membership is about to expire."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.coupons.php:1
+msgid ""
+"This is where you can create, delete, or update coupon codes for your "
+"membership site."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.gateways.php:1
+msgid ""
+"This is where you control which gateways you want to use for your website. "
+"You should only activate the ones that you want to use to accept payments."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.levels.php:1
+msgid ""
+"This is where you manage the access levels of your site. It's recommended "
+"that you create a basic 'free users' access level, for site visitors who "
+"aren't yet paying members. You can then create as many more access levels as "
+"you wish. Use the drag and drop controls to choose which content becomes "
+"available at each level."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.members.php:1
+msgid ""
+"This is where you can view a list of your current members and their status, "
+"subscriptions and levels. You can move a user to a subscription, or "
+"deactivate their accounts from this page."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.pings.php:1
+msgid ""
+"This is where you can set up Pings to be sent to other websites when a "
+"member signs up for your site, changes levels or ends their membership. A "
+"Ping sends information to a web page on a different website that will accept "
+"and process that information, such as signing a user up for a mailing list, "
+"or registering them on a forum."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.subscriptions.php:1
+msgid ""
+"This is where you manage the available subscriptions on your site. "
+"Subscriptions control which level a user is on at any point during their "
+"membership, and how much they are charged. In order for a subscription to be "
+"visible (and selectable) to a potential member they must be Active and "
+"Public."
+msgstr ""
+
+#: app_old/membershipincludes/help/header.urlgroups.php:1
+msgid ""
+"This is where you can create groups of URLs (web pages) that you want to "
+"prevent access to. A URL group can contain as many URLs as you want, and can "
+"even include regular expressions so that you can prevent access to large "
+"areas of your website in one go."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.addons.php:1
+#: app_old/membershipincludes/help/help.gateways.php:1
+#: app_old/membershipincludes/help/help.optionsdownloads.php:1
+#: app_old/membershipincludes/help/help.optionsextras.php:1
+#: app_old/membershipincludes/help/help.pings.php:1
+#: app_old/membershipincludes/help/help.pingsedit.php:1
+#: app_old/membershipincludes/help/help.pingshistory.php:1
+#: app_old/membershipincludes/help/help.subs.php:1
+#: app_old/membershipincludes/help/help.subsedit.php:1
+#: app_old/membershipincludes/help/help.urlgroups.php:1
+#: app_old/membershipincludes/help/help.urlgroupsedit.php:1
+msgid "Some help content"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communication.php:2
+msgid ""
+"The communications system enables you to set up messages to be sent to a "
+"member at certain points during the lifetime of their membership. Messages "
+"can be sent immediately on sign-up as well as any number of days after they "
+"signed up. You can even send messages to a user as they move towards the "
+"expiration of their subscription."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communication.php:3
+#: app_old/membershipincludes/help/help.levels.php:3
+#: app_old/membershipincludes/help/help.members.php:3
+msgid "Active / Inactive"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communication.php:4
+msgid ""
+"Only messages that are active will be sent, to activate a message you should "
+"click on the Activate link underneath the messages subject. You can "
+"deactivate a currently active message at any time by clicking the Deactivate "
+"link, this will stop the message from being sent but will not delete it, so "
+"you can reactivate it again at a later time."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:1
+msgid "Adding / Editing a message"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:2
+msgid "Message to be sent"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:3
+msgid ""
+"The first field in the message add / edit screen is the time period in the "
+"lifetime of a membership that the message should be sent. Setting the number "
+"of days to 0 will force the message to be sent immediately when a member "
+"signs up, alternatively you can set the message to be sent x number of "
+"days / months or even years after a member has joined, or before a members "
+"subscription is due to expire."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:4
+msgid "Message subject"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:5
+msgid ""
+"The message subject is simply the subject that is set on the email for this "
+"message."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:7
+msgid ""
+"The message is the main content of the email to be sent. It can contain a "
+"number of tags that will be automatically filled in before the email is "
+"sent. This allows the message to be personalised to a certain degree. The "
+"available tags are:"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:9
+msgid "Displays your Blog Name."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:10
+msgid "Displays your Blog URL."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:11
+msgid "Displays the Username of the member."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:12
+msgid "Displays their chosen Nice Name."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:13
+msgid "Displays your Network Name (Multisite Install)."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:14
+msgid "Displays the Network URL (Multisite Install)."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:15
+msgid "Displays the Subscription Name they are currently on."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:16
+msgid "Displays the Level Name they are currently on."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.communicationedit.php:17
+msgid "Displays their Account URL."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.dashboard.php:1
+msgid "Membership Dashboard"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.dashboard.php:2
+msgid ""
+"The membership dashboard page shows a summary of the current status of your "
+"system, including the number of subscriptions and levels, and the number of "
+"users / members in each of them. This page is split into different areas "
+"each with a heading."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.dashboard.php:4
+msgid ""
+"The Members area shows the current status of your plugin (whether it is "
+"enabled or disabled), the Levels and Susbscriptions that you have set up and "
+"the number of members assigned to each one as well as the total number of "
+"users for your site and the number of those currently active."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.dashboard.php:6
+msgid ""
+"The News area shows the last few operations that have occured on your site. "
+"The news system records the movement of a user through your system and is "
+"handy for keeping track of recent events."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.dashboard.php:8
+msgid ""
+"The Statistics area shows the current number of members on each of your "
+"levels and subscriptions, as well as the recent sign-up activity in handy "
+"graph form."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levels.php:2
+msgid ""
+"Your access levels control the content that a user has access to on your "
+"site. This main page shows a list of all the levels that you currently have "
+"on your system, their status, the number of users assigned to them and the "
+"shortcode you can use to protect content for user not assigned to that level."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levels.php:4
+msgid ""
+"You can activate or deactivate a level by clicking on the relevant link "
+"under the level title. An Inactive level will not show in any other parts of "
+"the plugin. You can not deactivate a level that has users assigned to it, "
+"you must move the users to a new level first."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levels.php:6
+msgid "The number of users assigned to a level is listed in the Users column."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levels.php:8
+msgid ""
+"Each level has a custom shortcode based on the level title. You can protect "
+"content in your posts or pages so that only users on that level can see it "
+"by surrounding the content with the shortcode shown. E.g. [level-"
+"one]Protected content[/level-one] will allow users only on \"level one\" to "
+"see the content."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levelsedit.php:1
+msgid "Adding / Editing Levels"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levelsedit.php:2
+msgid ""
+"You can add and / or edit levels using this form. Each level should have a "
+"unique title, the level shortcode is based on the title, so if a level title "
+"is too similar to another, it may be confusing when using the shortcodes to "
+"protect content at a later date."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levelsedit.php:4
+msgid ""
+"A positive rule determines what content a user assigned to this level will "
+"have access to. To pick the content you should drag the relevant rules "
+"listed on the right hand side of the page to the DROP HERE box and then pick "
+"the content shown that you want the user to be able to access."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levelsedit.php:6
+msgid ""
+"A negative rule determines what content a user assigned to this level will "
+"not have access to. To pick the content you should drag the relevant rules "
+"listed on the right hand side of the page to the DROP HERE box and then pick "
+"the content shown that you want to prevent the user from accessing."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.levelsedit.php:8
+msgid ""
+"Sometimes you want to be able to use both positive and negative rules "
+"together, for example you may want to allow a user access to two pages, but "
+"not allow them access to a number of posts. You can accomplish this on the "
+"advanced tab by dragging the relevant rules to the appropriate DROP HERE "
+"boxes and selecting the content you want to allow / disallow access to."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:2
+msgid ""
+"The Edit Members page shows a list of your current users / members and is "
+"where you will manage their status within your membership system."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:4
+msgid ""
+"A member who has completed their sign-up and has been assigned to a "
+"subscription is automatically marked as an Active member. You can activate "
+"and deactivate a user manually on this page by clicking on the relevant "
+"link. A deactivted user will retain their subscription and level details, "
+"but will not be able to login to the site."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:6
+msgid ""
+"The subscription column shows the current subscriptions that a user is on. "
+"You can add, move or drop a subscription for a user by clicking on the "
+"relevant link in that column."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:8
+msgid ""
+"The level column shows the current level that a user is on. If the level "
+"name is in <strong>bold</strong> then it is assigned as part of a "
+"subscription. You can add, move or drop levels for a user by clicking on the "
+"relevant link in that column."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:10
+msgid ""
+"The gateway column shows the gateway that the user used to sign up. The "
+"gateway controls the renewal and upgrade options available for a user. You "
+"can change the gateway by clicking on the link in that column."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:11
+msgid "Bulk operations"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.members.php:12
+msgid ""
+"You can alter a number of users at the same time by checking the checkbox "
+"next to their names and using the Bulk Actions drop down to choose an "
+"actions to perform."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:1
+msgid "Stranger Settings"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:2
+msgid ""
+"If you used the Wizard and selected 'Also create a level to control what "
+"non- members can see?' then a default Visitors level will have been created "
+"and that will be the default option selected here. If there is no Stranger "
+"level then all of your content will be protected regardless which is "
+"probably not what you want because you would want to pop some blurb on there "
+"about why people need your critical subscription offerings."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:3
+msgid "It will then be down to each level to decide who has what access."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:4
+msgid ""
+"If you set this to none, then you can choose a page in the Membership Pages "
+"tab where users will be directed to if they do not have a subscription with "
+"you when viewing protected content."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:5
+msgid ""
+"As the description points out, this level will be used for visitors and "
+"members without a free or paid subscription to your site (free as in you "
+"give it them for free. Not free as in Stranger Level free). If you didn't "
+"insert a visitor level you can go create that and then come back here to "
+"finish the set up."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:6
+msgid "User Registration"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:7
+msgid ""
+"You might want to offer a free subscription, like 'signup for 10 days free', "
+"you can set which subscription they are assigned to by default. Most people "
+"will probably just create a stranger level as described previously in the "
+"Stranger Settings. But if you wanted to limit the time access then a free "
+"subscription is something to consider as well."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.options.php:8
+msgid ""
+"You can also choose to allow incomplete signups, so if your user registers "
+"but does not complete the signup process they would still be assigned an "
+"account for subscriptions."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:2
+msgid ""
+"First and foremost keep if you use the 'Create Page' button here, you can "
+"then go and add content to that page from the Page Admin area. If you edited "
+"the page for the subscription form, the form would appear below your content."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:3
+msgid "Registration Page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:4
+msgid ""
+"Decide which page in our WordPress site we will use for the registration "
+"page where users can grab a subscription. If the page does not exist in the "
+"drop down then click on the button Create Page button (Clicking this "
+"multiple times will create multiple pages)."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:5
+msgid "Form Type"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:6
+msgid "There are two options here."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:7
+msgid ""
+"<strong>Original Membership Form</strong> - With this option when a user "
+"clicks the signup button they will be sent to another page to complete the "
+"process."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:8
+msgid ""
+"<strong>Popup Registration Form</strong> - This will give your users a nice "
+"in page pop up."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:9
+msgid "Registration Completed Page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:10
+msgid ""
+"Really as it states, this is the page your users will see once they signup "
+"successfully and make any payments due. Create the page here and you can go "
+"edit it to put anything you wish on there."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:11
+msgid "Account Page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:12
+msgid ""
+"The Account Page is where you users can go and edit their account details."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:13
+msgid "Protected Content Page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:14
+msgid ""
+"When you protect a post or page, this is the content a user will be directed "
+"to if they do not have a subscription with access. That will prevent the "
+"user without a subscription accessing the content direct."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.optionspages.php:15
+msgid ""
+"You can edit this page direct, make a huge splash there with some flashy "
+"graphics or promotional text promoting why people should upgrade to a snazzy "
+"subscription from your website. Even link them to your signup page."
+msgstr ""
+
+#: app_old/membershipincludes/help/help.sidebar.php:5
+msgid "Project page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.sidebar.php:6
+msgid "Installation and instructions page"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.sidebar.php:7
+msgid "Support forum"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.sidebar.php:8
+#: app_old/membershipincludes/help/help.sidebar.php:15
+msgid "Restart the Tutorial"
+msgstr ""
+
+#: app_old/membershipincludes/help/help.sidebar.php:13
+msgid ""
+"The most powerful, easy to use and flexible membership plugin for WordPress, "
+"Multisite and BuddyPress sites available. Offer downloads, posts, pages, "
+"forums and more to paid members."
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:7
+#: app_old/membershipincludes/includes/bp.account.form.php:7
+msgid "Your details have been updated."
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:22
+#: app_old/membershipincludes/includes/bp.account.form.php:22
+msgid "Your password settings do not match"
+msgstr "Your password settings do not match"
+
+#: app_old/membershipincludes/includes/account.form.php:34
+#: app_old/membershipincludes/includes/bp.account.form.php:34
+msgid "Your details could not be updated."
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:57
+msgid "Edit your details"
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:63
+#: app_old/membershipincludes/includes/bp.account.form.php:67
+msgid "Usernames cannot be changed."
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:89
+msgid "Display name as"
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:126
+#: app_old/membershipincludes/includes/bp.account.form.php:127
+msgid "Website"
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:133
+msgid ""
+"To change your password, enter the new password below and then repeat it to "
+"confirm, otherwise leave these two fields blank."
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:137
+#: app_old/membershipincludes/includes/bp.account.form.php:136
+msgid "New Password"
+msgstr ""
+
+#: app_old/membershipincludes/includes/account.form.php:150
+#: app_old/membershipincludes/includes/bp.account.form.php:153
+msgid "Update Account"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.account.form.php:50
+#, php-format
+msgid ""
+"<strong>Hello %s</strong>, to edit your account details click on the edit "
+"link."
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.account.form.php:52
+msgid "edit"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.account.form.php:89
+msgid "Display name publicly as"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:31
+msgid ""
+"Registering for this site is easy, just fill in the fields below and we'll "
+"get a new account set up for you in no time."
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:39
+msgid "Account Details"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:41
+#: app_old/membershipincludes/includes/bp.registration.form.php:45
+#: app_old/membershipincludes/includes/bp.registration.form.php:49
+#: app_old/membershipincludes/includes/bp.registration.form.php:53
+#: app_old/membershipincludes/includes/bp.registration.form.php:80
+#: app_old/membershipincludes/includes/bp.registration.form.php:88
+#: app_old/membershipincludes/includes/bp.registration.form.php:96
+#: app_old/membershipincludes/includes/bp.registration.form.php:106
+#: app_old/membershipincludes/includes/bp.registration.form.php:117
+#: app_old/membershipincludes/includes/bp.registration.form.php:132
+#: app_old/membershipincludes/includes/bp.registration.form.php:143
+msgid "(required)"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:49
+msgid "Choose a Password"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:69
+msgid "Profile Details"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:123
+msgid "Clear"
+msgstr ""
+
+#: app_old/membershipincludes/includes/bp.registration.form.php:182
+#: app_old/membershipincludes/includes/renew.form.php:69
+#: app_old/membershipincludes/includes/subscription.form.php:48
+msgid "Sign Up"
+msgstr ""
+
+#: app_old/membershipincludes/includes/coupon.form.php:42
+msgid "Have a coupon code?"
+msgstr "Have a coupon code?"
+
+#: app_old/membershipincludes/includes/coupon.form.php:46
+msgid "Apply Coupon"
+msgstr "Apply Coupon"
+
+#: app_old/membershipincludes/includes/coupon.form.php:50
+msgid "Using Coupon Code: "
+msgstr ""
+
+#: app_old/membershipincludes/includes/coupon.form.php:54
+msgid "Remove Coupon"
+msgstr "Remove Coupon"
+
+#: app_old/membershipincludes/includes/default.rules.php:15
+msgid "Remove Posts from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:17
+msgid ""
+"Select the posts to be covered by this rule by checking the box next to the "
+"relevant posts title."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:74
+#, php-format
+msgid ""
+"Only the most recent %d posts are shown above, if you have more than that "
+"then you should consider using categories instead."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:322
+msgid "Remove Pages from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:324
+msgid ""
+"Select the Pages to be covered by this rule by checking the box next to the "
+"relevant pages title."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:379
+#, php-format
+msgid "Only the most recent %d pages are shown above."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:641
+msgid "Remove Categories from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:643
+msgid ""
+"Select the Categories to be covered by this rule by checking the box next to "
+"the relevant categories name."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:858
+msgid "More tag"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:858
+msgid "Remove More tag from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:860
+#: app_old/membershipincludes/includes/default.rules.php:965
+#: app_old/membershipincludes/includes/default.rules.php:1390
+msgid "Positive : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:860
+msgid "User can read full post content beyond the More tag."
+msgstr "User can read full post content beyond the More tag."
+
+#: app_old/membershipincludes/includes/default.rules.php:861
+#: app_old/membershipincludes/includes/default.rules.php:966
+#: app_old/membershipincludes/includes/default.rules.php:1391
+msgid "Negative : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:861
+msgid "User is unable to read full post content beyond the More tag."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:963
+msgid "Comments"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:963
+msgid "Remove Comments from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:965
+msgid "User gets read and make comments of posts."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:966
+msgid "User can not read or comment on posts."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1032
+msgid "Downloads"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1032
+msgid "Remove Downloads from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1034
+msgid ""
+"Select the Downloads / Media to be covered by this rule by checking the box "
+"next to the relevant group name."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1050
+#: app_old/membershipincludes/includes/default.rules.php:1056
+msgid "Download / Group name"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1083
+msgid ""
+"You have no download groups set, please visit the membership options page to "
+"set them up."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1136
+msgid "Remove Shortcodes from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1138
+msgid ""
+"Select the Shortcodes to be covered by this rule by checking the box next to "
+"the relevant shortcode tag."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1146
+#: app_old/membershipincludes/includes/default.rules.php:1153
+msgid "Shortcode tag"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1262
+msgid "Remove Menu from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1264
+msgid ""
+"Select the Menu items to be covered by this rule by checking the box next to "
+"the relevant menu labels."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1275
+#: app_old/membershipincludes/includes/default.rules.php:1282
+msgid "Menu / Item title"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1292
+msgid "MENU"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1383
+msgid "Blog Creation"
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1383
+msgid "Remove Blog Creation from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1390
+msgid "User can create "
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1390
+msgid " blogs."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1390
+msgid "Leave blank for unlimited blogs."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1391
+msgid "User is unable to create any blogs."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1526
+msgid "Remove URL Groups from this rules area."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1528
+msgid ""
+"Select the URL Groups to be covered by this rule by checking the box next to "
+"the relevant URL Group name."
+msgstr ""
+
+#: app_old/membershipincludes/includes/default.rules.php:1538
+#: app_old/membershipincludes/includes/default.rules.php:1545
+msgid "URL Group"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:293
+msgid "Sorry, this account is not active."
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:720
+#: app_old/membershipincludes/includes/functions.php:789
+#, php-format
+msgid "%s for "
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:720
+#: app_old/membershipincludes/includes/functions.php:754
+#: app_old/membershipincludes/includes/functions.php:868
+#: app_old/membershipincludes/includes/functions.php:870
+#: app_old/membershipincludes/includes/functions.php:890
+#: app_old/membershipincludes/includes/functions.php:922
+msgid "free"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:724
+#: app_old/membershipincludes/includes/functions.php:758
+#: app_old/membershipincludes/includes/functions.php:793
+#: app_old/membershipincludes/includes/functions.php:827
+msgid " day"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:726
+#: app_old/membershipincludes/includes/functions.php:760
+#: app_old/membershipincludes/includes/functions.php:795
+#: app_old/membershipincludes/includes/functions.php:829
+#: app_old/membershipincludes/includes/functions.php:896
+#: app_old/membershipincludes/includes/functions.php:928
+#: app_old/membershipincludes/includes/functions.php:964
+#: app_old/membershipincludes/includes/functions.php:996
+msgid " days"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:731
+#: app_old/membershipincludes/includes/functions.php:765
+#: app_old/membershipincludes/includes/functions.php:800
+#: app_old/membershipincludes/includes/functions.php:834
+msgid " week"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:733
+#: app_old/membershipincludes/includes/functions.php:767
+#: app_old/membershipincludes/includes/functions.php:802
+#: app_old/membershipincludes/includes/functions.php:836
+#: app_old/membershipincludes/includes/functions.php:903
+#: app_old/membershipincludes/includes/functions.php:935
+#: app_old/membershipincludes/includes/functions.php:971
+#: app_old/membershipincludes/includes/functions.php:1003
+msgid " weeks"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:738
+#: app_old/membershipincludes/includes/functions.php:772
+#: app_old/membershipincludes/includes/functions.php:807
+#: app_old/membershipincludes/includes/functions.php:841
+msgid " month"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:740
+#: app_old/membershipincludes/includes/functions.php:774
+#: app_old/membershipincludes/includes/functions.php:809
+#: app_old/membershipincludes/includes/functions.php:843
+#: app_old/membershipincludes/includes/functions.php:910
+#: app_old/membershipincludes/includes/functions.php:942
+#: app_old/membershipincludes/includes/functions.php:978
+#: app_old/membershipincludes/includes/functions.php:1010
+msgid " months"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:745
+#: app_old/membershipincludes/includes/functions.php:779
+#: app_old/membershipincludes/includes/functions.php:814
+#: app_old/membershipincludes/includes/functions.php:848
+msgid " year"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:747
+#: app_old/membershipincludes/includes/functions.php:781
+#: app_old/membershipincludes/includes/functions.php:816
+#: app_old/membershipincludes/includes/functions.php:850
+#: app_old/membershipincludes/includes/functions.php:917
+#: app_old/membershipincludes/includes/functions.php:949
+#: app_old/membershipincludes/includes/functions.php:985
+#: app_old/membershipincludes/includes/functions.php:1017
+msgid " years"
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:754
+#: app_old/membershipincludes/includes/functions.php:823
+#, php-format
+msgid "and then %s for "
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:868
+#: app_old/membershipincludes/includes/functions.php:876
+#, php-format
+msgid "%s "
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:870
+#: app_old/membershipincludes/includes/functions.php:878
+#, php-format
+msgid "and then %s "
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:890
+#: app_old/membershipincludes/includes/functions.php:958
+#, php-format
+msgid "%s every "
+msgstr ""
+
+#: app_old/membershipincludes/includes/functions.php:922
+#: app_old/membershipincludes/includes/functions.php:990
+#, php-format
+msgid "and then %s every "
+msgstr ""
+
+#: app_old/membershipincludes/includes/member.form.php:5
+msgid "Completed: Thank you for joining"
+msgstr ""
+
+#: app_old/membershipincludes/includes/member.form.php:6
+msgid ""
+"It looks like you are already a member of our site. Thank you very much for "
+"your support."
+msgstr ""
+
+#: app_old/membershipincludes/includes/member.form.php:7
+msgid ""
+"If you are at this page because you would like to create another account, "
+"then please log out first."
+msgstr ""
+
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:134
+#: app_old/membershipincludes/includes/pointer-tutorials.php:134
+msgid "Tutorial"
+msgstr ""
+
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:435
+#: app_old/membershipincludes/includes/pointer-tutorials.php:421
+msgid "Next &raquo;"
+msgstr ""
+
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:451
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:473
+#: app_old/membershipincludes/includes/pointer-tutorials.php:437
+#: app_old/membershipincludes/includes/pointer-tutorials.php:459
+#, php-format
+msgid "Dismiss %s"
+msgstr ""
+
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:457
+#: app_old/membershipincludes/includes/pointer-tutorials.php:443
+msgid "&laquo; Previous"
+msgstr ""
+
+#: app_old/membershipincludes/includes/new-pointer-tutorials.php:513
+#: app_old/membershipincludes/includes/pointer-tutorials.php:498
+#, php-format
+msgid "%s: Step %d of %d"
+msgstr ""
+
+#: app_old/membershipincludes/includes/payment.form.php:19
+#: app_old/membershipincludes/includes/payment.form.php:112
+#: app_old/membershipincludes/includes/popover_payment.form.php:51
+#: app_old/membershipincludes/includes/popover_payment.form.php:143
+msgid "Sign up for"
+msgstr ""
+
+#: app_old/membershipincludes/includes/payment.form.php:22
+#: app_old/membershipincludes/includes/popover_payment.form.php:54
+msgid "You currently have a subscription for the <strong>"
+msgstr ""
+
+#: app_old/membershipincludes/includes/payment.form.php:22
+#: app_old/membershipincludes/includes/popover_payment.form.php:54
+msgid ""
+"</strong> subscription. If you wish to sign up a different subscription then "
+"you can do below."
+msgstr ""
+
+#: app_old/membershipincludes/includes/payment.form.php:90
+#: app_old/membershipincludes/includes/payment.form.php:169
+#: app_old/membershipincludes/includes/popover_payment.form.php:120
+#: app_old/membershipincludes/includes/popover_payment.form.php:199
+msgid "You will pay : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/payment.form.php:115
+#: app_old/membershipincludes/includes/popover_payment.form.php:146
+msgid ""
+"Please check the details of your subscription below and click on the "
+"relevant button to complete the subscription."
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_payment.form.php:32
+msgid "Enter Your Credit Card Information"
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_payment.form.php:41
+msgid "Misconfigured Custom Payment Gateway: haspaymentform must be true."
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:2
+msgid "Register or Login to purchase"
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:5
+msgid "Enter your details below to create a new account."
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:6
+#: app_old/membershipincludes/includes/popover_signup.form.php:35
+msgid "This is an error"
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:28
+#: app_old/membershipincludes/includes/registration.form.php:72
+msgid "Register My Account &raquo;"
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:34
+msgid "Login below if you're already registered."
+msgstr ""
+
+#: app_old/membershipincludes/includes/popover_signup.form.php:48
+msgid "Login &raquo;"
+msgstr ""
+
+#: app_old/membershipincludes/includes/registration.form.php:48
+msgid ""
+"Please enter a new password, and then verify your new password by entering "
+"it again."
+msgstr ""
+
+#: app_old/membershipincludes/includes/registration.form.php:63
+msgid ""
+"Hint: The password should be at least 5 characters long. To make it "
+"stronger, use upper and lower case letters, numbers and symbols like ! \" ? "
+"$ % ^ &amp; )."
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:9
+#: app_old/membershipincludes/includes/renew.form.php:26
+#: app_old/membershipincludes/includes/renew.form.php:153
+msgid "Your Subscriptions"
+msgstr "Your Subscriptions"
+
+#: app_old/membershipincludes/includes/renew.form.php:11
+msgid ""
+"You are not currently logged in. Please login to view your subscriptions."
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:28
+msgid ""
+"You do not currently have any subscriptions in place. You can sign up for a "
+"new subscription by selecting one below"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:155
+msgid ""
+"Your current subscriptions are listed here. You can renew, cancel or upgrade "
+"your subscriptions by using the forms below."
+msgstr ""
+"Your current subscriptions are listed here. You can renew, cancel or upgrade "
+"your subscriptions by using the forms below."
+
+#: app_old/membershipincludes/includes/renew.form.php:185
+msgid "Your membership has been cancelled and will expire on : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:191
+#: app_old/membershipincludes/includes/renew.form.php:205
+#: app_old/membershipincludes/includes/renew.form.php:219
+msgid "Your membership is due to expire on : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:195
+#: app_old/membershipincludes/includes/renew.form.php:209
+#: app_old/membershipincludes/includes/renew.form.php:223
+msgid "You are on an <strong>indefinite</strong> membership."
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:202
+#: app_old/membershipincludes/includes/renew.form.php:216
+msgid "Your membership is set to <strong>automatically renew</strong>"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:249
+msgid "Renewal your subscription"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:253
+msgid "Renewal for the "
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:255
+#: app_old/membershipincludes/includes/renew.form.php:277
+msgid " day(s)"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:257
+#: app_old/membershipincludes/includes/renew.form.php:279
+msgid " week(s)"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:259
+#: app_old/membershipincludes/includes/renew.form.php:281
+msgid " month(s)"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:261
+#: app_old/membershipincludes/includes/renew.form.php:283
+msgid " year(s)"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:264
+#: app_old/membershipincludes/includes/renew.form.php:286
+msgid "following"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:265
+msgid "has been completed."
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:275
+msgid "To renew your subscription for another "
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:288
+msgid "you will need to pay"
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:291
+msgid "click on the button to the right."
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:320
+msgid "Upgrade from "
+msgstr ""
+
+#: app_old/membershipincludes/includes/renew.form.php:332
+msgid "Move to : "
+msgstr ""
+
+#: app_old/membershipincludes/includes/subscription.form.php:7
+msgid "Select a Subscription"
+msgstr ""
+
+#: app_old/membershipincludes/includes/subscription.form.php:8
+msgid ""
+"We have the following subscriptions available for our site. To join, simply "
+"click on the <strong>Sign Up</strong> button and then complete the "
+"registration details."
+msgstr ""
+"We have the following subscriptions available for our site. To join, simply "
+"click on the <strong>Sign Up</strong> button and then complete the "
+"registration details."
+
 #: lib/wpmu-lib/inc/class-thelib-ui.php:492
 msgid "Dismiss this notice."
 msgstr "Dismiss this notice."
-
-#~ msgid "Title"
-#~ msgstr "Title"
-
-#~ msgid "News"
-#~ msgstr "News"
-
-#~ msgid "URL Groups"
-#~ msgstr "URL Groups"
-
-#~ msgid "Membership Pages"
-#~ msgstr "Membership Pages"
-
-#~ msgid "Page URLs"
-#~ msgstr "Page URLs"
-
-#~ msgid "Strip query strings from URL"
-#~ msgstr "Strip query strings from URL"
-
-#~ msgid "Edit Members"
-#~ msgstr "Edit Members"
-
-#~ msgid "Add"
-#~ msgstr "Add"
-
-#~ msgid "Drop"
-#~ msgstr "Drop"
-
-#~ msgid "Basic protection"
-#~ msgstr "Basic protection"
-
-#~ msgid "Gateway Name"
-#~ msgstr "Gateway Name"
-
-#~ msgid "Every 15 Mins"
-#~ msgstr "Every 15 Mins"
-
-#~ msgid "Ok"
-#~ msgstr "Ok"
-
-#~ msgid "Have a coupon code?"
-#~ msgstr "Have a coupon code?"
-
-#~ msgid "Apply Coupon"
-#~ msgstr "Apply Coupon"
-
-#~ msgid "Remove Coupon"
-#~ msgstr "Remove Coupon"
-
-#~ msgid "User can read full post content beyond the More tag."
-#~ msgstr "User can read full post content beyond the More tag."
-
-#~ msgid ""
-#~ "Your current subscriptions are listed here. You can renew, cancel or "
-#~ "upgrade your subscriptions by using the forms below."
-#~ msgstr ""
-#~ "Your current subscriptions are listed here. You can renew, cancel or "
-#~ "upgrade your subscriptions by using the forms below."
-
-#~ msgid ""
-#~ "We have the following subscriptions available for our site. To join, "
-#~ "simply click on the <strong>Sign Up</strong> button and then complete the "
-#~ "registration details."
-#~ msgstr ""
-#~ "We have the following subscriptions available for our site. To join, "
-#~ "simply click on the <strong>Sign Up</strong> button and then complete the "
-#~ "registration details."
 
 #~ msgid "Any"
 #~ msgstr "Any"
