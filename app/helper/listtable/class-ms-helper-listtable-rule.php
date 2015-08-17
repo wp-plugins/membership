@@ -1,31 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership List Table
  *
- *
- * @since 1.0.0
- *
+ * @since  1.0.0
  */
 class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 
@@ -39,7 +16,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Holds the human readable name of the rule tyle
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var array
 	 */
 	protected $name = array(
@@ -67,7 +44,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	 * member variable for later usage.
 	 *
 	 * @var   array
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	protected $prepared_args = array();
 
@@ -75,14 +52,14 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	 * A list of all active memberships
 	 *
 	 * @var array
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	static protected $memberships = array();
 
 	/**
 	 * Initialize the list table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Rule $model Rule-Model
 	 */
 	public function __construct( $model ) {
@@ -121,7 +98,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Returns the rule model.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return MS_Rule
 	 */
 	public function get_model() {
@@ -187,7 +164,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	 * Adds a hidden field to the form that passes the current rule_type to the
 	 * bulk-edit action handler.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function add_rule_type() {
 		MS_Helper_Html::html_element(
@@ -237,6 +214,18 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 			self::DEFAULT_PAGE_SIZE
 		);
 
+		/**
+		 * Custom filter to modify the items on all Protection Rule list tables.
+		 *
+		 * @since 1.0.1.0
+		 * @var   int
+		 */
+		$per_page = apply_filters(
+			'rule_items_per_page',
+			$per_page,
+			$this->id
+		);
+
 		$current_page = $this->get_pagenum();
 
 		$args = array(
@@ -254,7 +243,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 		if ( ! empty( $_REQUEST['s'] ) ) {
 			$this->search_string = $_REQUEST['s'];
 			$args['s'] = $_REQUEST['s'];
-			$args['posts_per_page'] = false;
+			$args['posts_per_page'] = -1;
 			$args['number'] = false;
 			$args['offset'] = 0;
 		}
@@ -298,7 +287,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	 * Returns true, if the list displays items of the base membership.
 	 * i.e. true means that the Membership filter is set to "All"
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function list_shows_base_items() {
@@ -314,7 +303,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Returnst the membership of the current view.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function get_membership() {
@@ -336,7 +325,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Can be overwritten to customize the args array for prepare_items()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $defaults
 	 * @return array
 	 */
@@ -428,6 +417,19 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 			$label = __( 'Set date...', MS_TEXT_DOMAIN );
 		}
 
+		$offset = 0;
+		$number = 20;
+		if ( isset( $this->prepared_args['offset'] ) ) {
+			$offset = $this->prepared_args['offset'];
+		} elseif ( isset( $_POST['offset'] ) ) {
+			$offset = $_POST['offset'];
+		}
+		if ( isset( $this->prepared_args['number'] ) ) {
+			$number = $this->prepared_args['number'];
+		} elseif ( isset( $_POST['number'] ) ) {
+			$number = $_POST['number'];
+		}
+
 		ob_start();
 		?>
 		<a href="#" class="editinline"><?php echo '' . $label; ?></a>
@@ -442,12 +444,16 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 						'<span class="ms_%1$s[dripped_type]">%2$s</span>' .
 						'<span class="ms_%1$s[date]">%3$s</span>' .
 						'<span class="ms_%1$s[delay_unit]">%4$s</span>' .
-						'<span class="ms_%1$s[delay_type]">%5$s</span>',
+						'<span class="ms_%1$s[delay_type]">%5$s</span>' .
+						'<span class="offset">%6$s</span>' .
+						'<span class="number">%7$s</span>',
 						$membership->id,
 						$data['type'],
 						$data['date'],
 						$data['delay_unit'],
-						$data['delay_type']
+						$data['delay_type'],
+						$offset,
+						$number
 					);
 				}
 			}
@@ -471,7 +477,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Adds a class to the <tr> element
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  object $item
 	 */
 	protected function single_row_class( $item ) {
@@ -485,7 +491,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Displays the inline-edit form used to edit the dripped content details.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	protected function inline_edit() {
 		$rule = $this->model;
@@ -506,6 +512,16 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 		$field_item = array(
 			'type' => MS_Helper_Html::INPUT_TYPE_HIDDEN,
 			'name' => 'item_id',
+		);
+
+		$field_offset = array(
+			'type' => MS_Helper_Html::INPUT_TYPE_HIDDEN,
+			'name' => 'offset',
+		);
+
+		$field_number = array(
+			'type' => MS_Helper_Html::INPUT_TYPE_HIDDEN,
+			'name' => 'number',
 		);
 
 		$field_filter = array(
@@ -529,14 +545,14 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 		$field_date = array(
 			'type' => MS_Helper_Html::INPUT_TYPE_DATEPICKER,
 			'name' => 'date',
-			'placeholder' => __( 'Date...', MS_TEXT_DOMAIN ),
+			'placeholder' => __( 'Date', MS_TEXT_DOMAIN ) . '...',
 		);
 
 		$field_delay_unit = array(
 			'type' => MS_Helper_Html::INPUT_TYPE_TEXT,
 			'name' => 'delay_unit',
 			'class' => 'ms-text-small',
-			'placeholder' => '1',
+			'placeholder' => '0',
 		);
 
 		$field_delay_type = array(
@@ -559,6 +575,8 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 				MS_Helper_Html::html_element( $field_action );
 				MS_Helper_Html::html_element( $field_rule );
 				MS_Helper_Html::html_element( $field_item );
+				MS_Helper_Html::html_element( $field_offset );
+				MS_Helper_Html::html_element( $field_number );
 				MS_Helper_Html::html_element( $field_filter );
 				?>
 				<div class="dynamic-form"></div>
@@ -598,7 +616,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	 * membership-ID. Combined with the views (below) users can filter all rules
 	 * by membership + protection status independantly
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function list_head() {
 		$type_name = $this->name['plural'];
@@ -711,7 +729,7 @@ class MS_Helper_ListTable_Rule extends MS_Helper_ListTable {
 	/**
 	 * Return true if the current list is a view except "all"
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function is_view() {

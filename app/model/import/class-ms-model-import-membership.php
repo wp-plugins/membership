@@ -1,29 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Imports data from WPMU DEV Membership plugin.
  *
- * @since 1.1.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -32,14 +11,14 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Identifier for this Import source
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	const KEY = 'membership';
 
 	/**
 	 * Stores the result of present() call
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var bool
 	 */
@@ -48,7 +27,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * The import data object
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -60,7 +39,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	 * This information is not entirely reliable, since data could have been
 	 * deleted again after import.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function did_import() {
@@ -73,7 +52,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	 * true in case the source data is valid. When returning true then the
 	 * $source property of the model is set to the sanitized import source data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 *
 	 * @return bool
 	 */
@@ -96,7 +75,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	 * Returns true if the specific import-source is present and can be used
 	 * for import.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function present() {
@@ -118,7 +97,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Returns a valid import object that contains the Membership details
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return object
 	 */
 	protected function prepare_import_struct() {
@@ -157,7 +136,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	 * Generates a list of all default membership objects that can be imported.
 	 * The Membership2 base membership is not included!
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	protected function add_memberships() {
 		global $wpdb;
@@ -203,7 +182,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Generates a list of all members that have a membership
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	protected function add_members() {
 		global $wpdb;
@@ -227,7 +206,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Generates a list of subscriptions for the specified member
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @param int $member_id The member-ID
 	 */
 	protected function add_subscriptions( $member_id ) {
@@ -271,7 +250,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Generates a list of invoices for the specified subscription
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @param int $member_id The member-ID
 	 * @param int $subscription The subscription plan-ID
 	 * @param int $exp_id The export ID of the subscription object
@@ -329,7 +308,7 @@ class MS_Model_Import_Membership extends MS_Model_Import {
 	/**
 	 * Adds activation details for a single add-on to the import object
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $name The add-on name
 	 */
 	protected function activate_addon( $name ) {

@@ -1,33 +1,12 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Free Gateway.
  *
  * Process free memberships.
  *
  * Persisted by parent class MS_Model_Option. Singleton.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -38,7 +17,7 @@ class MS_Gateway_Free extends MS_Gateway {
 	/**
 	 * Gateway singleton instance.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $instance
 	 */
 	public static $instance;
@@ -47,7 +26,7 @@ class MS_Gateway_Free extends MS_Gateway {
 	 * Hook to show payment info.
 	 * This is called by the MS_Factory
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function after_load() {
 		parent::after_load();
@@ -56,13 +35,13 @@ class MS_Gateway_Free extends MS_Gateway {
 		$this->name = __( 'Free Gateway', MS_TEXT_DOMAIN );
 		$this->group = '';
 		$this->active = true;
-		$this->manual_payment = true;
+		$this->manual_payment = true; // Recurring billed/paid manually
 	}
 
 	/**
 	 * Return status if all fields are configured
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function is_configured() {
@@ -77,7 +56,7 @@ class MS_Gateway_Free extends MS_Gateway {
 	 *
 	 * We need to confirm that it's actually free and mark it paid.
 	 *
-	 * @since 1.1.1.3
+	 * @since  1.0.0
 	 * @param MS_Model_Relationship $subscription The related membership relationship.
 	 */
 	public function process_purchase( $subscription ) {

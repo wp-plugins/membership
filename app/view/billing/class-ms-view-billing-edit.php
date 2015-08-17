@@ -5,7 +5,7 @@
  *
  * Extends MS_View for rendering methods and magic methods.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage View
@@ -15,7 +15,7 @@ class MS_View_Billing_Edit extends MS_View {
 	/**
 	 * Create view output.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string
 	 */
@@ -59,7 +59,7 @@ class MS_View_Billing_Edit extends MS_View {
 	/**
 	 * Prepare html fields.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array
 	 */
@@ -77,7 +77,6 @@ class MS_View_Billing_Edit extends MS_View {
 				'id' => 'txt_membership',
 				'title' => __( 'Membership', MS_TEXT_DOMAIN ),
 				'type' => MS_Helper_Html::TYPE_HTML_TEXT,
-				'value' => $this->data['memberships'][ $invoice->membership_id ],
 			),
 			'txt_separator' => array(
 				'type' => MS_Helper_Html::TYPE_HTML_SEPARATOR,
@@ -175,6 +174,7 @@ class MS_View_Billing_Edit extends MS_View {
 		if ( $invoice->id > 0 ) {
 			$fields['user_id']['type'] = MS_Helper_Html::INPUT_TYPE_HIDDEN;
 			$fields['membership_id']['type'] = MS_Helper_Html::INPUT_TYPE_HIDDEN;
+			$fields['txt_membership']['value'] = $this->data['memberships'][ $invoice->membership_id ];
 		} else {
 			unset( $fields['txt_user'] );
 			unset( $fields['txt_membership'] );

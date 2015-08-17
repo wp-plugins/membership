@@ -1,33 +1,12 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Manual Gateway.
  *
  * Process manual payments (Eg. check, bank transfer)
  *
  * Persisted by parent class MS_Model_Option. Singleton.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -38,7 +17,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	/**
 	 * Gateway singleton instance.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $instance
 	 */
 	public static $instance;
@@ -48,7 +27,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	 *
 	 * The payment procedures like bank account, agency, etc.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $payment_info
 	 */
 	protected $payment_info;
@@ -58,7 +37,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	 * Hook to show payment info.
 	 * This is called by the MS_Factory
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function after_load() {
 		parent::after_load();
@@ -67,7 +46,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 		$this->name = __( 'Manual Payment Gateway', MS_TEXT_DOMAIN );
 		$this->description = __( '(Bank orders, cash, etc)', MS_TEXT_DOMAIN );
 		$this->group = __( 'Manual Payment', MS_TEXT_DOMAIN );
-		$this->manual_payment = true;
+		$this->manual_payment = true; // Recurring billed/paid manually
 		$this->pro_rate = true;
 
 		if ( $this->active ) {
@@ -86,7 +65,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	 * * Hooks Actions: *
 	 * * ms_controller_gateway_purchase_info_content
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return string The payment info.
 	 */
 	public function purchase_info_content() {
@@ -103,10 +82,9 @@ class MS_Gateway_Manual extends MS_Gateway {
 				<br />
 				<?php
 				printf(
-					'%s <a href="%s">%s</a>',
-					__( 'Edit it', MS_TEXT_DOMAIN ),
-					$link,
-					__( 'here.', MS_TEXT_DOMAIN )
+					__( 'Edit it %shere%s', MS_TEXT_DOMAIN ),
+					'<a href="' . $link . '">',
+					'</a>'
 				);
 				?>
 				<br /><br />
@@ -132,6 +110,11 @@ class MS_Gateway_Manual extends MS_Gateway {
 				$invoice->currency,
 				$invoice->total
 			);
+
+			// The user did make his intention to pay the invoice. Set status
+			// to billed.
+			$invoice->status = MS_Model_Invoice::STATUS_BILLED;
+			$invoice->save();
 		}
 
 		return apply_filters(
@@ -143,7 +126,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	/**
 	 * Verify required fields.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return boolean True if configured.
 	 */
 	public function is_configured() {
@@ -166,7 +149,7 @@ class MS_Gateway_Manual extends MS_Gateway {
 	/**
 	 * Validate specific property before set.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @access public
 	 * @param string $property The name of a property to associate.

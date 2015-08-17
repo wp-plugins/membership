@@ -1,28 +1,5 @@
 <?php
 /**
- * This file defines the MS_Hooker object.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Call when you really need a hooker...
  *
  * Base hooker class provides generic interface to hook on actions and filters.
@@ -32,7 +9,7 @@
  *
  * The Membership base class all other classes build on. No hooks defined here.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  */
@@ -41,7 +18,7 @@ class MS_Hooker {
 	/**
 	 * A unique object ID which is only used for debugging and tracing data.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var null
 	 */
 	protected $_factory_id = null;
@@ -50,7 +27,7 @@ class MS_Hooker {
 	 * Internal list of messages which is passed between functions.
 	 * The message list is shared between all controller objects!
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @see _message()
 	 * @var array
@@ -60,7 +37,7 @@ class MS_Hooker {
 	/**
 	 * Called before loading the model.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function before_load() {
 		do_action( 'ms_hooker_before_load', $this );
@@ -69,7 +46,7 @@ class MS_Hooker {
 	/**
 	 * Load the model data.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function load( $model_id = false ) {
 		throw new Exception( 'Method to be implemented in child class' );
@@ -78,7 +55,7 @@ class MS_Hooker {
 	/**
 	 * Called after loading model data.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function after_load() {
 		do_action( 'ms_hooker_after_load', $this );
@@ -87,7 +64,7 @@ class MS_Hooker {
 	/**
 	 * Called my MS_Factory after an object was either created or loaded.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function prepare_obj() {
 		do_action( 'ms_hooker_prepare_obj', $this );
@@ -96,7 +73,7 @@ class MS_Hooker {
 	/**
 	 * Called by MS_Factory when the first object of the class is created/loaded
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	static public function prepare_class() {
 		do_action( 'ms_hooker_prepare_class' );
@@ -105,7 +82,7 @@ class MS_Hooker {
 	/**
 	 * Returns the callback array for the specified method
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $tag The tag that is addressed by the callback.
 	 * @param  string|array $method The callback method.
 	 * @return array A working callback.
@@ -123,7 +100,7 @@ class MS_Hooker {
 	/**
 	 * Registers an action hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @uses add_action() To register action hook.
 	 *
@@ -158,7 +135,7 @@ class MS_Hooker {
 	 * If the callback is executed instantly, then the functionr receives NO
 	 * parameters!
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 *
 	 * @uses add_action() To register action hook.
 	 *
@@ -189,7 +166,7 @@ class MS_Hooker {
 	/**
 	 * Removes an action hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @uses remove_action() To remove action hook.
 	 *
 	 * @param  string $tag The name of the action to which the $method is hooked.
@@ -218,7 +195,7 @@ class MS_Hooker {
 	/**
 	 * Registers AJAX action hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  string $tag The name of the AJAX action to which the $method is
 	 *         hooked.
@@ -246,7 +223,7 @@ class MS_Hooker {
 	/**
 	 * Removes AJAX action hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  string $tag The name of the AJAX action to which the $method is
 	 *         hooked.
@@ -274,7 +251,7 @@ class MS_Hooker {
 	/**
 	 * Registers a filter hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @uses add_filter() To register filter hook.
 	 *
@@ -305,7 +282,7 @@ class MS_Hooker {
 	/**
 	 * Removes a filter hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @uses remove_filter() To remove filter hook.
 	 *
@@ -331,7 +308,7 @@ class MS_Hooker {
 	/**
 	 * Unbinds all hooks previously registered for actions and/or filters.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param boolean $actions Optional. TRUE to unbind all actions hooks.
 	 * @param boolean $filters Optional. TRUE to unbind all filters hooks.
@@ -357,7 +334,7 @@ class MS_Hooker {
 	/**
 	 * Returns property associated with the render.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  string $property The name of a property.
 	 * @return mixed Returns mixed value of a property or NULL if a property
@@ -372,7 +349,7 @@ class MS_Hooker {
 	/**
 	 * Associates the render with specific property.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $property The name of a property to associate.
 	 * @param mixed $value The value of a property.
@@ -389,7 +366,7 @@ class MS_Hooker {
 	 * The _message_ functions are used to set and pass data between functions;
 	 * the data is meant to be displayed and is not stored in the database.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	static protected function _message_reset() {
 		MS_Hooker::$_messages = array();
@@ -402,7 +379,7 @@ class MS_Hooker {
 	 * _message( 'key' ) .. return the message 'key'
 	 * _message( 'key', 'value' ) .. set 'value' as message 'key'
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	static protected function _message( $key = null, $value = null ) {
 		if ( ! is_array( MS_Hooker::$_messages ) ) {
@@ -426,10 +403,11 @@ class MS_Hooker {
 	 * Debug function for developers.
 	 * This will dump the current object to the output stream.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function dump() {
 		lib2()->debug->enable();
+		// Intended debug output, leave it here.
 		lib2()->debug->dump( $this );
 	}
 }

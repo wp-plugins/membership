@@ -117,9 +117,17 @@ class TheLib_2_0_3_Core extends TheLib_2_0_3 {
 	 * @api
 	 *
 	 * @param  string $domain Translations will be mapped to this domain.
-	 * @param  string $rel_dir Path to the dictionary folder; relative to ABSPATH.
+	 * @param  string $rel_dir Path to the dictionary folder; relative to WP_PLUGIN_DIR.
 	 */
 	public function translate_plugin( $domain, $rel_dir ) {
+		if ( did_action( 'plugins_loaded' ) ) {
+			_doing_it_wrong(
+				'translate_plugin',
+				'This function must be called before the hook "plugins_loaded" is fired.',
+				'2.0.3'
+			);
+		}
+
 		$this->_add( 'textdomain', compact( 'domain', 'rel_dir' ) );
 
 		$this->add_action( 'plugins_loaded', '_translate_plugin_callback' );
@@ -135,7 +143,8 @@ class TheLib_2_0_3_Core extends TheLib_2_0_3 {
 		$items = $this->_get( 'textdomain' );
 		foreach ( $items as $item ) {
 			extract( $item ); // domain, rel_dir
-			load_plugin_textdomain( $domain, false, $rel_dir );
+
+			$loaded = load_plugin_textdomain( $domain, false, $rel_dir );
 		}
 	}
 

@@ -5,7 +5,7 @@
  *
  * Extends MS_View for rendering methods and magic methods.
  *
- * @since 1.1.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage View
  */
@@ -16,7 +16,7 @@ class MS_View_Member_Dialog extends MS_Dialog {
 	/**
 	 * Generate/Prepare the dialog attributes.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function prepare() {
 		$member_id = $_POST['member_id'];
@@ -36,7 +36,8 @@ class MS_View_Member_Dialog extends MS_Dialog {
 		);
 
 		// Dialog Size
-		$this->height = 390;
+		$this->width = 940;
+		$this->height = 500;
 
 		// Contents
 		$this->content = $this->get_contents( $data );
@@ -48,7 +49,7 @@ class MS_View_Member_Dialog extends MS_Dialog {
 	/**
 	 * Save the gateway details.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return string
 	 */
 	public function submit() {
@@ -73,7 +74,7 @@ class MS_View_Member_Dialog extends MS_Dialog {
 	/**
 	 * Returns the contens of the dialog
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @return object
 	 */
@@ -180,6 +181,10 @@ class MS_View_Member_Dialog extends MS_Dialog {
 						$subscription_info = array(
 							'subscription_id' => $subscription->id,
 						);
+						$update_info = array(
+							'subscription_id' => $subscription->id,
+							'statuscheck' => 'yes',
+						);
 						?>
 						<tr>
 							<td class="column-membership">
@@ -188,17 +193,21 @@ class MS_View_Member_Dialog extends MS_Dialog {
 							<td class="column-status">
 								<?php
 								printf(
-									'<a href="#" data-ms-dialog="View_Member_Subscription" data-ms-data="%1$s">%2$s</a>',
+									'<a href="#" data-ms-dialog="View_Member_Subscription" data-ms-data="%2$s">%1$s</a>
+									<a href="#" data-ms-dialog="View_Member_Subscription" data-ms-data="%3$s" title="%5$s">%4$s</a>',
+									$subscription->status,
 									esc_attr( json_encode( $subscription_info ) ),
-									$subscription->status
+									esc_attr( json_encode( $update_info ) ),
+									'<i class="dashicons dashicons-update"></i>',
+									__( 'Check and update subscription status', MS_TEXT_DOMAIN )
 								);
 								?>
 							</td>
 							<td class="column-start">
-								<?php echo '' . $subscription->start_date; ?>
+								<?php echo $subscription->start_date; ?>
 							</td>
 							<td class="column-expire">
-								<?php echo '' . $subscription->expire_date; ?>
+								<?php echo $subscription->expire_date; ?>
 							</td>
 							<?php if ( $show_trial ) : ?>
 							<td class="column-trialexpire">
@@ -206,7 +215,7 @@ class MS_View_Member_Dialog extends MS_Dialog {
 								if ( $subscription->start_date == $subscription->trial_expire_date ) {
 									echo '-';
 								} else {
-									echo '' . $subscription->trial_expire_date;
+									echo $subscription->trial_expire_date;
 								}
 								?>
 							</td>

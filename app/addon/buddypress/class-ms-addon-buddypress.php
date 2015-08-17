@@ -1,39 +1,26 @@
 <?php
-/**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-
 class MS_Addon_BuddyPress extends MS_Addon {
 
 	/**
 	 * The Add-on ID
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	const ID = 'buddypress';
 
 	/**
+	 * The flag to determine if we want to use the BuddyPress registration page
+	 * or default M2 registration page.
+	 *
+	 * @since  1.0.1.0
+	 * @var  bool
+	 */
+	protected $buddypress_registration = true;
+
+	/**
 	 * Checks if the current Add-on is enabled
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function is_active() {
@@ -48,29 +35,56 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	}
 
 	/**
+	 * Returns the Add-on ID (self::ID).
+	 *
+	 * @since  1.0.1.0
+	 * @return string
+	 */
+	public function get_id() {
+		return self::ID;
+	}
+
+	/**
 	 * Initializes the Add-on. Always executed.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function init() {
+		$this->collission_check();
+
 		if ( self::is_active() ) {
-			$this->add_filter( 'ms_controller_membership_tabs', 'rule_tabs' );
-			MS_Factory::load( 'MS_Addon_BuddyPress_Rule' );
+			$this->buddypress_registration = lib2()->is_true(
+				$this->get_setting( 'buddypress_registration' )
+			);
 
 			$this->add_filter(
-				'ms_frontend_custom_registration_form',
-				'registration_form'
+				'ms_controller_protection_tabs',
+				'rule_tabs'
 			);
 
-			$this->add_action(
-				'ms_controller_frontend_register_user_before',
-				'prepare_create_user'
-			);
+			MS_Factory::load( 'MS_Addon_BuddyPress_Rule' );
 
-			$this->add_action(
-				'ms_controller_frontend_register_user_complete',
-				'save_custom_fields'
-			);
+			/*
+			 * Using the BuddyPress registration form is optional.
+			 * These actions are only needed when the BuddyPress registration
+			 * form is used instead of the M2 registration form.
+			 */
+			if ( $this->buddypress_registration ) {
+				$this->add_filter(
+					'ms_frontend_custom_registration_form',
+					'registration_form'
+				);
+
+				$this->add_action(
+					'ms_controller_frontend_register_user_before',
+					'prepare_create_user'
+				);
+
+				$this->add_action(
+					'ms_controller_frontend_register_user_complete',
+					'save_custom_fields'
+				);
+			}
 
 			// Disable BuddyPress Email activation.
 			add_filter(
@@ -91,9 +105,55 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	}
 
 	/**
+	 * Checks, if some BuddyPress pages overlap with M2 membership pages.
+	 *
+	 * In some cases people used the same page-ID for both BuddyPress
+	 * registration and M2 registration. This will cause problems and must be
+	 * resolved to have M2 and BuddyPress work symbiotically.
+	 *
+	 * @since  1.0.1.1
+	 */
+	protected function collission_check() {
+		$buddy_pages = MS_Factory::get_option( 'bp-pages' );
+
+		if ( ! is_array( $buddy_pages ) ) {
+			// Okay, no BuddyPress pages set up yet.
+			return;
+		}
+
+		$duplicates = array();
+		foreach ( $buddy_pages as $type => $page_id ) {
+			$collission = MS_Model_Pages::get_page_by( 'id', $page_id );
+			if ( $collission ) {
+				$title = $collission->post_title;
+				if ( ! $title ) {
+					$title = $collission->post_name;
+				}
+
+				$duplicates[] = sprintf( '%s - %s', $page_id, $title );
+			}
+		}
+
+		if ( count( $duplicates ) ) {
+			$msg = sprintf(
+				'%s<br><br>%s',
+				sprintf(
+					__( 'BuddyPress uses a page that is also used as a Membership page by Membership 2.<br>Please assign a different page for either %sMembership 2%s or %sBuddyPress%s to avoid conflicts.', MS_TEXT_DOMAIN ),
+					'<a href="' . MS_Controller_Plugin::get_admin_url( 'settings' ) . '">',
+					'</a>',
+					'<a href="' . admin_url( 'admin.php?page=bp-page-settings' ) . '">',
+					'</a>'
+				),
+				implode( '<br>', $duplicates )
+			);
+			lib2()->ui->admin_message( $msg, 'error' );
+		}
+	}
+
+	/**
 	 * Registers the Add-On
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $list The Add-Ons list.
 	 * @return array The updated Add-Ons list.
 	 */
@@ -101,6 +161,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 		$list[ self::ID ] = (object) array(
 			'name' => __( 'BuddyPress Integration', MS_TEXT_DOMAIN ),
 			'description' => __( 'Integrate BuddyPress with Membership 2.', MS_TEXT_DOMAIN ),
+			'icon' => 'dashicons dashicons-groups',
 			'details' => array(
 				array(
 					'type' => MS_Helper_Html::TYPE_HTML_TEXT,
@@ -108,12 +169,18 @@ class MS_Addon_BuddyPress extends MS_Addon {
 					'desc' => __( 'Adds BuddyPress rules in the "Protection Rules" page.', MS_TEXT_DOMAIN ),
 				),
 				array(
-					'type' => MS_Helper_Html::TYPE_HTML_TEXT,
-					'title' => __( 'Registration page', MS_TEXT_DOMAIN ),
+					'id' => 'buddypress_registration',
+					'type' => MS_Helper_Html::INPUT_TYPE_RADIO_SLIDER,
+					'title' => __( 'Use BuddyPress Registration', MS_TEXT_DOMAIN ),
 					'desc' =>
-						__( 'The BuddyPress registration page will be used instead of the default Membership 2 registration page.', MS_TEXT_DOMAIN ) .
+						__( 'Enable this option to use the BuddyPress registration page instead of the Membership 2 registration page.', MS_TEXT_DOMAIN ) .
 						'<br />' .
 						__( 'New users are automatically activated by Membership 2 and no confirmation email is sent to the user!', MS_TEXT_DOMAIN ),
+					'value' => $this->buddypress_registration,
+					'ajax_data' => array(
+						'action' => $this->ajax_action(),
+						'field' => 'buddypress_registration',
+					),
 				),
 			),
 		);
@@ -132,7 +199,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	/**
 	 * Returns true, when the BuddyPress plugin is activated.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function buddypress_active() {
@@ -144,7 +211,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	/**
 	 * Add buddypress rule tabs in membership level edit.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @filter ms_controller_membership_get_tabs
 	 *
@@ -163,7 +230,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	 * Display the BuddyPress registration form instead of the default
 	 * Membership2 registration form.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return string HTML code of the registration form or empty string to use
 	 *                the default form.
 	 */
@@ -197,7 +264,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	/**
 	 * Redirects all output to the Buffer, so we can easily discard it later...
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function catch_nonce_field() {
 		ob_start();
@@ -213,7 +280,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	 * Note that the form is submitted to Membership2, so we need to
 	 * handle the background stuff. BuddyPress will not do it for us...
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function membership_fields() {
 		/*
@@ -252,7 +319,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	 * This preparation only ensures that the user can be created.
 	 * XProfile fields are not handled here...
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function prepare_create_user() {
 		$_REQUEST['first_name'] = $_REQUEST['signup_username'];
@@ -269,7 +336,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	 *
 	 * @see bp-xprofile-screens.php function xprofile_screen_edit_profile()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  WP_User $user The new user.
 	 */
 	public function save_custom_fields( $user ) {
@@ -321,7 +388,7 @@ class MS_Addon_BuddyPress extends MS_Addon {
 	/**
 	 * Automatically confirms new registrations.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  int $user_id The new User-ID
 	 */
 	public function disable_validation( $user_id ) {

@@ -1,4 +1,4 @@
-/*! Membership 2 - v4.0.01
+/*! Membership 2 - v4.0.03
  * https://wordpress.org/plugins/membership/
  * Copyright (c) 2015; * Licensed GPLv2+ */
 /*global window:false */
@@ -154,7 +154,9 @@ window.ms_functions = {
 
 		if ( ! slider.hasClass( 'ms-processing' ) && ! slider.attr( 'readonly' ) ) {
 			slider.toggleClass( 'on' );
+			slider.toggleClass( 'off' );
 			slider.parent().toggleClass( 'on' );
+			slider.parent().toggleClass( 'off' );
 			slider.trigger( 'change' );
 
 			toggle = slider.children( '.wpmui-toggle' );
@@ -187,6 +189,7 @@ window.ms_functions = {
 						var is_err = fn.ajax_error( response, info_field );
 						if ( is_err ) {
 							slider.toggleClass( 'on' );
+							slider.toggleClass( 'off' );
 						}
 
 						info_field.removeClass( 'ms-processing' );
@@ -477,13 +480,14 @@ window.ms_functions = {
 
 				resp.title = resp.title || 'Dialog';
 				resp.height = resp.height || 100;
+				resp.width = resp.width > 0 ? resp.width : undefined;
 				resp.content = resp.content || '';
 				resp.modal = resp.modal || true;
 
 				dlg = wpmUi.popup()
 					.modal( true, ! resp.modal )
 					.title( resp.title )
-					.size( undefined, resp.height )
+					.size( resp.width, resp.height )
 					.content( resp.content )
 					.show();
 			}
@@ -1053,11 +1057,388 @@ window.ms_init.view_billing_edit = function init () {
 
 /*global window:false */
 /*global document:false */
+/*global wpmUi:false */
+/*global ms_data:false */
+/*global ms_functions:false */
+
+window.ms_init.view_billing_transactions = function init() {
+	var table = jQuery( '.wp-list-table.transactions' ),
+		btn_clear = table.find( '.action-clear' ),
+		btn_ignore = table.find( '.action-ignore' ),
+		btn_link = table.find( '.action-link' );
+
+	// Handle the "Reset" action.
+	function clear_line( ev ) {
+		var cell = jQuery( this ).closest( 'td' ),
+			nonce = cell.find( 'input[name=nonce_update]' ).val(),
+			row = cell.closest( '.item' ),
+			row_id = row.attr( 'id' ).replace( /^item-/, '' ),
+			data = {};
+
+		if ( ! row.hasClass( 'log-ignore' ) ) { return false; }
+
+		data.action = 'transaction_update';
+		data._wpnonce = nonce;
+		data.id = row_id;
+		data.state = 'clear';
+
+		cell.addClass( 'wpmui-loading' );
+		jQuery.post(
+			window.ajaxurl,
+			data,
+			function(response) {
+				row.removeClass( 'log-ignore is-manual' ).addClass( 'log-err' );
+			}
+		).always(function() {
+			cell.removeClass( 'wpmui-loading' );
+		});
+
+		return false;
+	}
+
+	// Handle the "Ignore" action.
+	function ignore_line( ev ) {
+		var cell = jQuery( this ).closest( 'td' ),
+			nonce = cell.find( 'input[name=nonce_update]' ).val(),
+			row = cell.closest( '.item' ),
+			row_id = row.attr( 'id' ).replace( /^item-/, '' ),
+			data = {};
+
+		if ( ! row.hasClass( 'log-err' ) ) { return false; }
+
+		data.action = 'transaction_update';
+		data._wpnonce = nonce;
+		data.id = row_id;
+		data.state = 'ignore';
+
+		cell.addClass( 'wpmui-loading' );
+		jQuery.post(
+			window.ajaxurl,
+			data,
+			function(response) {
+				row.removeClass( 'log-err' ).addClass( 'log-ignore is-manual' );
+			}
+		).always(function() {
+			cell.removeClass( 'wpmui-loading' );
+		});
+
+		return false;
+	}
+
+	// Handle the "Link" action.
+	function link_line( ev ) {
+		var cell = jQuery( this ).closest( 'td' ),
+			nonce = cell.find( 'input[name=nonce_link]' ).val(),
+			row = cell.closest( '.item' ),
+			row_id = row.attr( 'id' ).replace( /^item-/, '' ),
+			data = {};
+
+		if ( ! row.hasClass( 'log-err' ) ) { return false; }
+
+		data.action = 'transaction_link';
+		data._wpnonce = nonce;
+		data.id = row_id;
+
+		cell.addClass( 'wpmui-loading' );
+		jQuery.post(
+			window.ajaxurl,
+			data,
+			function( response ) {
+				if ( response.length ) {
+					show_link_dialog( row, response );
+				}
+			}
+		).always(function() {
+			cell.removeClass( 'wpmui-loading' );
+		});
+
+		return false;
+	}
+
+	// Display the Transaction-Link popup.
+	function show_link_dialog( row, data ) {
+		var sel_user, sel_subscription, sel_invoice, nonce_data, nonce_update,
+			row_user, row_subscription, row_invoice, btn_submit, log_id,
+			popup = wpmUi.popup(),
+			wnd = popup.$();
+
+		popup.modal( true );
+		popup.title( ms_data.lang.link_title );
+		popup.content( data );
+		popup.show();
+
+		// Add event handlers inside the popup.
+		sel_user = wnd.find( 'select[name=user_id]' );
+		sel_subscription = wnd.find( 'select[name=subscription_id]' );
+		sel_invoice = wnd.find( 'select[name=invoice_id]' );
+		row_user = wnd.find( '.link-member' );
+		row_subscription = wnd.find( '.link-subscription' );
+		row_invoice = wnd.find( '.link-invoice' );
+		nonce_data = wnd.find( 'input[name=nonce_link_data]' );
+		nonce_update = wnd.find( 'input[name=nonce_update]' );
+		log_id = wnd.find( 'input[name=log_id]' );
+		btn_submit = wnd.find( 'button[name=submit]' );
+
+		row_subscription.hide();
+		row_invoice.hide();
+		btn_submit.prop( 'disabled', true ).addClass( 'disabled' );
+
+		function load_subscriptions() {
+			var data,
+				user_id = sel_user.val();
+
+			if ( isNaN( user_id ) || user_id < 1 ) {
+				row_invoice.find( '.wpmui-label-after' ).hide();
+				row_subscription.hide();
+				row_invoice.hide();
+				return false;
+			}
+
+			data = {
+				'action': 'transaction_link_data',
+				'_wpnonce': nonce_data.val(),
+				'get': 'subscriptions',
+				'for': user_id
+			};
+
+			sel_subscription.empty();
+			sel_invoice.empty();
+			row_subscription.show().addClass( 'wpmui-loading' );
+			row_invoice.find( '.wpmui-label-after' ).hide();
+			row_invoice.hide();
+			btn_submit.prop( 'disabled', true ).addClass( 'disabled' );
+
+			jQuery.post(
+				window.ajaxurl,
+				data,
+				function( response ) {
+					jQuery.each( response, function( val, label ) {
+						append_option( sel_subscription, val, label );
+					});
+				},
+				'json'
+			).always(function() {
+				row_subscription.removeClass( 'wpmui-loading' );
+			});
+		}
+
+		function load_invoices() {
+			var data,
+				subscription_id = sel_subscription.val();
+
+			if ( isNaN( subscription_id ) || subscription_id < 1 ) {
+				row_invoice.find( '.wpmui-label-after' ).hide();
+				row_invoice.hide();
+				return false;
+			}
+
+			data = {
+				'action': 'transaction_link_data',
+				'_wpnonce': nonce_data.val(),
+				'get': 'invoices',
+				'for': subscription_id
+			};
+
+			sel_invoice.empty();
+			row_invoice.show().addClass( 'wpmui-loading' );
+			row_invoice.find( '.wpmui-label-after' ).hide();
+			btn_submit.prop( 'disabled', true ).addClass( 'disabled' );
+
+			jQuery.post(
+				window.ajaxurl,
+				data,
+				function( response ) {
+					window.console.log( response );
+					jQuery.each( response, function( val, label ) {
+
+					window.console.log( val, label );
+						append_option( sel_invoice, val, label );
+					});
+				},
+				'json'
+			).always(function() {
+				row_invoice.removeClass( 'wpmui-loading' );
+			});
+		}
+
+		function confirm_data() {
+			var inv_id = sel_invoice.val();
+
+			if ( ! isNaN( inv_id ) && inv_id > 0 ) {
+				row_invoice.find( '.wpmui-label-after' ).show();
+				btn_submit.prop( 'disabled', false ).removeClass( 'disabled' );
+			} else {
+				row_invoice.find( '.wpmui-label-after' ).hide();
+				btn_submit.prop( 'disabled', true ).addClass( 'disabled' );
+			}
+		}
+
+		function save_link() {
+			var data = {
+				'action': 'transaction_update',
+				'_wpnonce': nonce_update.val(),
+				'id': log_id.val(),
+				'link': sel_invoice.val()
+			};
+
+			if ( ! data.link ) { return false; }
+			wnd.addClass( 'wpmui-loading' );
+
+			jQuery.post(
+				window.ajaxurl,
+				data,
+				function( response ) {
+					if ( '3' === response ) {
+						row.removeClass( 'log-err' ).addClass( 'log-ok is-manual' );
+						popup.close();
+					}
+				}
+			).always(function() {
+				wnd.removeClass( 'wpmui-loading' );
+			});
+		}
+
+		sel_user.change( load_subscriptions );
+		sel_subscription.change( load_invoices );
+		sel_invoice.change( confirm_data );
+		btn_submit.click( save_link );
+
+		if ( ! isNaN( sel_user.val() ) && sel_user.val() > 0 ) {
+			load_subscriptions();
+		}
+	}
+
+	function append_option( container, val, label ) {
+		if ( typeof label === 'object' ) {
+			var group = jQuery( '<optgroup></optgroup>' );
+			group.attr( 'label', val );
+			jQuery.each( label, function( subval, sublabel ) {
+				append_option( group, subval, sublabel );
+			});
+			container.append( group );
+		} else {
+			container.append(
+				jQuery( '<option></option>' )
+				.val( val )
+				.html( label )
+			);
+		}
+	}
+
+	btn_clear.click(clear_line);
+	btn_ignore.click(ignore_line);
+	btn_link.click(link_line);
+};
+
+/*global window:false */
+/*global document:false */
 /*global ms_data:false */
 /*global ms_functions:false */
 
 window.ms_init.view_member_date = function init () {
 	jQuery( '.ms-date' ).ms_datepicker();
+};
+
+/*global window:false */
+/*global document:false */
+/*global ms_data:false */
+/*global ms_functions:false */
+
+window.ms_init.view_member_editor = function init () {
+	var txt_username = jQuery( '#username' ),
+		txt_email = jQuery( '#email' ),
+		sel_user = jQuery( '.ms-group-select #user_id' ),
+		btn_add = jQuery( '#btn_create' ),
+		btn_select = jQuery( '#btn_select' ),
+		chosen_options = {};
+
+	function validate_field( fieldname, field ) {
+		var value = field.val(),
+			data = {},
+			row = field.closest( '.wpmui-wrapper' );
+
+		data.action = 'member_validate_field';
+		data.field = fieldname;
+		data.value = value;
+
+		row.addClass( 'wpmui-loading' );
+
+		jQuery.post(
+			window.ajaxurl,
+			data,
+			function( response ) {
+				var info = row.find( '.wpmui-label-after' );
+				row.removeClass( 'wpmui-loading' );
+
+				if ( '1' === response ) {
+					field.removeClass( 'invalid' );
+					field.addClass( 'valid' );
+					info.html( '' );
+				} else {
+					field.removeClass( 'valid' );
+					field.addClass( 'invalid' );
+					info.html( response );
+				}
+
+				validate_buttons();
+			}
+		);
+	}
+
+	function validate_buttons() {
+		if ( txt_username.hasClass( 'valid' ) && txt_email.hasClass( 'valid' ) ) {
+			btn_add.prop( 'disabled', false );
+			btn_add.removeClass( 'disabled' );
+		} else {
+			btn_add.prop( 'disabled', true );
+			btn_add.addClass( 'disabled' );
+		}
+
+		if ( sel_user.val() ) {
+			btn_select.prop( 'disabled', false );
+			btn_select.removeClass( 'disabled' );
+		} else {
+			btn_select.prop( 'disabled', true );
+			btn_select.addClass( 'disabled' );
+		}
+	}
+
+	txt_username.change(function() {
+		validate_field( 'username', txt_username );
+	});
+
+	txt_email.change(function() {
+		validate_field( 'email', txt_email );
+	});
+
+	sel_user.change(validate_buttons);
+
+	chosen_options.minimumInputLength = 3;
+	chosen_options.multiple = false;
+	chosen_options.dropdownAutoWidth = true;
+	chosen_options.dropdownCssClass = 'ms-select2';
+	chosen_options.containerCssClass = 'ms-select2';
+	chosen_options.ajax = {
+		url: window.ajaxurl,
+		dataType: "json",
+		type: "GET",
+		quietMillis: 100,
+		data: function( term, page ) {
+			return {
+				action: "member_search",
+				q: term,
+				p: page
+			};
+		},
+		results: function( data, page ) {
+			return { results: data.items, more: data.more };
+		}
+	};
+	sel_user.removeClass( 'wpmui-hidden' );
+	window.console.log( chosen_options );
+	sel_user.select2( chosen_options );
+
+	validate_buttons();
 };
 
 /*global window:false */
@@ -1110,7 +1491,7 @@ window.ms_init.view_membership_add = function init () {
 			el_public.removeClass( 'disabled ms-locked' );
 			el_paid.removeClass( 'disabled ms-locked' );
 		}
-	}).first().trigger( 'click' );
+	}).filter( ':checked' ).trigger( 'click' );
 
 	// Cancel the wizard.
 	jQuery( '#cancel' ).click( function() {
@@ -1174,10 +1555,14 @@ window.ms_init.view_membership_list = function init () {
 /*global ms_functions:false */
 
 window.ms_init.metabox = function init() {
-	if ( jQuery( '.ms-protect-content' ).hasClass( 'on' ) ) {
-		jQuery( '#ms-metabox-access-wrapper' ).show();
+	var radio_protection = jQuery( '.ms-protect-content' ),
+		radio_rule = jQuery( '.ms-protection-rule' ),
+		box_access = jQuery( '#ms-metabox-access-wrapper' );
+
+	if ( radio_protection.hasClass( 'on' ) ) {
+		box_access.show();
 	} else {
-		jQuery( '#ms-metabox-access-wrapper' ).hide();
+		box_access.hide();
 	}
 
 	jQuery( '.dripped' ).click( function() {
@@ -1185,6 +1570,7 @@ window.ms_init.metabox = function init() {
 		tooltip.toggle( 300 );
 	} );
 
+	// Callback after the base protection setting was changed.
 	window.ms_init.ms_metabox_event = function( event, data ) {
 		jQuery( '#ms-metabox-wrapper' ).replaceWith( data.response );
 		window.ms_init.metabox();
@@ -1193,13 +1579,29 @@ window.ms_init.metabox = function init() {
 			window.ms_functions.radio_slider_ajax_update( this );
 		} );
 
-		jQuery( '.ms-protect-content' ).on( 'ms-radio-slider-updated', function( event, data ) {
+		radio_protection.on( 'ms-radio-slider-updated', function( event, data ) {
 			window.ms_init.ms_metabox_event( event, data );
 		} );
 	};
 
-	jQuery( '.ms-protect-content' ).on( 'ms-radio-slider-updated', function( event, data ) {
+	// Callback after a membership protection setting was changed.
+	function rule_updated( event, data ) {
+		var active = radio_rule.filter('.on,.wpmui-loading').length;
+
+		if ( active ) {
+			box_access.show();
+			radio_protection.addClass( 'on' );
+		} else {
+			box_access.hide();
+			radio_protection.removeClass( 'on' );
+		}
+	}
+
+	radio_protection.on( 'ms-radio-slider-updated', function( event, data ) {
 		window.ms_init.ms_metabox_event( event, data );
+	});
+	radio_rule.on( 'ms-radio-slider-updated', function( event, data ) {
+		rule_updated( event, data );
 	});
 };
 
@@ -1311,7 +1713,7 @@ window.ms_init.view_membership_payment = function init () {
 
 	function payment_type() {
 		var me = jQuery( this ),
-			block = me.closest( '.inside' ),
+			block = me.closest( '.ms-payment-form' ),
 			pay_type = me.val(),
 			all_settings = block.find( '.ms-payment-type-wrapper' ),
 			active_settings = block.find( '.ms-payment-type-' + pay_type ),
@@ -1365,8 +1767,9 @@ window.ms_init.view_membership_payment = function init () {
 	jQuery( '#currency' ).change( show_currency );
 
 	jQuery( '.wpmui-slider-trial_period_enabled' ).on( 'ms-radio-slider-updated', toggle_trial );
-	jQuery(document).on( 'ms-ajax-updated', '#enable_trial', reload_page );
+	jQuery(document).on( 'ms-ajax-updated', '#enable_trial_addon', reload_page );
 };
+
 /*global window:false */
 /*global document:false */
 /*global ms_data:false */
@@ -1433,6 +1836,12 @@ window.ms_init.view_protected_content = function init () {
 
 				form_row.find( '[name=item_id]' )
 					.val( item_data.item_id );
+
+				form_row.find( '[name=offset]' )
+					.val( item_data.offset );
+
+				form_row.find( '[name=number]' )
+					.val( item_data.number );
 
 				form_row.find( '[name=dripped_type]' )
 					.attr( 'name', base + '[dripped_type]' )
@@ -1508,7 +1917,6 @@ window.ms_init.view_protected_content = function init () {
 	jQuery( document ).on( 'ms-inline-editor-updated', update_table );
 
 	sel_network_site.on( 'change', refresh_site_data );
-	window.console.log( 'INIT PROTECTED CONTENT' , sel_network_site );
 };
 
 
@@ -1586,6 +1994,38 @@ window.ms_init.memberships_column = function init_column( column_class ) {
 	});
 };
 
+/*global window:false */
+/*global document:false */
+/*global ms_data:false */
+/*global ms_functions:false */
+
+//
+// JS for the Membership > Edit > Upgrade Paths page.
+//
+window.ms_init.view_membership_upgrade = function init () {
+	var slider_allow = jQuery( '.ms-allow .wpmui-radio-slider' );
+
+	function slider_updated() {
+		var me = jQuery( this ),
+			denied = me.hasClass( 'on' ),
+			row = me.closest( '.ms-allow' ),
+			upd_replace = row.next( '.ms-update-replace' );
+
+		if ( ! upd_replace.length ) { return; }
+
+		if ( denied ) {
+			upd_replace.hide();
+		} else {
+			upd_replace.show();
+		}
+	}
+
+	slider_allow.on( 'ms-radio-slider-updated', slider_updated );
+
+	slider_allow.each(function() {
+		slider_updated.apply( this );
+	});
+};
 /*global window:false */
 /*global document:false */
 /*global ms_data:false */
@@ -1732,7 +2172,7 @@ window.ms_init.view_settings = function init () {
 window.ms_init.view_settings_automated_msg = function init () {
 	var is_dirty = false;
 
-	jQuery( '#switch_comm_type' ).click(function() {
+	function change_comm_type() {
 		var me = jQuery( this ),
 			form = me.closest( 'form' ),
 			ind = 0;
@@ -1748,11 +2188,29 @@ window.ms_init.view_settings_automated_msg = function init () {
 		}
 
 		form.submit();
-	});
+	}
 
-	jQuery( 'input, select, textarea', '.ms-editor-form' ).change(function() {
+	function make_dirty() {
 		is_dirty = true;
-	});
+	}
+
+	function toggle_override() {
+		var toggle = jQuery( this ),
+			block = toggle.closest( '.ms-settings-wrapper' ),
+			form = block.find( '.ms-editor-form' );
+
+		if ( toggle.hasClass( 'on' ) ) {
+			form.show();
+		} else {
+			form.hide();
+		}
+	}
+
+	jQuery( '#switch_comm_type' ).click( change_comm_type );
+	jQuery( 'input, select, textarea', '.ms-editor-form' ).change( make_dirty );
+	jQuery( '.override-slider' )
+		.each(function() { toggle_override.apply( this ); })
+		.on( 'ms-ajax-done', toggle_override );
 
 	/**
 	 * Add the javascript for our custom TinyMCE button
@@ -1762,14 +2220,13 @@ window.ms_init.view_settings_automated_msg = function init () {
 	 */
 	window.tinymce.PluginManager.add(
 		'ms_variable',
-		function( editor, url ) {
+		function membership2_variables( editor, url ) {
 			var key, item, items = [];
 
 			// This function inserts the variable to the current cursor position.
 			function insert_variable() {
 				editor.insertContent( this.value() );
 			}
-
 			// Build the list of available variabled (defined in the view!)
 			for ( key in ms_data.var_button.items ) {
 				if ( ! ms_data.var_button.items.hasOwnProperty( key ) ) {
@@ -2026,7 +2483,6 @@ window.ms_init.view_settings_import = function init() {
 	btn_import.click( start_import );
 
 };
-
 /*global window:false */
 /*global document:false */
 /*global ms_data:false */
@@ -2099,7 +2555,26 @@ window.ms_init.view_settings_protection = function init () {
 		return data;
 	}
 
+	function toggle_override() {
+		var toggle = jQuery( this ),
+			block = toggle.closest( '.inside' ),
+			content = block.find( '.wp-editor-wrap' ),
+			button = block.find( '.button-primary' );
+
+		if ( toggle.hasClass( 'on' ) ) {
+			button.show();
+			content.show();
+		} else {
+			button.hide();
+			content.hide();
+		}
+	}
+
 	jQuery( '.button-primary.wpmui-ajax-update' ).data( 'before_ajax', before_ajax );
+
+	jQuery( '.override-slider' )
+		.each(function() { toggle_override.apply( this ); })
+		.on( 'ms-ajax-done', toggle_override );
 };
 
 /*global window:false */

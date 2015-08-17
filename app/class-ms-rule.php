@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership Rule Parent class.
  *
  * Persisted by Membership class.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -34,7 +13,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Membership ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int $membership_id
 	 */
 	protected $membership_id = 0;
@@ -44,7 +23,7 @@ class MS_Rule extends MS_Model {
 	 * If yes, then we need to invert all access: "has access" in base rule
 	 * means that the item is protected.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var bool
 	 */
 	protected $is_base_rule = false;
@@ -52,7 +31,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Rule type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $rule_type
 	 */
 	protected $rule_type;
@@ -63,7 +42,7 @@ class MS_Rule extends MS_Model {
 	 * Each child rule may use it's own data structure, but
 	 * need to override core methods that use parent data structure.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array $rule_value {
 	 *     @type int $item_id The protected item ID.
 	 *     @type int $value The rule value. 0: no access; 1: has access.
@@ -77,7 +56,7 @@ class MS_Rule extends MS_Model {
 	 * Each child rule may use it's own data structure, but
 	 * need to override core methods that use parent data structure.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array {
 	 *     A hash that defines the drip options of each protected item.
 	 *
@@ -100,7 +79,7 @@ class MS_Rule extends MS_Model {
 	 * Subscription -> Membership -> Rule
 	 * When we know the Subscription-ID we also know the Membership-ID
 	 *
-	 * @since 1.1.0.7
+	 * @since  1.0.0
 	 * @var   int
 	 */
 	protected $_subscription_id = 0;
@@ -108,7 +87,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Class constructor.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param int $membership_id The membership that owns this rule object.
 	 */
 	public function __construct( $membership_id ) {
@@ -135,7 +114,7 @@ class MS_Rule extends MS_Model {
 	 * This function is executed in Admin and Front-End, so it should only
 	 * initialize stuff that is really needed!
 	 *
-	 * @since  1.1
+	 * @since  1.0.0
 	 */
 	protected function initialize() {
 		// Can be overwritten by child classes.
@@ -148,7 +127,7 @@ class MS_Rule extends MS_Model {
 	 * Rules that need to be activated via an add-on should overwrite this
 	 * method to return the current rule-state
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function is_active() {
@@ -158,7 +137,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Validate dripped type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $type The rule type to validate.
 	 * @return bool True if is a valid dripped type.
 	 */
@@ -171,7 +150,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Create a rule model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $rule_type The rule type to create.
 	 * @param int $membership_id The Membership model this rule belongs to.
 	 * @param int $subscription_id The Subscription ID
@@ -206,7 +185,7 @@ class MS_Rule extends MS_Model {
 	 * - For site-wide protection $rule_type is same as the $key.
 	 * - For network-wide protection the $key has format "blog_id:rule_rype".
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key The rule-key which may or may not include a site_id.
 	 * @return string The rule_type value extracted from the rule-key.
 	 */
@@ -227,7 +206,7 @@ class MS_Rule extends MS_Model {
 	 * Builds the rule-key based on the provided rule_type. This function uses
 	 * the current blog_id to build the rule-key for network-wide mode.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $rule_type
 	 * @return string The rule-key (includes the site_id in network-wide mode).
 	 */
@@ -254,7 +233,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * If network-wide protection is disabled this function always returns true.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key
 	 * @return bool
 	 */
@@ -282,7 +261,7 @@ class MS_Rule extends MS_Model {
 	 * If the query targetet multiple post_types at once, then an array of
 	 * all queried post_types is returned.
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @param  WP_Query $wp_query
 	 * @return string|array The post-type(s) that was queried.
 	 */
@@ -318,7 +297,7 @@ class MS_Rule extends MS_Model {
 				$post_type = 'post';
 			}
 
-			if ( $qv['withcomments'] ) {
+			if ( ! empty( $qv['withcomments'] ) ) {
 				// Seems to be posts, since it has comments.
 				$post_type = 'post';
 			}
@@ -340,7 +319,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * To be overridden by children classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Model_Relationship The membership relationship to protect content from.
 	 */
 	public function prepare_rule( $subscription = false ) {
@@ -361,7 +340,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * To be overridden by children classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function protect_content() {
 		do_action(
@@ -375,7 +354,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * To be overridden by children classes.
 	 *
-	 * @since 1.1
+	 * @since  1.0.0
 	 */
 	public function protect_admin_content() {
 		do_action(
@@ -387,7 +366,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Verify if this model has rules set.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return boolean True if it has rules, false otherwise.
 	 */
 	public function has_rules() {
@@ -408,7 +387,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Count protection rules quantity.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param bool $has_access_only Optional. Count rules for has_access status only.
 	 * @return int $count The rule count result.
 	 */
@@ -434,7 +413,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Get rule value for a specific content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to get rule value for.
 	 * @return boolean The rule value for the requested content. Default $rule_value_default.
@@ -465,7 +444,7 @@ class MS_Rule extends MS_Model {
 	 * Can be overwritten by child classes to implement a distinct
 	 * serialization logic.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return array The serialized values of the Rule.
 	 */
 	public function serialize() {
@@ -499,7 +478,7 @@ class MS_Rule extends MS_Model {
 	 * Can be overwritten by child classes to implement a distinct
 	 * deserialization logic.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $values A list of allowed IDs.
 	 */
 	public function populate( $values ) {
@@ -528,7 +507,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Returns an array of membership that protect the specified rule item.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to check.
 	 * @return array List of memberships (ID => name)
@@ -556,7 +535,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * Note: This method should only be called for the BASE membership!
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to check.
 	 * @return array List of memberships (ID => name)
@@ -573,20 +552,6 @@ class MS_Rule extends MS_Model {
 			$All_Memberships = MS_Model_Membership::get_memberships();
 		}
 
-		$base = MS_Model_Membership::get_base();
-		$base_rule = $base->get_rule( $this->rule_type );
-		$current_protection = $base_rule->get_rule_value( $id );
-		$should_protect = ! empty( $memberships );
-
-		if ( ! $should_protect ) {
-			$base_rule->remove_access( $id );
-		} elseif ( ! $current_protection ) {
-			// Only `give_access()` when the item is not protected yet.
-			$base_rule->give_access( $id );
-		}
-		$base->set_rule( $this->rule_type, $base_rule );
-		$base->save();
-
 		foreach ( $All_Memberships as $membership ) {
 			$rule = $membership->get_rule( $this->rule_type );
 			if ( in_array( $membership->id, $memberships ) ) {
@@ -602,7 +567,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Verify access to the current content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to verify access.
 	 * @param bool $admin_has_access Default true: Admin will always have access,
@@ -663,7 +628,7 @@ class MS_Rule extends MS_Model {
 			'ms_rule_has_access',
 			$access,
 			$id,
-			$this->ruly_type,
+			$this->rule_type,
 			$this
 		);
 	}
@@ -671,7 +636,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Verify if has dripped rules.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to verify.
 	 * @return boolean True if has dripped rules.
@@ -698,7 +663,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * Handler for setting dripped data content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param int $item_id Drip-Settings of this item are changed.
 	 * @param string $drip_type Any of MS_Model_Rule::DRIPPED_TYPE_* values.
 	 * @param string $date Only used for type 'specific_date'
@@ -729,7 +694,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Returns the effective date on which the specified item becomes available.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $item_id The content id to verify dripped access.
 	 * @param string $start_date The start date of the member membership.
@@ -785,7 +750,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Returns a string that describes the dripped rule.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @param string $item_id The content id to verify dripped access.
 	 * @return string Text like "Instantly" or "After 7 days"
@@ -850,7 +815,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Count item Membership2 summary.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @return array {
@@ -903,7 +868,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * To be overridden in children classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @return array The contents array.
@@ -917,7 +882,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * To be overridden in children classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @return int The content count.
@@ -929,7 +894,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Reset the rule value data.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @return int The content count.
@@ -946,7 +911,7 @@ class MS_Rule extends MS_Model {
 	 * Denies access to all items that are defined in the base-rule but
 	 * not in the current rule.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Rule $base_rule The source rule model to merge rules to.
 	 */
 	public function protect_undefined_items( $base_rule ) {
@@ -993,16 +958,46 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Set access status to content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $id The content id to set access to.
 	 * @param bool $access The access status to set.
 	 */
 	public function set_access( $id, $access ) {
 		if ( $access ) {
+			$rule_usage = 1;
 			$this->rule_value[ $id ] = MS_Model_Rule::RULE_VALUE_HAS_ACCESS;
 		} else {
+			$rule_usage = 0;
 			unset( $this->rule_value[ $id ] );
 			unset( $this->dripped[ $id ] );
+		}
+
+		// Update the base rule.
+		if ( ! $this->is_base_rule ) {
+			$base = MS_Model_Membership::get_base();
+			$base_rule = $base->get_rule( $this->rule_type );
+
+			if ( ! $rule_usage ) {
+				$all_memberships = MS_Model_Membership::get_memberships();
+				foreach ( $all_memberships as $membership ) {
+					if ( $membership->is_base ) { continue; }
+					$mem_rule = $membership->get_rule( $this->rule_type );
+					if ( ! $mem_rule->get_rule_value( $id ) ) { continue; }
+
+					$rule_usage += 1;
+				}
+			}
+
+			if ( ! $rule_usage ) {
+				$base_rule->remove_access( $id );
+				$base->set_rule( $this->rule_type, $base_rule );
+				$base->save();
+			} elseif ( ! $base_rule->get_rule_value( $id ) ) {
+				// Only `give_access()` when the item is not protected yet.
+				$base_rule->give_access( $id );
+				$base->set_rule( $this->rule_type, $base_rule );
+				$base->save();
+			}
 		}
 
 		do_action( 'ms_rule_set_access', $id, $access, $this );
@@ -1011,7 +1006,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Give access to content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $id The content id to give access.
 	 */
 	public function give_access( $id ) {
@@ -1026,7 +1021,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Remove access to content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $id The content id to remove access.
 	 */
 	public function remove_access( $id ) {
@@ -1041,7 +1036,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Toggle access to content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $id The content id to toggle access.
 	 */
 	public function toggle_access( $id ) {
@@ -1061,7 +1056,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * Return default search arguments.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
@@ -1134,7 +1129,7 @@ class MS_Rule extends MS_Model {
 	 * Returns a list of post_ids to exclude or include to fullfil the specified
 	 * Membership/Status filter.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $args
 	 * @return array {
 	 *     List of post_ids to exclude or include
@@ -1203,7 +1198,7 @@ class MS_Rule extends MS_Model {
 		/**
 		 * Allow rules/Add-ons to modify the exclude/include list.
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 */
 		$exclude = array_unique(
 			apply_filters(
@@ -1241,7 +1236,7 @@ class MS_Rule extends MS_Model {
 	 *
 	 * Avoid post__in and post__not_in conflicts.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param mixed $args The query post args
 	 *     @see @link http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @return mixed $args The validated args.
@@ -1326,7 +1321,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Filter content.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $status The status to filter.
 	 * @param mixed[] $contents The content object array.
 	 * @return mixed[] The filtered contents.
@@ -1369,7 +1364,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Returns Membership object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return MS_Model_Membership The membership object.
 	 */
 	public function get_membership() {
@@ -1384,7 +1379,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Returns property associated with the render.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $property The name of a property.
 	 * @return mixed Returns mixed value of a property or NULL if a property doesn't exist.
 	 */
@@ -1415,7 +1410,7 @@ class MS_Rule extends MS_Model {
 	/**
 	 * Validate specific property before set.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $property The name of a property to associate.
 	 * @param mixed $value The value of a property.
 	 */

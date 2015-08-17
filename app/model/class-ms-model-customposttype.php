@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Abstract Custom Post Type model.
  *
  * Persists data into wp_post and wp_postmeta
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Model
@@ -38,74 +17,74 @@ class MS_Model_CustomPostType extends MS_Model {
 	 * Both static and class property are used to handle php 5.2 limitations.
 	 * Override this value in child object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected static $POST_TYPE;
+	protected static $POST_TYPE = '';
 
 	/**
 	 * ID of the model object.
 	 *
 	 * Saved as WP post ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var int
 	 */
-	protected $id;
+	protected $id = 0;
 
 	/**
-	 * Model name.
+	 * Model name (this is the post slug)
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
-	protected $name;
+	protected $name = '';
 
 	/**
 	 * Model title.
 	 *
 	 * Saved in $post->post_title.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
-	protected $title;
+	protected $title = '';
 
 	/**
 	 * Model description.
 	 *
 	 * Saved in $post->post_content and $post->excerpt.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
-	protected $description;
+	protected $description = '';
 
 	/**
 	 * The user ID of the owner.
 	 *
 	 * Saved in $post->post_author
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var int
 	 */
-	protected $user_id;
+	protected $user_id = 0;
 
 	/**
 	 * The last modified date.
 	 *
 	 * Saved in $post->post_modified
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
-	protected $post_modified;
+	protected $post_modified = '';
 
 	/**
 	 * Custom data can be used by other plugins via the set_custom_data() and
@@ -114,7 +93,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 * This can be used to store data that other plugins use to store object
 	 * related information, like affiliate options for a membership, etc.
 	 *
-	 * @since  2.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -123,9 +102,9 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Not persisted fields.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	static public $ignore_fields = array();
 
@@ -134,7 +113,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 *
 	 * We ensure that the custom_data field is an array.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function prepare_obj() {
 		parent::prepare_obj();
@@ -149,17 +128,23 @@ class MS_Model_CustomPostType extends MS_Model {
 	 *
 	 * Update WP cache.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @var string[]
+	 * @since  1.0.0
 	 */
 	public function save() {
 		MS_Factory::select_blog();
 		$this->before_save();
 
 		$this->post_modified = gmdate( 'Y-m-d H:i:s' );
-
 		$class = get_class( $this );
+
+		/*
+		 * Serialize data that is later saved to the postmeta table.
+		 *
+		 * While data is serialized it can also modify the model data before
+		 * writing it to the posts table.
+		 */
+		$data = MS_Factory::serialize_model( $this );
+
 		$post = array(
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
@@ -173,15 +158,21 @@ class MS_Model_CustomPostType extends MS_Model {
 			'post_modified' => $this->post_modified,
 		);
 
+		/**
+		 * Give child classes an easy way to modify the post and meta data right
+		 * before it is saved.
+		 *
+		 * @since 1.0.1.0
+		 */
+		$post = $this->save_post_data( $post );
+		$data = $this->save_meta_data( $data );
+
 		if ( empty( $this->id ) ) {
 			$this->id = wp_insert_post( $post );
 		} else {
 			$post[ 'ID' ] = $this->id;
 			wp_update_post( $post );
 		}
-
-		// save attributes in postmeta table
-		$data = MS_Factory::serialize_model( $this );
 
 		// We first remove any metadata of our custom post type that is not
 		// contained in the serialized data collection.
@@ -202,16 +193,60 @@ class MS_Model_CustomPostType extends MS_Model {
 			 * Action triggered after a custom post type model was saved to
 			 * database.
 			 *
-			 * @since 2.0.0
+			 * @since  1.0.0
 			 */
 			do_action( 'ms_saved_' . $class, $this );
 		}
 	}
 
 	/**
+	 * Prepare the post data right before it is saved to the wp_posts table.
+	 *
+	 * @see    self::save()
+	 * @since  1.0.1.0
+	 * @param  array $post Data collection passed to wp_update_post().
+	 * @return array Data collection passed to wp_update_post().
+	 */
+	protected function save_post_data( $post ) {
+		return $post;
+	}
+
+	/**
+	 * Prepare the meta data right before it is saved to the wp_postmeta table.
+	 *
+	 * @see    self::save()
+	 * @since  1.0.1.0
+	 * @param  array $data Key-Value pairs that represent metadata.
+	 * @return array Key-Value pairs that represent metadata.
+	 */
+	protected function save_meta_data( $data ) {
+		return $data;
+	}
+
+	/**
+	 * Populate the model with custom data from the wp_posts table.
+	 *
+	 * @see    MS_Factory::load_from_wp_custom_post_type()
+	 * @since  1.0.1.0
+	 * @param  array $post Data collection passed to wp_update_post().
+	 */
+	public function load_post_data( $post ) {
+	}
+
+	/**
+	 * Populate the model with custom data from the wp_postmeta table.
+	 *
+	 * @see    MS_Factory::load_from_wp_custom_post_type()
+	 * @since  1.0.1.0
+	 * @param  array $data Key-Value pairs that represent metadata.
+	 */
+	public function load_meta_data( $data ) {
+	}
+
+	/**
 	 * Delete post from wp table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return bool
 	 */
@@ -233,7 +268,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 * Removes all meta fields, except the ones that are specified in the
 	 * second parameter.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $data_to_keep List of meta-fields to keep (field-names)
 	 */
 	private function clean_metadata( $data_to_keep ) {
@@ -261,7 +296,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Get custom register post type args for this model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public static function get_register_post_type_args() {
 		return apply_filters(
@@ -275,7 +310,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 *
 	 * @see wp_check_post_lock.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return boolean True if locked.
 	 */
@@ -309,7 +344,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 *
 	 * Based in the wp_set_post_lock
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return bool|int
 	 */
@@ -336,7 +371,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Delete object lock.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function delete_object_lock() {
 		MS_Factory::select_blog();
@@ -351,7 +386,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Check if the current post type exists.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return boolean True if valid.
 	 */
@@ -375,7 +410,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	 * Note: Remember to prefix the $key with a unique string to prevent
 	 * conflicts with other plugins that also use this function.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -388,7 +423,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Removes a custom data field from this object.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -400,7 +435,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Returns the value of a custom data field.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -418,7 +453,7 @@ class MS_Model_CustomPostType extends MS_Model {
 	/**
 	 * Returns the post-type of the current object.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return string The post-type name.
 	 */
 	protected static function _post_type( $orig_posttype ) {

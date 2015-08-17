@@ -1,29 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Members List Table.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Helper
@@ -40,7 +19,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Constructor.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct(){
 		parent::__construct(
@@ -72,7 +51,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Get list table columns.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *		Returns array of $id => $title.
@@ -103,7 +82,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Get list table sortable columns.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *		Returns array of $id => $title.
@@ -125,7 +104,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Prepare list items.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function prepare_items() {
 		$this->_column_headers = array(
@@ -168,7 +147,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Returns a query arg structure tailored to give the defined results
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 * @return array Query args
 	 */
 	protected function prepare_query_args( $args ) {
@@ -198,13 +177,17 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 					break;
 
 				default:
-					$args['meta_query'][ $option ] = array(
-						'key' => $option,
+					$args['meta_query'][ $search_option ] = array(
+						'key' => $search_option,
 						'value' => $search_filter,
 						'compare' => 'LIKE',
 					);
 					break;
 			}
+
+			$args['posts_per_page'] = -1;
+			$args['number'] = false;
+			$args['offset'] = 0;
 		}
 
 		// Filter by membership_id and membership status
@@ -225,8 +208,8 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 				$filter
 			);
 
-			foreach ( $subscriptions as $ms_relationship ) {
-				$members[ $ms_relationship->user_id ] = $ms_relationship->user_id;
+			foreach ( $subscriptions as $subscription ) {
+				$members[ $subscription->user_id ] = $subscription->user_id;
 			}
 
 			// Workaround to invalidate query
@@ -243,15 +226,19 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Display checkbox column.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param mixed $item The table item to display.
+	 * @param mixed $member The table item to display.
 	 */
-	public function column_cb( $item ) {
-		$html = sprintf(
-			'<input type="checkbox" name="member_id[]" value="%s" />',
-			esc_attr( $item->id )
-		);
+	public function column_cb( $member ) {
+		if ( MS_Model_Member::is_admin_user( $member->id ) ) {
+			$html = '';
+		} else {
+			$html = sprintf(
+				'<input type="checkbox" name="member_id[]" value="%s" />',
+				esc_attr( $member->id )
+			);
+		}
 
 		return $html;
 	}
@@ -259,13 +246,13 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Infos-Column
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param mixed $item The table item to display.
+	 * @param mixed $member The table item to display.
 	 */
-	public function column_infos( $item ) {
+	public function column_infos( $member ) {
 		$dialog_data = array(
-			'member_id' => $item->id,
+			'member_id' => $member->id,
 		);
 
 		$html = sprintf(
@@ -279,21 +266,29 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Display Username column.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param mixed $item The table item to display.
+	 * @param mixed $member The table item to display.
 	 */
-	public function column_username( $item ) {
+	public function column_username( $member ) {
 		$actions = array();
 		$actions['edit'] = sprintf(
-			'<a href="user-edit.php?user_id=%s">%s</a>',
-			esc_attr( $item->id ),
-			__( 'Edit', MS_TEXT_DOMAIN )
+			'<a href="%s">%s</a>',
+			MS_Controller_Plugin::get_admin_url(
+				'add-member',
+				array( 'user_id' => $member->id )
+			),
+			__( 'Subscription Details', MS_TEXT_DOMAIN )
+		);
+		$actions['profile'] = sprintf(
+			'<a href="%s">%s</a>',
+			admin_url( 'user-edit.php?user_id=' . $member->id ),
+			__( 'Edit Profile', MS_TEXT_DOMAIN )
 		);
 
 		$html = sprintf(
 			'%1$s %2$s',
-			$item->username,
+			$member->username,
 			$this->row_actions( $actions )
 		);
 
@@ -303,19 +298,19 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Display Email column.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param mixed $item The table item to display.
+	 * @param mixed $member The table item to display.
 	 */
-	public function column_email( $item ) {
-		$html = $item->email;
+	public function column_email( $member ) {
+		$html = $member->email;
 		return $html;
 	}
 
 	/**
 	 * Create membership column.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Member $member The member object.
 	 */
@@ -364,8 +359,8 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Adds a class to the <tr> element
 	 *
-	 * @since  1.1.0
-	 * @param  object $item
+	 * @since  1.0.0
+	 * @param  object $member
 	 */
 	protected function single_row_class( $member ) {
 		$subscriptions = $member->get_membership_ids();
@@ -377,7 +372,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Bulk actions options.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param array {
 	 *     @type string $action The action name.
@@ -385,14 +380,28 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	 * }
 	 */
 	public function get_bulk_actions() {
-		$actions = array(
-			// Removed in 1.1.0.3 - these actions were not supported anymore.
-			// TODO: Add correct Bulk actions, like in memberships-list.
+		$protect_key = __( 'Add Membership', MS_TEXT_DOMAIN );
+		$unprotect_key = __( 'Drop Membership', MS_TEXT_DOMAIN );
+		$bulk_actions = array(
+			'drop-all' => __( 'Drop all Memberships', MS_TEXT_DOMAIN ),
+			$protect_key => array(),
+			$unprotect_key => array(),
 		);
+
+		$args = array(
+			'include_guest' => 0,
+		);
+		$memberships = MS_Model_Membership::get_membership_names( $args );
+		$txt_add = __( 'Add: %s', MS_TEXT_DOMAIN );
+		$txt_rem = __( 'Drop: %s', MS_TEXT_DOMAIN );
+		foreach ( $memberships as $id => $name ) {
+			$bulk_actions[$protect_key]['add-' . $id] = sprintf( $txt_add, $name );
+			$bulk_actions[$unprotect_key]['drop-' . $id] = sprintf( $txt_rem, $name );
+		}
 
 		return apply_filters(
 			'ms_helper_listtable_member_get_bulk_actions',
-			$actions,
+			$bulk_actions,
 			$this
 		);
 	}
@@ -400,7 +409,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * Add custom filters to the searchbox
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function searchbox_filters() {
 		lib2()->array->equip_request( 'search_options' );
@@ -424,7 +433,7 @@ class MS_Helper_ListTable_Member extends MS_Helper_ListTable {
 	/**
 	 * This list has no views.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array
 	 */

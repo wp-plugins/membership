@@ -1,26 +1,5 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
 ********************************************************************************
 Import Data Structure
 
@@ -137,7 +116,7 @@ Import Data Structure
 /**
  * Class that handles Export functions.
  *
- * @since 1.1.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -146,7 +125,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Identifier for this Import source
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	const KEY = 'membership2';
 
@@ -156,7 +135,7 @@ class MS_Model_Import_Export extends MS_Model {
 	 * This information is not entirely reliable, since data could have been
 	 * deleted again after import.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function did_import() {
@@ -170,7 +149,7 @@ class MS_Model_Import_Export extends MS_Model {
 	 * This task will exit the current request as the result will be a download
 	 * and no HTML page that is displayed.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function process() {
 		$data = (object) array();
@@ -219,7 +198,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  int $membership_id
 	 * @return object Export data
 	 */
@@ -277,7 +256,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  int $member_id
 	 * @return object Export data
 	 */
@@ -305,7 +284,7 @@ class MS_Model_Import_Export extends MS_Model {
 		);
 
 		$obj->subscriptions = array();
-		foreach ( $src->subscriptions as $membership_id => $registration ) {
+		foreach ( $src->subscriptions as $registration ) {
 			$obj->subscriptions[] = $this->export_relationship( $registration );
 		}
 
@@ -315,7 +294,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  MS_Model_Relationship $src
 	 * @return object Export data
 	 */
@@ -345,7 +324,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  MS_Model_Invoice $src
 	 * @return object Export data
 	 */
@@ -374,7 +353,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  int $coupon_id
 	 * @return object Export data
 	 */
@@ -387,7 +366,7 @@ class MS_Model_Import_Export extends MS_Model {
 	/**
 	 * Export specific data.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return object Export data
 	 */
 	protected function export_settings() {
@@ -409,7 +388,7 @@ class MS_Model_Import_Export extends MS_Model {
 	 * export. This ID ensures that all links inside the export file are valid
 	 * but that we do not use actual WordPress IDs.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $type Type
 	 * @param  int $internal_id WordPress ID
 	 * @return int Export-ID

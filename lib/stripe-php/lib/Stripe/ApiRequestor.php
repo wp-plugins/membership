@@ -1,6 +1,6 @@
 <?php
 
-class Stripe_ApiRequestor
+class M2_Stripe_ApiRequestor
 {
   /**
    * @var string $apiKey The API key that's to be used to make requests.
@@ -29,7 +29,7 @@ class Stripe_ApiRequestor
    */
   public static function apiUrl($url='')
   {
-    $apiBase = Stripe::$apiBase;
+    $apiBase = M2_Stripe::$apiBase;
     return "$apiBase$url";
   }
 
@@ -51,7 +51,7 @@ class Stripe_ApiRequestor
 
   private static function _encodeObjects($d)
   {
-    if ($d instanceof Stripe_ApiResource) {
+    if ($d instanceof M2_Stripe_ApiResource) {
       return self::utf8($d->id);
     } else if ($d === true) {
       return 'true';
@@ -133,7 +133,7 @@ class Stripe_ApiRequestor
     if (!is_array($resp) || !isset($resp['error'])) {
       $msg = "Invalid response object from API: $rbody "
            ."(HTTP response code was $rcode)";
-      throw new Stripe_ApiError($msg, $rcode, $rbody, $resp);
+      throw new M2_Stripe_ApiError($msg, $rcode, $rbody, $resp);
     }
 
     $error = $resp['error'];
@@ -144,20 +144,20 @@ class Stripe_ApiRequestor
     switch ($rcode) {
     case 400:
         if ($code == 'rate_limit') {
-          throw new Stripe_RateLimitError(
+          throw new M2_Stripe_RateLimitError(
               $msg, $param, $rcode, $rbody, $resp
           );
         }
     case 404:
-        throw new Stripe_InvalidRequestError(
+        throw new M2_Stripe_InvalidRequestError(
             $msg, $param, $rcode, $rbody, $resp
         );
     case 401:
-        throw new Stripe_AuthenticationError($msg, $rcode, $rbody, $resp);
+        throw new M2_Stripe_AuthenticationError($msg, $rcode, $rbody, $resp);
     case 402:
-        throw new Stripe_CardError($msg, $param, $code, $rcode, $rbody, $resp);
+        throw new M2_Stripe_CardError($msg, $param, $code, $rcode, $rbody, $resp);
     default:
-        throw new Stripe_ApiError($msg, $rcode, $rbody, $resp);
+        throw new M2_Stripe_ApiError($msg, $rcode, $rbody, $resp);
     }
   }
 
@@ -165,30 +165,30 @@ class Stripe_ApiRequestor
   {
     $myApiKey = $this->_apiKey;
     if (!$myApiKey)
-      $myApiKey = Stripe::$apiKey;
+      $myApiKey = M2_Stripe::$apiKey;
 
     if (!$myApiKey) {
       $msg = 'No API key provided.  (HINT: set your API key using '
-           . '"Stripe::setApiKey(<API-KEY>)".  You can generate API keys from '
+           . '"M2_Stripe::setApiKey(<API-KEY>)".  You can generate API keys from '
            . 'the Stripe web interface.  See https://stripe.com/api for '
            . 'details, or email support@stripe.com if you have any questions.';
-      throw new Stripe_AuthenticationError($msg);
+      throw new M2_Stripe_AuthenticationError($msg);
     }
 
     $absUrl = $this->apiUrl($url);
     $params = self::_encodeObjects($params);
     $langVersion = phpversion();
     $uname = php_uname();
-    $ua = array('bindings_version' => Stripe::VERSION,
+    $ua = array('bindings_version' => M2_Stripe::VERSION,
                 'lang' => 'php',
                 'lang_version' => $langVersion,
                 'publisher' => 'stripe',
                 'uname' => $uname);
     $headers = array('X-Stripe-Client-User-Agent: ' . json_encode($ua),
-                     'User-Agent: Stripe/v1 PhpBindings/' . Stripe::VERSION,
+                     'User-Agent: Stripe/v1 PhpBindings/' . M2_Stripe::VERSION,
                      'Authorization: Bearer ' . $myApiKey);
-    if (Stripe::$apiVersion)
-      $headers[] = 'Stripe-Version: ' . Stripe::$apiVersion;
+    if (M2_Stripe::$apiVersion)
+      $headers[] = 'Stripe-Version: ' . M2_Stripe::$apiVersion;
     list($rbody, $rcode) = $this->_curlRequest(
         $method,
         $absUrl,
@@ -205,7 +205,7 @@ class Stripe_ApiRequestor
     } catch (Exception $e) {
       $msg = "Invalid response body from API: $rbody "
            . "(HTTP response code was $rcode)";
-      throw new Stripe_ApiError($msg, $rcode, $rbody);
+      throw new M2_Stripe_ApiError($msg, $rcode, $rbody);
     }
 
     if ($rcode < 200 || $rcode >= 300) {
@@ -240,7 +240,7 @@ class Stripe_ApiRequestor
         $absUrl = "$absUrl?$encoded";
       }
     } else {
-      throw new Stripe_ApiError("Unrecognized method $method");
+      throw new M2_Stripe_ApiError("Unrecognized method $method");
     }
 
     $absUrl = self::utf8($absUrl);
@@ -250,7 +250,7 @@ class Stripe_ApiRequestor
     $opts[CURLOPT_TIMEOUT] = 80;
     $opts[CURLOPT_RETURNTRANSFER] = true;
     $opts[CURLOPT_HTTPHEADER] = $headers;
-    if (!Stripe::$verifySslCerts)
+    if (!M2_Stripe::$verifySslCerts)
       $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
     curl_setopt_array($curl, $opts);
@@ -293,7 +293,7 @@ class Stripe_ApiRequestor
    */
   public function handleCurlError($errno, $message)
   {
-    $apiBase = Stripe::$apiBase;
+    $apiBase = M2_Stripe::$apiBase;
     switch ($errno) {
     case CURLE_COULDNT_CONNECT:
     case CURLE_COULDNT_RESOLVE_HOST:
@@ -317,7 +317,7 @@ class Stripe_ApiRequestor
     $msg .= " let us know at support@stripe.com.";
 
     $msg .= "\n\n(Network error [errno $errno]: $message)";
-    throw new Stripe_ApiConnectionError($msg);
+    throw new M2_Stripe_ApiConnectionError($msg);
   }
 
   private function checkSslCert($url)
@@ -349,7 +349,7 @@ class Stripe_ApiRequestor
         )));
     $result = stream_socket_client($url, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $sslContext);
     if ($errno !== 0) {
-        throw new Stripe_ApiConnectionError(
+        throw new M2_Stripe_ApiConnectionError(
              "Could not connect to Stripe ($apiBase).  Please check your "
            . "internet connection and try again.  If this problem persists, "
            . "you should check Stripe's service status at "
@@ -365,7 +365,7 @@ class Stripe_ApiRequestor
     openssl_x509_export($cert, $pem_cert);
 
     if (self::isBlackListed($pem_cert)) {
-        throw new Stripe_ApiConnectionError(
+        throw new M2_Stripe_ApiConnectionError(
             "Invalid server certificate. You tried to connect to a server that has a " .
             "revoked SSL certificate, which means we cannot securely send data to " .
             "that server.  Please email support@stripe.com if you need help " .

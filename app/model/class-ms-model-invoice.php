@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Invoice model.
  *
  * Persisted by parent class MS_Model_CustomPostType.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Model
@@ -37,7 +16,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Both static and class property are used to handle php 5.2 limitations.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +25,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Invoice status constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @see $status property.
 	 * @var string
@@ -71,7 +50,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Used to link 3rd party transaction ID to $this->id
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $external_id = '';
@@ -81,7 +60,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Gateway used to pay this invoice.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $gateway_id = '';
@@ -91,7 +70,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Invoice for membership.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $membership_id = 0;
@@ -101,7 +80,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Invoice for this user/member.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $user_id = 0;
@@ -109,7 +88,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Membership Relationship ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $ms_relationship_id = 0;
@@ -119,7 +98,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Used coupon ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $coupon_id = 0;
@@ -127,7 +106,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Currency of this invoice.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $currency = '';
@@ -135,7 +114,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Amount value not including discounts.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $amount = 0;
@@ -143,7 +122,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Discount value.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $discount = 0;
@@ -151,7 +130,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Pro rate value.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $pro_rate = 0;
@@ -162,7 +141,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * To modify this value change any of these properties:
 	 * amount, discount, pro_rate
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $subtotal = 0;
@@ -173,7 +152,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * To modify this value change any of these properties:
 	 * amount, discount, pro_rate, tax_rate
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $total = 0;
@@ -181,7 +160,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Inovoice status.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $status = '';
@@ -189,7 +168,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Invoice for trial period.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var boolean
 	 */
 	protected $uses_trial = false;
@@ -197,7 +176,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * The trial period price.
 	 *
-	 * @since 1.1.1.4
+	 * @since  1.0.0
 	 * @var numeric
 	 */
 	protected $trial_price = 0;
@@ -205,7 +184,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * This is the last day of the trial period. The next day is paid.
 	 *
-	 * @since 1.1.1.4
+	 * @since  1.0.0
 	 * @var date
 	 */
 	protected $trial_ends = '';
@@ -216,7 +195,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * This is the date when the invoice was created. It may be differe than the
 	 * due date if the subscription uses a trial period.
 	 *
-	 * @since 1.1.1.4
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $invoice_date = '';
@@ -225,7 +204,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Invoice due date.
 	 * When invoice uses_trial is true then this is the first day that is paid.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $due_date = '';
@@ -233,7 +212,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Invoice notes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $notes = '';
@@ -241,7 +220,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Invoice number.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $invoice_number = 0;
@@ -249,7 +228,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Tax rate value.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var float
 	 */
 	protected $tax_rate = 0;
@@ -257,7 +236,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Tax name.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $tax_name = '';
@@ -265,7 +244,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Short, compact version of the payment description
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $short_description = '';
@@ -273,7 +252,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Where the data came from. Can only be changed by data import tool
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $source = '';
@@ -282,7 +261,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Timestamp of price calculation.
 	 * This information is used when price-options of the memberhsip is changed.
 	 *
-	 * @since 1.1.1.3
+	 * @since  1.0.0
 	 * @var int
 	 */
 	protected $price_date = 0;
@@ -295,7 +274,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the post-type of the current object.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return string The post-type name.
 	 */
 	public static function get_post_type() {
@@ -305,7 +284,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get custom register post type args for this model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public static function get_register_post_type_args() {
 		$args = array(
@@ -330,7 +309,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get invoice status types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public static function get_status_types() {
 		return apply_filters(
@@ -348,7 +327,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the default query-arg array
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public static function get_query_args() {
@@ -378,7 +357,15 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 
 		// Search string.
 		if ( ! empty( $_REQUEST['s'] ) ) {
-			$args['author_name'] = $_REQUEST['s'];
+			$user_args = array(
+				'search' => '*' . $_REQUEST['s'] . '*',
+			);
+			$user_list = new WP_User_Query( $user_args );
+			$user_ids = array();
+			foreach ( $user_list->results as $user ) {
+				$user_ids[] = $user->ID;
+			}
+			$args['author__in'] = $user_ids;
 		}
 
 		$args['meta_query'] = array();
@@ -446,7 +433,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Count the number of unpaid invoices. Unpaid is any invoice with status
 	 * BILLED or PENDING.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  array $args The query post args
 	 *         @see http://codex.wordpress.org/Class_Reference/WP_Query
 	 * @param  bool $for_badge if true then return value is a string
@@ -472,7 +459,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 		if ( $for_badge ) {
 			if ( $bill_count > 99 ) {
 				$res = '99+';
-			} elseif ( $bill_count ) {
+			} elseif ( ! $bill_count ) {
 				$res = '';
 			}
 		}
@@ -489,7 +476,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get invoices.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param mixed $args The arguments to select data.
 	 * @return array $invoices
@@ -510,7 +497,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 
 		MS_Factory::select_blog();
 		$query = new WP_Query( $args );
-		$items = $query->get_posts();
+		$items = $query->posts;
 		$invoices = array();
 		MS_Factory::revert_blog();
 
@@ -531,7 +518,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * - Invoices with 0.00 total amount are not displayed
 	 * - Invoices with status New are not displayed
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @param  int $user_id
 	 * @param  int $limit
 	 * @return array List of MS_Model_Invoice objects.
@@ -567,7 +554,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Get invoice of a user and membership.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param int $subscription_id The membership relationship id.
 	 * @param int $invoice_number Optional. The invoice number. Get the current number if null.
@@ -602,7 +589,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 		MS_Factory::select_blog();
 		$args = apply_filters( 'ms_model_invoice_get_invoice_args', $args );
 		$query = new WP_Query( $args );
-		$item = $query->get_posts();
+		$item = $query->posts;
 		MS_Factory::revert_blog();
 
 		$invoice = null;
@@ -625,10 +612,11 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * The current invoice is the not paid one. Every time a invoice is paid,
 	 * the current invoice number is incremented.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param MS_Model_Relationship $subscription The membership relationship.
-	 * @param boolean $create_missing Optional. True to overwrite existing invoice or false to create a new one if doesn't exist.
+	 * @param  MS_Model_Relationship $subscription The membership relationship.
+	 * @param  bool $create_missing Optional. True to overwrite existing
+	 *         invoice or false to create a new one if doesn't exist.
 	 * @return MS_Model_Invoice
 	 */
 	public static function get_current_invoice( $subscription, $create_missing = true ) {
@@ -637,7 +625,8 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 			$subscription->current_invoice_number
 		);
 
-		if ( empty( $invoice ) && $create_missing ) {
+		if ( ! $invoice && $create_missing ) {
+			// Create a new invoice.
 			$invoice = self::create_invoice(
 				$subscription,
 				$subscription->current_invoice_number
@@ -655,10 +644,11 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get next invoice for the membership.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param MS_Model_Relationship $subscription The membership relationship.
-	 * @param boolean $create_missing Optional. True to overwrite existing invoice or false to create a new one if doesn't exist.
+	 * @param  MS_Model_Relationship $subscription The membership relationship.
+	 * @param  bool $create_missing Optional. True to overwrite existing
+	 *         invoice or false to create a new one if doesn't exist.
 	 * @return MS_Model_Invoice
 	 */
 	public static function get_next_invoice( $subscription, $create_missing = true ) {
@@ -667,13 +657,18 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 			$subscription->current_invoice_number + 1
 		);
 
-		if ( empty( $invoice ) && $create_missing ) {
+		if ( ! $invoice && $create_missing ) {
+			// Create a new invoice.
 			$invoice = self::create_invoice(
 				$subscription,
 				$subscription->current_invoice_number + 1
 			);
 		}
 
+		/*
+		 * Since only the *first* invoice can have discount/pro-rating we
+		 * manually set those values to 0.
+		 */
 		$invoice->discount = 0;
 		$invoice->pro_rate = 0;
 		$invoice->notes = array();
@@ -689,7 +684,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get previous invoice for the membership.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Relationship $subscription The membership relationship.
 	 * @param string $status The invoice status to find. Optional
@@ -715,7 +710,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Create a new invoice using the membership information.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Relationship $subscription The membership to create invoice for.
 	 * @param int $invoice_number Optional. The invoice number.
@@ -738,8 +733,10 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 			$invoice_number = $subscription->current_invoice_number;
 		}
 
+		$invoice = self::get_invoice( $subscription->id, $invoice_number );
+
 		// No existing invoice, create a new one.
-		if ( empty( $invoice ) ) {
+		if ( ! $invoice || ! $invoice->id ) {
 			$invoice = MS_Factory::create( 'MS_Model_Invoice' );
 			$invoice = apply_filters( 'ms_model_invoice', $invoice );
 		}
@@ -762,33 +759,6 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 		);
 		$invoice->invoice_number = $invoice_number;
 		$invoice->discount = 0;
-
-		// Calc pro rate discount if moving from another membership.
-		if (  MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_PRO_RATE )
-			&& $subscription->move_from_id
-		) {
-			$move_from = MS_Model_Relationship::get_subscription(
-				$subscription->user_id,
-				$subscription->move_from_id
-			);
-
-			if ( ! empty( $move_from->id )
-				&& ! empty( $gateway )
-				&& $gateway->pro_rate
-			) {
-				$pro_rate = self::calculate_pro_rate( $move_from );
-
-				if ( $pro_rate ) {
-					$invoice->pro_rate = $pro_rate;
-					$notes[] = sprintf(
-						__( 'Pro rate discount: %s %s. ', MS_TEXT_DOMAIN ),
-						$invoice->currency,
-						$pro_rate
-					);
-				}
-			}
-		}
-
 		$invoice->notes = $notes;
 		$invoice->amount = $membership->price; // Without taxes!
 
@@ -824,64 +794,17 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 		);
 	}
 
-	/**
-	 * Calculate pro rate value.
-	 *
-	 * Pro rate using remaining membership days. For further versions.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return float The pro rate value.
-	 */
-	public static function calculate_pro_rate( $subscription ) {
-		$value = 0;
-		$membership = $subscription->get_membership();
-
-		if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MULTI_MEMBERSHIPS )
-			&& MS_Model_Membership::PAYMENT_TYPE_PERMANENT !== $membership->payment_type
-		) {
-			$invoice = self::get_previous_invoice( $subscription );
-
-			if ( ! empty( $invoice ) && self::STATUS_PAID === $invoice->status ) {
-				switch ( $subscription->status ) {
-					case MS_Model_Relationship::STATUS_TRIAL:
-						// No Pro-Rate given for trial memberships.
-						break;
-
-					case MS_Model_Relationship::STATUS_ACTIVE:
-					case MS_Model_Relationship::STATUS_CANCELED:
-						$remaining_days = $subscription->get_remaining_period();
-						$total_days = MS_Helper_Period::subtract_dates(
-							$subscription->expire_date,
-							$subscription->start_date
-						);
-						$value = $remaining_days / $total_days;
-						$value *= $invoice->total;
-						break;
-
-					default:
-						$value = 0;
-						break;
-				}
-			}
-		}
-
-		return apply_filters(
-			'ms_model_invoice_calculate_pro_rate_value',
-			$value,
-			$subscription
-		);
-	}
 
 	//
 	//
 	//
 	// ------------------------------------------------------------- SINGLE ITEM
 
+
 	/**
 	 * Save model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function save() {
 		parent::save();
@@ -893,13 +816,17 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * This should be the only place that sets an invoice status to PAID.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $gateway_id The payment gateway.
 	 * @param  string $external_id Payment-ID provided by the gateway
 	 */
-	public function pay_it( $gateway_id, $external_id ) {
-		$this->gateway_id = $gateway_id;
-		$this->external_id = $external_id;
+	public function pay_it( $gateway_id = null, $external_id = null ) {
+		if ( $gateway_id ) {
+			$this->gateway_id = $gateway_id;
+		}
+		if ( $external_id ) {
+			$this->external_id = $external_id;
+		}
 		$is_paid = false;
 
 		$subscription = $this->get_subscription();
@@ -917,19 +844,22 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 			$this->status = self::STATUS_BILLED;
 		}
 
-		/*
-		 * Process the payment and update the subscription.
-		 * This function will call the config_period() function to calculate the
-		 * new expire date of the subscription.
-		 *
-		 * All changes above are also saved at the end of changed()
-		 */
-		$this->changed();
+		// Manual gateway works differently. This conditon avoids infinite loop.
+		if ( MS_Gateway_Manual::ID != $gateway_id ) {
+			/*
+			 * Process the payment and update the subscription.
+			 * This function will call the config_period() function to calculate
+			 * the new expire date of the subscription.
+			 *
+			 * All changes above are also saved at the end of changed()
+			 */
+			$this->changed();
+		}
 
 		/**
 		 * Notify Add-ons that an invoice was paid.
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 */
 		do_action( 'ms_invoice_paid', $this, $subscription );
 	}
@@ -937,7 +867,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns true if the invoice was paid.
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @return bool Payment status.
 	 */
 	public function is_paid() {
@@ -950,7 +880,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Process transaction status change related to this membership relationship.
 	 * Change status accordinly to transaction status.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Model_Invoice $invoice The invoice to process.
 	 * @return MS_Model_Invoice The processed invoice.
 	 */
@@ -974,7 +904,10 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 
 				case self::STATUS_PAID:
 					if ( $this->total > 0 ) {
-						MS_Model_Event::save_event( MS_Model_Event::TYPE_PAID, $subscription );
+						MS_Model_Event::save_event(
+							MS_Model_Event::TYPE_PAID,
+							$subscription
+						);
 					}
 
 					do_action(
@@ -984,29 +917,51 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 					);
 
 					// Check for moving memberships
-					if ( MS_Model_Relationship::STATUS_PENDING == $subscription->status
-						&& $subscription->move_from_id
-						&& ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MULTI_MEMBERSHIPS )
-					) {
-						$move_from = MS_Model_Relationship::get_subscription(
-							$subscription->user_id,
-							$subscription->move_from_id
-						);
+					if ( $subscription->move_from_id ) {
+						$ids = explode( ',', $subscription->move_from_id );
+						foreach ( $ids as $id ) {
+							$move_from = MS_Model_Relationship::get_subscription(
+								$subscription->user_id,
+								$id
+							);
 
-						if ( $move_from->is_valid() ) {
-							$move_from->set_status( MS_Model_Relationship::STATUS_CANCELED );
-							$move_from->save();
+							if ( $move_from->is_valid() ) {
+								/**
+								 * @since 1.0.1.2 The old subscription will be
+								 * deactivated instantly, and not cancelled.
+								 * When the subscription is cancelled the user
+								 * still has full access to the membership
+								 * contents. When it is deactivated he cannot
+								 * access protected content anymore (instantly).
+								 */
+								$move_from->deactivate_membership();
+							}
 						}
+
+						$subscription->cancelled_memberships = $subscription->move_from_id;
+						$subscription->move_from_id = '';
 					}
 
-					// The trial period info gets updated after MS_Model_Relationship::config_period()
-					$trial_period = $subscription->is_trial_eligible();
-					$subscription->current_invoice_number = max(
-						$subscription->current_invoice_number,
-						$this->invoice_number + 1
+					/*
+					 * Memberships with those payment types can have multiple
+					 * invoices for a single subscription.
+					 */
+					$multi_invoice = array(
+						// RECURRING is PRO ONLY
+						MS_Model_Membership::PAYMENT_TYPE_FINITE,
 					);
-					$member->is_member = true;
-					$member->active = true;
+
+					if ( in_array( $membership->payment_type, $multi_invoice ) ) {
+						// Update the current_invoice_number counter.
+						$subscription->current_invoice_number = max(
+							$subscription->current_invoice_number,
+							$this->invoice_number + 1
+						);
+					}
+
+					if ( MS_Gateway_Manual::ID == $this->gateway_id ) {
+						$this->pay_it( $this->gateway_id );
+					}
 					break;
 
 				case self::STATUS_DENIED:
@@ -1039,7 +994,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Add invoice notes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $notes
 	 */
@@ -1054,7 +1009,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get notes array as string.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string The notes as text description.
 	 */
@@ -1074,7 +1029,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns a translated version of the invoice status
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @return string
 	 */
 	public function status_text() {
@@ -1100,7 +1055,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Updates various fields that display/depend on the invoice total amount.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function total_amount_changed() {
 		$subscription = $this->get_subscription();
@@ -1137,7 +1092,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 *
 	 * Only unpaid invoices are updated!
 	 *
-	 * @since  1.1.1.3
+	 * @since  1.0.0
 	 */
 	private function refresh_amount() {
 		// Never change the amount of paid invoices.
@@ -1177,7 +1132,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Refreshes the due-date of the invoice.
 	 *
-	 * @since 1.1.1.4
+	 * @since  1.0.0
 	 */
 	public function set_due_date() {
 		// Never change due-date of paid invoices.
@@ -1225,7 +1180,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Discounting coupon and pro-rating.
 	 * Add taxes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	private function get_net_amount() {
 		if ( ! $this->is_paid() ) {
@@ -1253,7 +1208,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the tax-value in currency (opposed to the percentage value)
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @return float Total tax amount
 	 */
 	private function get_tax() {
@@ -1275,7 +1230,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Returns the tax-value in currency for the trial membership (opposed to
 	 * the percentage value)
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @return float Total tax amount (trial membership)
 	 */
 	private function get_trial_tax() {
@@ -1299,7 +1254,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * Discounting coupon and pro-rating.
 	 * Add taxes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	private function get_total() {
 		$total = $this->get_net_amount(); // Net amount
@@ -1324,7 +1279,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Get invoice trial price.
 	 *
-	 * @since 1.1.1.4
+	 * @since  1.0.0
 	 */
 	private function get_trial_price() {
 		$membership = $this->get_membership();
@@ -1352,7 +1307,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	 * The public invoice number is the official identifier that is displayed
 	 * to the end user that refers to an invoice
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @return string The public invoice number.
 	 */
 	public function get_invoice_number() {
@@ -1368,7 +1323,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the membership model that is linked to this invoice.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return MS_Model_Membership
 	 */
 	public function get_membership() {
@@ -1378,7 +1333,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the membership model that is linked to this invoice.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return MS_Model_Membership
 	 */
 	public function get_member() {
@@ -1388,7 +1343,7 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns the subscription model that is linked to this invoice.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return MS_Model_Relationship
 	 */
 	public function get_subscription() {
@@ -1398,9 +1353,8 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Returns property associated with the render.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @access public
+	 * @since  1.0.0
+	 * @internal
 	 * @param string $property The name of a property.
 	 * @return mixed Returns mixed value of a property or NULL if a property doesn't exist.
 	 */
@@ -1466,9 +1420,8 @@ class MS_Model_Invoice extends MS_Model_CustomPostType {
 	/**
 	 * Set specific property.
 	 *
-	 * @since 4.0
-	 *
-	 * @access public
+	 * @since  1.0.0
+	 * @internal
 	 * @param string $property The name of a property to associate.
 	 * @param mixed $value The value of a property.
 	 */

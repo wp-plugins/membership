@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Settings model.
  *
  * Singleton. Persisted by parent class MS_Model_Option.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Model
@@ -35,7 +14,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Singleton instance.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @staticvar MS_Model_Settings
 	 */
@@ -49,7 +28,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 * - Shortcode content is protected
 	 * - Read-more content is protected
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	const PROTECTION_MSG_CONTENT = 'content';
 	const PROTECTION_MSG_SHORTCODE = 'shortcode';
@@ -58,7 +37,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * ID of the model object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var int
 	 */
@@ -67,7 +46,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Model name.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -76,7 +55,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Current db version.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -85,7 +64,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Plugin enabled status indicator.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -96,7 +75,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 *
 	 * Wizard mode.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -105,7 +84,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Is set to false when the first membership was created.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -114,7 +93,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Is set to false when the first paid membership was created.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -125,7 +104,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 *
 	 * Indicate which step of the wizard.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -136,7 +115,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 *
 	 * Wizard mode.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -147,7 +126,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 *
 	 * Wizard mode.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -156,7 +135,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * The currency used in the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -165,7 +144,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * The name used in the invoices.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -174,7 +153,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Global payments already set indicator.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var boolean
 	 */
@@ -183,7 +162,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Settings data for extensions/integrations.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -192,7 +171,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Protection Messages.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -201,7 +180,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * How menu items are protected.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -210,7 +189,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Media / Downloads settings.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -225,7 +204,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 * When data was imported a flag can be set here to remember that some
 	 * members come from there.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -237,7 +216,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	 * This defines a special view that is displayed when the plugin is loaded
 	 * instead of the default plugin page that would be displayed.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -246,7 +225,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Get protection message types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string[] The available protection message types.
 	 */
@@ -263,7 +242,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Validate protection message type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $type The protection message type to validate.
 	 * @return boolean True if valid.
@@ -280,20 +259,37 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Set protection message type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $type The protection message type.
 	 * @param string $msg The protection message.
+	 * @param  MS_Model_Membership $membership Optional. If defined the
+	 *         protection message specific for this membership will be set.
 	 */
-	public function set_protection_message( $type, $msg ) {
+	public function set_protection_message( $type, $msg, $membership = null ) {
 		if ( self::is_valid_protection_msg_type( $type ) ) {
-			$this->protection_messages[ $type ] = stripslashes( wp_kses_post( $msg ) );
+			$key = $type;
+
+			if ( $membership ) {
+				if ( $membership instanceof MS_Model_Membership ) {
+					$key .= '_' . $membership->id;
+				} elseif ( is_scalar( $membership ) ) {
+					$key .= '_' . $membership;
+				}
+			}
+
+			if ( null === $msg ) {
+				unset( $this->protection_messages[ $key ] );
+			} else {
+				$this->protection_messages[ $key ] = stripslashes( wp_kses_post( $msg ) );
+			}
 		}
 
 		do_action(
 			'ms_model_settings_set_protection_message',
 			$type,
 			$msg,
+			$membership,
 			$this
 		);
 	}
@@ -301,16 +297,37 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Get protection message type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param string $type The protection message type.
+	 * @param  string $type The protection message type.
+	 * @param  MS_Model_Membership $membership Optional. If defined the
+	 *         protection message specific for this membership will be returned.
+	 * @param  bool $found This is set to true if the specified membership did
+	 *         override this message.
 	 * @return string $msg The protection message.
 	 */
-	public function get_protection_message( $type ) {
+	public function get_protection_message( $type, $membership = null, &$found = null ) {
 		$msg = '';
+		$found = false;
 		if ( self::is_valid_protection_msg_type( $type ) ) {
-			if ( isset( $this->protection_messages[ $type ] ) ) {
-				$msg = $this->protection_messages[ $type ];
+			$key = $type;
+
+			if ( $membership ) {
+				if ( $membership instanceof MS_Model_Membership ) {
+					$key_override = $key . '_' . $membership->id;
+				} elseif ( is_scalar( $membership ) ) {
+					$key_override = $key . '_' . $membership;
+				} else {
+					$key_override = $key;
+				}
+				if ( isset( $this->protection_messages[ $key_override ] ) ) {
+					$key = $key_override;
+					$found = true;
+				}
+			}
+
+			if ( isset( $this->protection_messages[ $key ] ) ) {
+				$msg = $this->protection_messages[ $key ];
 			} else {
 				$msg = __( 'The content you are trying to access is only available to members. Sorry.', MS_TEXT_DOMAIN );
 			}
@@ -327,43 +344,96 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Set custom setting.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param string $group The custom setting group.
-	 * @param string $field The custom setting field.
+	 * @param string $group_name The custom setting group.
+	 * @param string $field_name The custom setting field.
 	 * @param mixed $value The custom setting value.
 	 */
-	public function set_custom_setting( $group, $field, $value ) {
-		$this->custom[ $group ][ $field ] = apply_filters(
+	public function set_custom_setting( $group_name, $field_name, $value ) {
+		if ( isset( $this->custom[ $group_name ] ) ) {
+			$group = $this->custom[ $group_name ];
+		} else {
+			$group = array();
+		}
+
+		$field_value = apply_filters(
 			'ms_model_settings_set_custom_setting',
 			$value,
-			$group,
-			$field,
+			$group_name,
+			$field_name,
 			$this
 		);
+
+		$key = false;
+
+		// Very basic support for array updates.
+		// We only support updating 1-dimensional arrays with a
+		// specified key value.
+		if ( strpos( $field_name, '[' ) ) {
+			$field_name = str_replace( ']', '', $field_name );
+			list( $field_name, $key ) = explode( '[', $field_name, 2 );
+		}
+
+		if ( $key ) {
+			if ( empty( $group[ $field_name ] ) ) {
+				$group[ $field_name ] = array();
+			}
+			if ( is_array( $group[ $field_name ] ) ) {
+				$group[ $field_name ][ $key ] = $field_value;
+			}
+		} else {
+			$group[ $field_name ] = $field_value;
+		}
+
+		$this->custom[ $group_name ] = $group;
 	}
 
 	/**
 	 * Get custom setting.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param string $group The custom setting group.
-	 * @param string $field The custom setting field.
+	 * @param string $group_name The custom setting group.
+	 * @param string $field_name The custom setting field.
 	 * @return mixed $value The custom setting value.
 	 */
-	public function get_custom_setting( $group, $field ) {
+	public function get_custom_setting( $group_name, $field_name ) {
 		$value = '';
 
-		if ( ! empty( $this->custom[ $group ][ $field ] ) ) {
-			$value = $this->custom[ $group ][ $field ];
+		if ( isset( $this->custom[ $group_name ] ) ) {
+			$group = $this->custom[ $group_name ];
+		} else {
+			$group = array();
+		}
+
+		$key = false;
+
+		// Very basic support for array updates.
+		// We only support updating 1-dimensional arrays with a
+		// specified key value.
+		if ( strpos( $field_name, '[' ) ) {
+			$field_name = str_replace( ']', '', $field_name );
+			list( $key, $field_name ) = explode( '[', $field_name, 2 );
+		}
+
+		if ( $key ) {
+			if ( isset( $group[ $key ] ) ) {
+				$group = $group[ $key ];
+			} else {
+				$group = array();
+			}
+		}
+
+		if ( isset( $group[ $field_name ] ) ) {
+			$value = $group[ $field_name ];
 		}
 
 		return apply_filters(
 			'ms_model_settings_get_custom_setting',
 			$value,
-			$group,
-			$field,
+			$group_name,
+			$field_name,
 			$this
 		);
 	}
@@ -410,7 +480,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Get available currencies.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *     @type string $currency The currency.
@@ -459,7 +529,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Set specific property.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $property The name of a property to associate.
 	 * @param mixed $value The value of a property.
@@ -506,7 +576,7 @@ class MS_Model_Settings extends MS_Model_Option {
 	/**
 	 * Returns a specific property.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  string $property The name of a property.
 	 * @return mixed $value The value of a property.

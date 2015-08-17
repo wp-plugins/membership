@@ -25,21 +25,44 @@ class MS_View_Frontend_Payment extends MS_View {
 		}
 
 		$cancel_warning = false;
-		if ( ! MS_Model_Member::is_admin_user()
-			&& ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MULTI_MEMBERSHIPS )
-		) {
-			// Member can only sign up to one membership.
-			$valid_status = array(
-				MS_Model_Relationship::STATUS_TRIAL,
-				MS_Model_Relationship::STATUS_ACTIVE,
-				MS_Model_Relationship::STATUS_PENDING,
-			);
+		if ( ! MS_Model_Member::is_admin_user() ) {
+			if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MULTI_MEMBERSHIPS ) ) {
+				// Member can only sign up to one membership.
+				$valid_status = array(
+					MS_Model_Relationship::STATUS_TRIAL,
+					MS_Model_Relationship::STATUS_ACTIVE,
+					MS_Model_Relationship::STATUS_PENDING,
+				);
 
-			foreach ( $this->data['member']->subscriptions as $tmp_relationship ) {
-				if ( $tmp_relationship->is_system() ) { continue; }
-				if ( in_array( $tmp_relationship->status, $valid_status ) ) {
-					$cancel_warning = true;
-					break;
+				foreach ( $this->data['member']->subscriptions as $tmp_subscription ) {
+					if ( $tmp_subscription->is_system() ) { continue; }
+					if ( in_array( $tmp_subscription->status, $valid_status ) ) {
+						$cancel_warning = __(
+							'Your other Memberships will be cancelled when you complete this payment.',
+							MS_TEXT_DOMAIN
+						);
+						break;
+					}
+				}
+			} elseif ( $subscription->move_from_id ) {
+				$move_from_ids = explode( ',', $subscription->move_from_id );
+				$names = array();
+				foreach ( $move_from_ids as $id ) {
+					$ms = MS_Factory::load( 'MS_Model_Membership', $id );
+					if ( $ms->is_system() ) { continue; }
+					$names[] = $ms->name;
+				}
+
+				if ( 1 == count( $names ) ) {
+					$cancel_warning = sprintf(
+						__( 'When you complete this payment your Membership "%s" will be cancelled.', MS_TEXT_DOMAIN ),
+						$names[0]
+					);
+				} elseif ( 1 < count( $names ) ) {
+					$cancel_warning = sprintf(
+						__( 'When you complete this payment the following Memberships will be cancelled: %s.', MS_TEXT_DOMAIN ),
+						implode( ', ', $names )
+					);
 				}
 			}
 		}
@@ -47,12 +70,25 @@ class MS_View_Frontend_Payment extends MS_View {
 		// Check if the user goes through a trial period before first payment.
 		$is_trial = $invoice->uses_trial;
 
-		if ( ! MS_Model_Member::is_admin_user()
+		$skip_form = ! MS_Model_Member::is_admin_user()
 			&& ! $cancel_warning
-			&& $membership->is_free()
-		) {
-			// No confirmation required. Simply register for this membership!
+			&& $membership->is_free();
 
+		/**
+		 * Filter the flag to allow Add-ons like "Invitation codes" to override
+		 * the state and force the form to display.
+		 *
+		 * @var bool
+		 */
+		$skip_form = apply_filters(
+			'ms_view_frontend_payment_skip_form',
+			$skip_form,
+			$invoice,
+			$this
+		);
+
+		if ( $skip_form ) {
+			// No confirmation required. Simply register for this membership!
 			$args = array();
 			$args['ms_relationship_id'] = $subscription->id;
 			$args['gateway'] = MS_Gateway_Free::ID;
@@ -72,12 +108,25 @@ class MS_View_Frontend_Payment extends MS_View {
 
 		$show_tax = MS_Model_Addon::is_enabled( MS_Addon_Taxamo::ID );
 
+		/**
+		 * Trigger an action before the payment form is displayed. This hook
+		 * can be used by Add-ons or plugins to initialize payment settings or
+		 * add custom code.
+		 */
+		do_action( 'ms_view_frontend_payment_form_start', $invoice, $this );
+
+		$classes = array(
+			'ms-membership-form-wrapper',
+			'ms-subscription-' . $subscription->id,
+			'ms-invoice-' . $invoice->id,
+		);
+
 		ob_start();
 		?>
-		<div class="ms-membership-form-wrapper">
+		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 			<legend><?php _e( 'Join Membership', MS_TEXT_DOMAIN ) ?></legend>
 			<p class="ms-alert-box <?php echo esc_attr( $class ); ?>">
-				<?php echo '' . $msg; ?>
+				<?php echo $msg; ?>
 			</p>
 			<table class="ms-purchase-table">
 				<tr>
@@ -96,7 +145,7 @@ class MS_View_Frontend_Payment extends MS_View {
 						</td>
 						<td class="ms-desc-column">
 							<span class="ms-membership-description"><?php
-								echo '' . $membership->description;
+								echo $membership->description;
 							?></span>
 						</td>
 					</tr>
@@ -127,10 +176,16 @@ class MS_View_Frontend_Payment extends MS_View {
 					<?php if ( $invoice->discount ) : ?>
 						<tr>
 							<td class="ms-title-column">
-								<?php _e( 'Coupon discount', MS_TEXT_DOMAIN ); ?>
+								<?php _e( 'Coupon Discount', MS_TEXT_DOMAIN ); ?>
 							</td>
 							<td class="ms-price-column">
-								<?php printf( '%s -%s', $invoice->currency, MS_Helper_Billing::format_price( $invoice->discount ) ); ?>
+								<?php
+								printf(
+									'%s -%s',
+									$invoice->currency,
+									MS_Helper_Billing::format_price( $invoice->discount )
+								);
+								?>
 							</td>
 						</tr>
 					<?php endif; ?>
@@ -138,10 +193,16 @@ class MS_View_Frontend_Payment extends MS_View {
 					<?php if ( $invoice->pro_rate ) : ?>
 						<tr>
 							<td class="ms-title-column">
-								<?php _e( 'Pro rate discount', MS_TEXT_DOMAIN ); ?>
+								<?php _e( 'Pro-Rate Discount', MS_TEXT_DOMAIN ); ?>
 							</td>
 							<td class="ms-price-column">
-								<?php printf( '%s -%s', $invoice->currency, MS_Helper_Billing::format_price( $invoice->pro_rate ) ); ?>
+								<?php
+								printf(
+									'%s -%s',
+									$invoice->currency,
+									MS_Helper_Billing::format_price( $invoice->pro_rate )
+								);
+								?>
 							</td>
 						</tr>
 					<?php endif; ?>
@@ -215,10 +276,20 @@ class MS_View_Frontend_Payment extends MS_View {
 							</td>
 						</tr>
 					<?php endif; ?>
+
+					<?php
+					do_action(
+						'ms_view_frontend_payment_after_total_row',
+						$subscription,
+						$invoice,
+						$this
+					);
+					?>
+
 					<tr>
 						<td class="ms-desc-column" colspan="2">
 							<span class="ms-membership-description"><?php
-								echo '' . $subscription->get_payment_description( $invoice );
+								echo $subscription->get_payment_description( $invoice );
 							?></span>
 						</td>
 					</tr>
@@ -228,10 +299,7 @@ class MS_View_Frontend_Payment extends MS_View {
 					<tr>
 						<td class="ms-desc-warning" colspan="2">
 							<span class="ms-cancel-other-memberships"><?php
-								_e(
-									'Your other Memberships will be cancelled when you complete this payment.',
-									MS_TEXT_DOMAIN
-								);
+								echo $cancel_warning;
 							?></span>
 						</td>
 					</tr>
@@ -249,7 +317,8 @@ class MS_View_Frontend_Payment extends MS_View {
 					do_action(
 						'ms_view_frontend_payment_purchase_button',
 						$subscription,
-						$invoice
+						$invoice,
+						$this
 					);
 				endif;
 				?>
@@ -266,7 +335,15 @@ class MS_View_Frontend_Payment extends MS_View {
 		<div style="clear:both;"></div>
 		<?php
 
-		return ob_get_clean();
+		$html = ob_get_clean();
+		$html = apply_filters( 'ms_compact_code', $html );
+
+		$html = apply_filters(
+			'ms_view_frontend_payment_form',
+			$html,
+			$this
+		);
+		return $html;
 	}
 
 }

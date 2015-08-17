@@ -1,31 +1,8 @@
 <?php
 /**
- * An Addon controller.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
- */
-
-/**
  * Add-On controller for: MailChimp
  *
- * @since 1.1.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -35,21 +12,21 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * The Add-on ID
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	const ID = 'mailchimp';
 
 	/**
 	 * Mailchimp API object
 	 *
-	 * @var Mailchimp
+	 * @var M2_Mailchimp
 	 */
 	static protected $mailchimp_api = null;
 
 	/**
 	 * Checks if the current Add-on is enabled
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function is_active() {
@@ -57,9 +34,19 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	}
 
 	/**
+	 * Returns the Add-on ID (self::ID).
+	 *
+	 * @since  1.0.1.0
+	 * @return string
+	 */
+	public function get_id() {
+		return self::ID;
+	}
+
+	/**
 	 * Initializes the Add-on. Always executed.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function init() {
 		if ( self::is_active() ) {
@@ -68,10 +55,12 @@ class MS_Addon_Mailchimp extends MS_Addon {
 				'settings_tabs',
 				10, 2
 			);
+
 			$this->add_action(
 				'ms_controller_settings_enqueue_scripts_' . self::ID,
 				'enqueue_scripts'
 			);
+
 			$this->add_filter(
 				'ms_view_settings_edit_render_callback',
 				'manage_render_callback',
@@ -104,7 +93,7 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Registers the Add-On
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $list The Add-Ons list.
 	 * @return array The updated Add-Ons list.
 	 */
@@ -112,6 +101,7 @@ class MS_Addon_Mailchimp extends MS_Addon {
 		$list[ self::ID ] = (object) array(
 			'name' => __( 'MailChimp Integration', MS_TEXT_DOMAIN ),
 			'description' => __( 'Enable MailChimp integration.', MS_TEXT_DOMAIN ),
+			'icon' => 'dashicons dashicons-email',
 		);
 
 		return $list;
@@ -120,8 +110,9 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * A new user registered (not a Member yet).
 	 *
-	 * @param mixed $event
-	 * @param mixed $member
+	 * @since  1.0.0
+	 * @param  mixed $event
+	 * @param  mixed $member
 	 */
 	public function subscribe_registered( $event, $member ) {
 		if ( $list_id = self::$settings->get_custom_setting( 'mailchimp', 'mail_list_registered' ) ) {
@@ -134,8 +125,9 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * A user subscribed to a membership.
 	 *
-	 * @param mixed $event
-	 * @param mixed $member
+	 * @since  1.0.0
+	 * @param  mixed $event
+	 * @param  mixed $member
 	 */
 	public function subscribe_members( $event, $subscription ) {
 		$member = $subscription->get_member();
@@ -165,8 +157,9 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * A membership was deactivated (e.g. expired or manually cancelled)
 	 *
-	 * @param mixed $event
-	 * @param mixed $member
+	 * @since  1.0.0
+	 * @param  mixed $event
+	 * @param  mixed $member
 	 */
 	public function subscribe_deactivated( $event, $subscription ) {
 		$member = $subscription->get_member();
@@ -196,12 +189,12 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Add mailchimp settings tab in settings page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @filter ms_controller_membership_get_tabs
 	 *
-	 * @param array $tabs The current tabs.
-	 * @param int $membership_id The membership id to edit
+	 * @param  array $tabs The current tabs.
+	 * @param  int $membership_id The membership id to edit
 	 * @return array The filtered tabs.
 	 */
 	public function settings_tabs( $tabs ) {
@@ -233,18 +226,18 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Add mailchimp views callback.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @filter ms_view_membership_edit_render_callback
+	 * @filter ms_view_settings_edit_render_callback
 	 *
-	 * @param array $callback The current function callback.
-	 * @param string $tab The current membership rule tab.
-	 * @param array $data The data shared to the view.
+	 * @param  array $callback The current function callback.
+	 * @param  string $tab The current membership rule tab.
+	 * @param  array $data The data shared to the view.
 	 * @return array The filtered callback.
 	 */
 	public function manage_render_callback( $callback, $tab, $data ) {
 		if ( self::ID == $tab ) {
-			$view = MS_Factory::load( 'MS_Addon_Mailchimp_View_Settings' );
+			$view = MS_Factory::load( 'MS_Addon_Mailchimp_View' );
 			$view->data = $data;
 			$callback = array( $view, 'render_tab' );
 		}
@@ -255,7 +248,7 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Get mailchimp api lib status.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return boolean true on successfully loaded api, false otherwise.
 	 */
@@ -276,9 +269,9 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Load the Mailchimp API
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @return Mailchimp Object
+	 * @return M2_Mailchimp Object
 	 */
 	public static function load_mailchimp_api() {
 		if ( empty( self::$mailchimp_api ) ) {
@@ -297,7 +290,7 @@ class MS_Addon_Mailchimp extends MS_Addon {
 				require_once MS_Plugin::instance()->dir . '/lib/mailchimp-api/Mailchimp.php';
 			}
 
-			$api = new Mailchimp(
+			$api = new M2_Mailchimp(
 				self::$settings->get_custom_setting( 'mailchimp', 'api_key' ),
 				$options
 			);
@@ -321,29 +314,52 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	 * @return Array Lists info
 	 */
 	public static function get_mail_lists() {
-		$mail_lists = array( 0 => __( 'none', MS_TEXT_DOMAIN ) );
+		static $Mail_lists = null;
 
-		if ( self::get_api_status() ) {
-			$lists = self::$mailchimp_api->lists->getList();
+		if ( null === $Mail_lists ) {
+			$Mail_lists = array( 0 => __( 'none', MS_TEXT_DOMAIN ) );
+			if ( self::get_api_status() ) {
+				$page = 0;
+				$items_per_page = 25;
+				$iterations = 0;
 
-			if ( is_wp_error( $lists ) ) {
-				MS_Helper_Debug::log( $lists );
-			} else {
-				foreach ( $lists['data'] as $list ) {
-					$mail_lists[ $list['id'] ] = $list['name'];
-				}
+				do {
+					$lists = self::$mailchimp_api->lists->getList(
+						array(),
+						$page,
+						$items_per_page
+					);
+
+					$page += 1;
+					$iterations += 1;
+
+					if ( is_wp_error( $lists ) ) {
+						$has_more = false;
+						MS_Helper_Debug::log( $lists );
+					} else {
+						$has_more = count( $lists['data'] ) >= $items_per_page;
+						foreach ( $lists['data'] as $list ) {
+							$Mail_lists[ $list['id'] ] = $list['name'];
+						}
+					}
+
+					// Force to exit the loop after max. 100 API calls (2500 lists).
+					if ( $iterations > 100 ) {
+						$has_more = false;
+					}
+				} while ( $has_more );
 			}
 		}
 
-		return $mail_lists;
+		return $Mail_lists;
 	}
 
 	/**
 	 * Check if a user is subscribed in the list
 	 *
-	 * @param String $user_email
-	 * @param String $list_id
-	 * @return Boolean. True if the user is subscribed already to the list
+	 * @param  string $user_email
+	 * @param  string $list_id
+	 * @return bool True if the user is subscribed already to the list
 	 */
 	public static function is_user_subscribed( $user_email, $list_id ) {
 		$subscribed = false;
@@ -371,10 +387,10 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Subscribe a user to a Mailchimp list
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param MS_Model_Member $member
-	 * @param int $list_id
+	 * @param  MS_Model_Member $member
+	 * @param  int $list_id
 	 */
 	public static function subscribe_user( $member, $list_id ) {
 		if ( is_email( $member->email ) && self::get_api_status() ) {
@@ -430,11 +446,11 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Update a user data in a list
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param string $user_email
-	 * @param string $list_id
-	 * @param Array $merge_vars {
+	 * @param  string $user_email
+	 * @param  string $list_id
+	 * @param  array $merge_vars {
 	 *     $FNAME => First name
 	 *     $LNAME => Last Name
 	 * }
@@ -454,9 +470,9 @@ class MS_Addon_Mailchimp extends MS_Addon {
 	/**
 	 * Unsubscribe a user from a list
 	 *
-	 * @param string $user_email
-	 * @param string $list_id
-	 * @param boolean $delete True if the user is gonna be deleted from the list (not only unsubscribed)
+	 * @param  string $user_email
+	 * @param  string $list_id
+	 * @param  bool $delete True if the user is gonna be deleted from the list (not only unsubscribed)
 	 */
 	public static function unsubscribe_user( $user_email, $list_id, $delete = false ) {
 		if ( self::get_api_status() ) {

@@ -236,6 +236,11 @@
   background: #f6f6f6;
   color: #434343;
 }
+.ms-bottom-bar .wpmui-field-input {
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+}
 
 .ms-price-details {
   position: relative;
@@ -259,18 +264,51 @@
   margin-top: 0;
   margin-bottom: 0;
 }
-
 .ms-form-element label {
   display: inline;
 }
-
 .ms-form-element span {
   display: inline;
 }
-
-.ms-form-element input {
+.ms-form-element input,
+.ms-form-element select,
+.ms-form-element textarea {
+  min-width: 190px;
   margin: 0 0 0 1em;
   float: right;
+}
+.ms-form-element input[type=checkbox],
+.ms-form-element input[type=radio] {
+  width: auto;
+}
+.ms-form-element.ms-form-element-xprofile .description {
+  clear: both;
+  display: block;
+  color: #666;
+  font-style: italic;
+  text-align: left;
+}
+.ms-form-element.ms-form-element-xprofile .radio .label,
+.ms-form-element.ms-form-element-xprofile .checkbox .label {
+  display: inline;
+}
+.ms-form-element.ms-form-element-xprofile .radio label,
+.ms-form-element.ms-form-element-xprofile .checkbox label {
+  display: block;
+  min-width: 190px;
+  float: right;
+  clear: both;
+}
+.ms-form-element.ms-form-element-xprofile .datebox {
+  text-align: right;
+}
+.ms-form-element.ms-form-element-xprofile .datebox label {
+  float: left;
+}
+.ms-form-element.ms-form-element-xprofile .datebox select {
+  width: auto;
+  min-width: 0;
+  margin-right: 4px;
 }
 
 /* jQuery validation - on front end */
@@ -372,6 +410,7 @@ input[type="image"] {
   /* SETTINGS GATEWAY */
   /* MEMBERS LIST */
   /* MEDIA /DOWNLOADS TAB */
+  /* AUTOMATED EMAIL RESPONSES */
 }
 .wpmui-wnd .ms-settings-wrapper,
 #wpwrap .ms-wrap .ms-settings-wrapper {
@@ -791,6 +830,7 @@ input[type="image"] {
   left: -220px;
   margin: 0;
   top: 10px;
+  margin-right: 10px;
 }
 .wpmui-wnd .gateways .show-settings,
 #wpwrap .ms-wrap .gateways .show-settings {
@@ -882,10 +922,6 @@ input[type="image"] {
   margin-left: 6px;
   color: #B30;
 }
-.wpmui-wnd .ms-global-payment-wrapper .gateways .ms-gateway-item .row-actions,
-#wpwrap .ms-wrap .ms-global-payment-wrapper .gateways .ms-gateway-item .row-actions {
-  display: none;
-}
 .wpmui-wnd .ms-global-payment-wrapper .gateways .ms-gateway-settings .ms-settings-box .inside,
 #wpwrap .ms-wrap .ms-global-payment-wrapper .gateways .ms-gateway-settings .ms-settings-box .inside {
   padding-left: 0;
@@ -909,6 +945,11 @@ input[type="image"] {
 .wpmui-wnd .wpmui-description-masked_url,
 #wpwrap .ms-wrap .wpmui-description-masked_url {
   display: inline-block;
+}
+.wpmui-wnd .ms-settings-messages_automated .wpmui-label-email_body .ms-wpml-support,
+#wpwrap .ms-wrap .ms-settings-messages_automated .wpmui-label-email_body .ms-wpml-support {
+  position: absolute;
+  margin-top: 24px;
 }
 
 .wpmui-wnd.ms-setup-done .the-title {

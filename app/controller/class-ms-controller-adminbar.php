@@ -1,34 +1,11 @@
 <?php
 /**
- * This file defines the MS_Controller_Adminbar class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
- */
-
-/**
  * Controller to add functionality to the admin toolbar.
  *
  * Used extensively for simulating memberships and content access.
  * Adds ability for Membership users to test the behaviour for their end-users.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -38,7 +15,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Details on current simulation mode
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var MS_Model_Simulate
 	 */
@@ -47,18 +24,18 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Prepare the Admin Bar simulator.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
 
-		$this->run_action( 'set_current_user', 'init_adminbar' );
+		$this->run_action( 'init', 'init_adminbar', 1 );
 	}
 
 	/**
 	 * Returns the URL to start/switch simulation of a specific membership.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  int $id Membership-ID
 	 * @return string URL
 	 */
@@ -78,7 +55,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Returns the URL to end simulation.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return string URL
 	 */
 	static public function get_simulation_exit_url() {
@@ -88,7 +65,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Initialize the Admin-Bar after we have determined the current user.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function init_adminbar() {
 		$this->simulate = MS_Factory::load( 'MS_Model_Simulate' );
@@ -114,7 +91,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_before_admin_bar_render
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function customize_toolbar() {
 		if ( MS_Model_Member::is_admin_user()
@@ -138,7 +115,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	 * Related Action Hooks:
 	 * - add_admin_bar_menus
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_bar_manager() {
 		$redirect = false;
@@ -194,7 +171,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Remove all Admin Bar nodes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string[] $exclude The node IDs to exclude.
 	 */
@@ -227,7 +204,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Add 'Test Memberships' node.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 */
 	private function add_test_membership_node() {
@@ -259,7 +236,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Add 'Unprotected' node.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 */
 	private function add_unprotected_node() {
@@ -290,7 +267,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	/**
 	 * Add membership description nodes.
 	 *
-	 * @since 1.0.1
+	 * @since  1.0.0
 	 *
 	 */
 	private function add_detail_nodes() {
@@ -371,7 +348,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_before_admin_bar_render
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 */
 	public function customize_toolbar_front() {
@@ -387,7 +364,7 @@ class MS_Controller_Adminbar extends MS_Controller {
 	 * - wp_enqueue_scripts
 	 * - admin_enqueue_scripts
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_scripts() {
 		$data = array(

@@ -1,26 +1,5 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Helper class for rendering HTML components.
  *
  * Methods for creating form INPUT components.
@@ -28,7 +7,7 @@
  *
  * @todo Create add methods to parent class or remove 'extends MS_Helper' to use standalone.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @return object
  */
@@ -72,7 +51,7 @@ class MS_Helper_Html extends MS_Helper {
 	 * Pass in array with field arguments. See $defaults for argmuments.
 	 * Use constants to specify field type. e.g. MS_Helper_Html::INPUT_TYPE_TEXT
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void|string If $return param is false the HTML will be echo'ed,
 	 *           otherwise returned as string
@@ -281,7 +260,7 @@ class MS_Helper_Html extends MS_Helper {
 		do_action( 'ms_helper_settings_box_header_init', $title, $description, $state );
 
 		$handle = '';
-		if ( $state !== 'static' ) {
+		if ( 'static' !== $state ) {
 			$state = ('closed' === $state ? 'closed' : 'open');
 			$handle = sprintf(
 				'<div class="handlediv" title="%s"></div>',
@@ -330,7 +309,7 @@ class MS_Helper_Html extends MS_Helper {
 	 *
 	 * Pass in array with field arguments. See $defaults for argmuments.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void But does output HTML.
 	 */
@@ -356,7 +335,7 @@ class MS_Helper_Html extends MS_Helper {
 	 *
 	 * Pass in array with link arguments. See $defaults for arguments.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string But does output HTML.
 	 */
@@ -384,7 +363,7 @@ class MS_Helper_Html extends MS_Helper {
 	 *
 	 * Returns the active tab key. Vertical tabs need to be wrapped in additional code.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  array $tabs
 	 * @param  string $active_tab
@@ -410,7 +389,9 @@ class MS_Helper_Html extends MS_Helper {
 			<ul id="sortable-units" class="ms-tabs" style="">
 				<?php foreach ( $tabs as $tab_name => $tab ) :
 					$tab_class = $tab_name == $active_tab ? 'active' : '';
+					$title = esc_html( $tab['title'] );
 					$url = $tab['url'];
+										$attributes = array();
 
 					foreach ( $persistent as $param ) {
 						lib2()->array->equip_request( $param );
@@ -419,10 +400,19 @@ class MS_Helper_Html extends MS_Helper {
 							add_query_arg( $param, $value, $url )
 						);
 					}
+
+					$attributes[] = 'class="ms-tab-link"';
+					$attributes[] = 'href="' . esc_url( $url ) .'"';
+					if ( isset( $tab['target'] ) ) {
+						$attributes[] = 'target="' . esc_attr( $tab['target'] ) .'"';
+						if ( '_blank' == $tab['target'] ) {
+							$title .= ' <i class="wpmui-fa wpmui-fa-external-link-square"></i>';
+						}
+					}
 					?>
-					<li class="ms-tab <?php echo esc_attr( $tab_class ); ?> ">
-						<a class="ms-tab-link" href="<?php echo esc_url( $url ); ?>">
-							<?php echo esc_html( $tab['title'] ); ?>
+					<li class="ms-tab <?php echo esc_attr( $tab_class ); ?>">
+						<a <?php echo implode( ' ', $attributes ); ?>>
+							<?php echo $title; ?>
 						</a>
 					</li>
 				<?php endforeach; ?>
@@ -437,7 +427,7 @@ class MS_Helper_Html extends MS_Helper {
 	/**
 	 * Method for outputting tooltips.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string But does output HTML.
 	 */
@@ -546,6 +536,13 @@ class MS_Helper_Html extends MS_Helper {
 		}
 	}
 
+	/**
+	 * Return bread crumb navigation HTML code.
+	 *
+	 * @since  1.0.0
+	 * @param  array $bread_crumbs
+	 * @return string
+	 */
 	public static function bread_crumbs( $bread_crumbs ) {
 		$crumbs = array();
 		$html = '';
@@ -580,6 +577,14 @@ class MS_Helper_Html extends MS_Helper {
 		printf( $html );
 	}
 
+	/**
+	 * Return HTML code that displays a human readable Period representation.
+	 *
+	 * @since  1.0.0
+	 * @param  array $period
+	 * @param  string $class
+	 * @return string
+	 */
 	public static function period_desc( $period, $class = '' ) {
 		$html = sprintf(
 			'<span class="ms-period-desc %s"> <span class="ms-period-unit">%s</span> <span class="ms-period-type">%s</span></span>',
@@ -589,6 +594,41 @@ class MS_Helper_Html extends MS_Helper {
 		);
 
 		return apply_filters( 'ms_helper_html_period_desc', $html );
+	}
+
+	/**
+	 * Removes lines breaks and tralining/leading whitespace.
+	 *
+	 * Use this function:   $code = apply_filters( 'ms_compact_code', $code );
+	 *
+	 * Intention of this function is to make HTML code compatible with certain
+	 * Themes that would add <br> tags at every newline, even when the newline
+	 * was inside an HTML tag.
+	 *
+	 * e.g.             <div class="myclass"
+	 *                  id="myid">
+	 *
+	 * was replaced by  <div class="myclass" <br>
+	 *                  id="myid">
+	 *
+	 * @since  1.0.1.0
+	 * @param  string $html HTML code.
+	 * @return string Compressed HTML code.
+	 */
+	public static function compact_code( $html ) {
+		$html = str_replace( array( "\r\n", "\r" ), "\n", $html );
+		$lines = explode( "\n", $html );
+		$new_lines = array();
+
+		foreach ( $lines as $i => $line ) {
+			$line = trim( $line );
+			if ( ! empty( $line ) ) {
+				$new_lines[] = $line;
+			}
+		}
+		$html = implode( ' ', $new_lines );
+
+		return $html;
 	}
 
 }

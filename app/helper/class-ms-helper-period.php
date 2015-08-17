@@ -1,30 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Utilities class
  *
- * @since 1.0.0
- *
+ * @since  1.0.0
  */
 class MS_Helper_Period extends MS_Helper {
 
@@ -46,59 +24,68 @@ class MS_Helper_Period extends MS_Helper {
 	/**
 	 * Add a period interval to a date.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param int $period_unit The period unit to add.
 	 * @param string $period_type The period type to add.
-	 * @param string $start_date The start date to add to.
-	 * @throws Exception
+	 * @param string|int $start_date The start date to add to.
 	 * @return string The added date.
 	 */
 	public static function add_interval( $period_unit, $period_type, $start_date = null ) {
 		if ( empty ( $start_date ) ) {
-			$start_date = gmdate( self::PERIOD_FORMAT );
+			$start_date = self::current_date();
 		}
-
-		if ( self::PERIOD_TYPE_YEARS == $period_type ) {
-			$period_unit *= 365;
-			$period_type = self::PERIOD_TYPE_DAYS;
+		if ( ! is_numeric( $start_date ) ) {
+			$start_date = strtotime( $start_date );
 		}
+		$result = $start_date;
 
-		$end_dt = strtotime( '+' . $period_unit . $period_type , strtotime( $start_date ) );
-		if ( false === $end_dt ) {
-			throw new Exception( 'error add_interval' );
+		if ( is_numeric( $period_unit ) && $period_unit > 0 ) {
+			$days = self::get_period_in_days( $period_unit, $period_type );
+			$result = strtotime( '+' . $days . 'days', $start_date );
+
+			if ( false === $result ) {
+				$result = $start_date;
+			}
 		}
 
 		return apply_filters(
 			'ms_helper_period_add_interval',
-			gmdate( self::PERIOD_FORMAT, $end_dt )
+			gmdate( self::PERIOD_FORMAT, $result )
 		);
 	}
 
 	/**
 	 * Subtract a period interval to a date.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param int $period_unit The period unit to subtract.
 	 * @param string $period_type The period type to subtract.
-	 * @param string $start_date The start date to subtract to.
-	 * @throws Exception
+	 * @param string|int $start_date The start date to subtract to.
 	 * @return string The subtracted date.
 	 */
 	public static function subtract_interval( $period_unit, $period_type, $start_date = null ) {
 		if ( empty ( $start_date ) ) {
-			$start_date = gmdate( self::PERIOD_FORMAT );
+			$start_date = self::current_date();
 		}
+		if ( ! is_numeric( $start_date ) ) {
+			$start_date = strtotime( $start_date );
+		}
+		$result = $start_date;
 
-		$end_dt = strtotime( '-' . $period_unit . $period_type , strtotime( $start_date ) );
-		if ( false === $end_dt ) {
-			throw new Exception( 'error subtract_interval' );
+		if ( is_numeric( $period_unit ) && $period_unit > 0 ) {
+			$days = self::get_period_in_days( $period_unit, $period_type );
+			$result = strtotime( '-' . $days . 'days', $start_date );
+
+			if ( false === $result ) {
+				$result = $start_date;
+			}
 		}
 
 		return apply_filters(
 			'ms_helper_period_subtract_interval',
-			gmdate( self::PERIOD_FORMAT, $end_dt )
+			gmdate( self::PERIOD_FORMAT, $result )
 		);
 	}
 
@@ -107,13 +94,18 @@ class MS_Helper_Period extends MS_Helper {
 	 *
 	 * Return (end_date - start_date) in period_type format
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  Date $end_date The end date to subtract from in the format yyyy-mm-dd
 	 * @param  Date $start_date The start date to subtraction the format yyyy-mm-dd
-	 * @return int The resulting of the date subtraction.
+	 * @param  int $precission Time constant HOURS_IN_SECONDS will return the
+	 *         difference in hours. Default is DAY_IN_SECONDS (return = days).
+	 * @param  bool $real_diff If set to true then the result is negative if
+	 *         enddate is before startdate. Default is false, which will return
+	 *         the absolute difference which is always positive.
+	 * @return int The resulting difference of the date subtraction.
 	 */
-	public static function subtract_dates( $end_date, $start_date ) {
+	public static function subtract_dates( $end_date, $start_date, $precission = null, $real_diff = false ) {
 		if ( empty( $end_date ) ) {
 			// Empty end date is assumed to mean "never"
 			$end_date = '2999-12-31';
@@ -122,18 +114,22 @@ class MS_Helper_Period extends MS_Helper {
 		$end_date = new DateTime( $end_date );
 		$start_date = new DateTime( $start_date );
 
-		$days = intval(
+		if ( ! is_numeric( $precission ) || $precission <= 0 ) {
+			$precission = DAY_IN_SECONDS;
+		}
+
+		$result = intval(
 			( $end_date->format( 'U' ) - $start_date->format( 'U' ) ) /
-			86400 // = 60 * 60 * 24
+			$precission
 		);
 
-		if ( $days < 0 ) {
-			$days = 0;
+		if ( ! $real_diff ) {
+			$result = abs( $result );
 		}
 
 		return apply_filters(
 			'ms_helper_period_subtract_dates',
-			$days
+			$result
 		);
 	}
 
@@ -144,7 +140,7 @@ class MS_Helper_Period extends MS_Helper {
 	 * This function can be used to compare multiple dates, like
 	 * $valid = is_after( $today, $date1, $date2, $date3 );
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 *
 	 * @param  string|Date $the_date Date value that is compared with other dates.
 	 * @param  string|Date $before_1 Comparison Date 1
@@ -190,13 +186,13 @@ class MS_Helper_Period extends MS_Helper {
 	/**
 	 * Return current date.
 	 *
-	 * @since 1.0.0
-	 *
+	 * @since  1.0.0
+	 * @param  string $format A valid php date format. Default value is 'Y-m-d'.
 	 * @return string The current date.
 	 */
 	public static function current_date( $format = null, $ignore_filters = false ) {
 		static $Date = array();
-		$key = (string)$format . (int)$ignore_filters;
+		$key = (string) $format . (int) $ignore_filters;
 
 		if ( ! isset( $Date[$key] ) ) {
 			if ( empty( $format ) ) {
@@ -225,21 +221,34 @@ class MS_Helper_Period extends MS_Helper {
 	/**
 	 * Return current timestamp.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The current date.
+	 * @since  1.0.0
+	 * @param  string $format [ mysql | timestamp | date-format like 'Y-m-d' ].
+	 * @return string The current timestamp.
 	 */
-	public static function current_time( $type = 'mysql' ) {
-		return apply_filters(
-			'ms_helper_period_current_time',
-			current_time( $type, true )
-		);
+	public static function current_time( $format = 'mysql', $ignore_filters = false ) {
+		static $Time = array();
+		$key = (string) $format . (int) $ignore_filters;
+
+		if ( ! isset( $Time[$key] ) ) {
+			$time = current_time( $format, 1 );
+
+			if ( ! $ignore_filters ) {
+				$time = apply_filters(
+					'ms_helper_period_current_time',
+					$time
+				);
+			}
+
+			$Time[$key] = $time;
+		}
+
+		return $Time[$key];
 	}
 
 	/**
 	 * Return the existing period types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $type [all|singular|plural]
 	 * @return array The period types and descriptions.
@@ -279,7 +288,7 @@ class MS_Helper_Period extends MS_Helper {
 	 *
 	 * Convert period in week, month, years to days.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param $period The period to convert.
 	 *
@@ -309,7 +318,7 @@ class MS_Helper_Period extends MS_Helper {
 		return apply_filters(
 			'ms_helper_period_get_period_in_days',
 			$days,
-			$period
+			$type
 		);
 	}
 
@@ -370,7 +379,7 @@ class MS_Helper_Period extends MS_Helper {
 	 *   Month -> value will be between 1 - 24
 	 *   Year  -> value will be between 1 - 5
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 * @param  int $value The value to validate
 	 * @param  string $unit Period unit (D/W/M/Y or long days/weeks/...)
 	 * @return int The validated value

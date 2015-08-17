@@ -1,6 +1,6 @@
 <?php
 
-class Stripe_Recipient extends Stripe_ApiResource
+class M2_Stripe_Recipient extends M2_Stripe_ApiResource
 {
   /**
    * @param string $id The ID of the recipient to retrieve.
@@ -58,7 +58,7 @@ class Stripe_Recipient extends Stripe_ApiResource
     return self::_scopedDelete($class, $params);
   }
 
-  
+
   /**
    * @param array|null $params
    *
@@ -69,7 +69,7 @@ class Stripe_Recipient extends Stripe_ApiResource
     if (!$params)
       $params = array();
     $params['recipient'] = $this->id;
-    $transfers = Stripe_Transfer::all($params, $this->_apiKey);
+    $transfers = M2_Stripe_Transfer::all($params, $this->_apiKey);
     return $transfers;
   }
 }

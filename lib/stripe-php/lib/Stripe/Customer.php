@@ -1,6 +1,6 @@
 <?php
 
-class Stripe_Customer extends Stripe_ApiResource
+class M2_Stripe_Customer extends M2_Stripe_ApiResource
 {
   /**
    * @param string $id The ID of the customer to retrieve.
@@ -68,7 +68,7 @@ class Stripe_Customer extends Stripe_ApiResource
     if (!$params)
       $params = array();
     $params['customer'] = $this->id;
-    $ii = Stripe_InvoiceItem::create($params, $this->_apiKey);
+    $ii = M2_Stripe_InvoiceItem::create($params, $this->_apiKey);
     return $ii;
   }
 
@@ -82,7 +82,7 @@ class Stripe_Customer extends Stripe_ApiResource
     if (!$params)
       $params = array();
     $params['customer'] = $this->id;
-    $invoices = Stripe_Invoice::all($params, $this->_apiKey);
+    $invoices = M2_Stripe_Invoice::all($params, $this->_apiKey);
     return $invoices;
   }
 
@@ -96,7 +96,7 @@ class Stripe_Customer extends Stripe_ApiResource
     if (!$params)
       $params = array();
     $params['customer'] = $this->id;
-    $iis = Stripe_InvoiceItem::all($params, $this->_apiKey);
+    $iis = M2_Stripe_InvoiceItem::all($params, $this->_apiKey);
     return $iis;
   }
 
@@ -110,7 +110,7 @@ class Stripe_Customer extends Stripe_ApiResource
     if (!$params)
       $params = array();
     $params['customer'] = $this->id;
-    $charges = Stripe_Charge::all($params, $this->_apiKey);
+    $charges = M2_Stripe_Charge::all($params, $this->_apiKey);
     return $charges;
   }
 
@@ -121,7 +121,7 @@ class Stripe_Customer extends Stripe_ApiResource
    */
   public function updateSubscription($params=null)
   {
-    $requestor = new Stripe_ApiRequestor($this->_apiKey);
+    $requestor = new M2_Stripe_ApiRequestor($this->_apiKey);
     $url = $this->instanceUrl() . '/subscription';
     list($response, $apiKey) = $requestor->request('post', $url, $params);
     $this->refreshFrom(array('subscription' => $response), $apiKey, true);
@@ -135,7 +135,7 @@ class Stripe_Customer extends Stripe_ApiResource
    */
   public function cancelSubscription($params=null)
   {
-    $requestor = new Stripe_ApiRequestor($this->_apiKey);
+    $requestor = new M2_Stripe_ApiRequestor($this->_apiKey);
     $url = $this->instanceUrl() . '/subscription';
     list($response, $apiKey) = $requestor->request('delete', $url, $params);
     $this->refreshFrom(array('subscription' => $response), $apiKey, true);
@@ -149,7 +149,7 @@ class Stripe_Customer extends Stripe_ApiResource
    */
   public function deleteDiscount()
   {
-    $requestor = new Stripe_ApiRequestor($this->_apiKey);
+    $requestor = new M2_Stripe_ApiRequestor($this->_apiKey);
     $url = $this->instanceUrl() . '/discount';
     list($response, $apiKey) = $requestor->request('delete', $url);
     $this->refreshFrom(array('discount' => null), $apiKey, true);

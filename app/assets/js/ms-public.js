@@ -1,4 +1,4 @@
-/*! Membership 2 - v4.0.01
+/*! Membership 2 - v4.0.03
  * https://wordpress.org/plugins/membership/
  * Copyright (c) 2015; * Licensed GPLv2+ */
 /*global window:false */
@@ -45,28 +45,6 @@ jQuery(function() {
 /*global ms_functions:false */
 
 window.ms_init.shortcode = function init () {
-	var args = {
-		onkeyup: false,
-		errorClass: 'ms-validation-error',
-		rules: {
-			'username': 'required',
-			'email': {
-				'required': true,
-				'email': true,
-			},
-			'password': {
-				'required': true,
-				'minlength': 5,
-			},
-			'password2': {
-				'required': true,
-				'equalTo': '#password',
-			},
-		}
-	};
-
-	jQuery( '#ms-shortcode-register-user-form' ).validate(args);
-
 	jQuery( '.ms-membership-form .membership_cancel' ).click( function() {
 		if ( window.confirm( ms_data.cancel_msg ) ) {
 			return true;

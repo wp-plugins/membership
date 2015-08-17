@@ -494,6 +494,9 @@ class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 		foreach ( $data as $data_key => $data_value ) {
 			$data_attr .= 'data-' . $data_key . '=' . json_encode( $data_value ) . ' ';
 		}
+		foreach ( $config as $conf_key => $conf_value ) {
+			$data_attr .= $conf_key . '=' . json_encode( $conf_value ) . ' ';
+		}
 
 		if ( ! empty( $ajax_data ) ) {
 			$class .= ' wpmui-ajax-update';
@@ -547,11 +550,6 @@ class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 			case self::INPUT_TYPE_TIME:
 			case self::INPUT_TYPE_SEARCH:
 			case self::INPUT_TYPE_FILE:
-				$attr = array();
-				foreach ( $config as $conf_key => $conf_value ) {
-					$attr[] = $conf_key . '="' . esc_attr( $conf_value ) . '"';
-				}
-
 				$this->element_input(
 					$labels,
 					$type,
@@ -559,7 +557,7 @@ class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 					$id,
 					$name,
 					$value,
-					$read_only . $max_attr . $attr_placeholder . $ajax_data . $data_attr . implode( ' ', $attr ),
+					$read_only . $max_attr . $attr_placeholder . $ajax_data . $data_attr,
 					$wrapper_class
 				);
 				break;
@@ -1134,7 +1132,7 @@ class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 		if ( $state ) { $value = $options['active']; }
 		else { $value = $options['inactive']; }
 
-		$turned = ( $value ) ? 'on' : '';
+		$turned = ( $value ) ? 'on' : 'off';
 
 		$this->wrap_open( 'radio-slider', $class, 'span', $turned . ' ' . $wrapper_class );
 		$this->element_label( $labels );
@@ -1337,7 +1335,7 @@ class TheLib_2_0_3_Html extends TheLib_2_0_3  {
 		printf(
 			'<a id="%1$s" title="%2$s" class="wpmui-link %3$s" href="%4$s" target="%7$s" %6$s>%5$s</a>',
 			esc_attr( $id ),
-			esc_attr( $title ),
+			esc_attr( strip_tags( $title ) ),
 			esc_attr( $class ),
 			esc_url( $url ),
 			$label,

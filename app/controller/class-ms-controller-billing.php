@@ -1,31 +1,8 @@
 <?php
 /**
- * This file defines the MS_Controller_Billing class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
- */
-
-/**
  * Controller to manage billing and invoices.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -33,18 +10,76 @@
 class MS_Controller_Billing extends MS_Controller {
 
 	/**
+	 * Default action to open the invoice edit form.
+	 *
+	 * @since 1.0.1.0
+	 * @var   string
+	 */
+	const ACTION_EDIT = 'edit';
+
+	/**
+	 * Action used to quick-pay an invoice via a link in the billings list.
+	 *
+	 * @since 1.0.1.0
+	 * @var   string
+	 */
+	const ACTION_PAY_IT = 'pay_it';
+
+	/**
+	 * Ajax action used in the transaction log list.
+	 * Sets the Manual-State flag of an transaction.
+	 *
+	 * @since 1.0.1.0
+	 * @var   string
+	 */
+	const AJAX_ACTION_TRANSACTION_UPDATE = 'transaction_update';
+
+	/**
+	 * Ajax action used in the transaction log list.
+	 * Returns a form to link a transaction with an invoice.
+	 *
+	 * @since 1.0.1.0
+	 * @var   string
+	 */
+	const AJAX_ACTION_TRANSACTION_LINK = 'transaction_link';
+
+	/**
+	 * Ajax action used in the transaction log list.
+	 * Returns a list of requested items.
+	 *
+	 * @since 1.0.1.0
+	 * @var   string
+	 */
+	const AJAX_ACTION_TRANSACTION_LINK_DATA = 'transaction_link_data';
+
+	/**
 	 * Prepare the Billing manager.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
+
+		$this->add_ajax_action(
+			self::AJAX_ACTION_TRANSACTION_UPDATE,
+			'ajax_change_transaction'
+		);
+
+		$this->add_ajax_action(
+			self::AJAX_ACTION_TRANSACTION_LINK,
+			'ajax_link_transaction'
+		);
+
+		$this->add_ajax_action(
+			self::AJAX_ACTION_TRANSACTION_LINK_DATA,
+			'ajax_link_data_transaction'
+		);
 	}
 
 	/**
 	 * Initialize the admin-side functions.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_init() {
 		$hook = MS_Controller_Plugin::admin_page_hook( 'billing' );
@@ -57,7 +92,7 @@ class MS_Controller_Billing extends MS_Controller {
 	/**
 	 * Show admin notices.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 */
 	public function print_admin_message() {
@@ -69,7 +104,7 @@ class MS_Controller_Billing extends MS_Controller {
 	 *
 	 * Verifies GET and POST requests to manage billing.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_billing_manager() {
 		$this->print_admin_message();
@@ -80,12 +115,14 @@ class MS_Controller_Billing extends MS_Controller {
 			return;
 		}
 
-		$fields = array( 'user_id', 'membership_id' );
+		$fields_edit = array( 'user_id', 'membership_id' );
+		$fields_pay = array( 'invoice_id' );
+		$fields_bulk = array( 'action', 'action2', 'invoice_id' );
 
-		if ( self::validate_required( $fields )
-			&& $this->verify_nonce()
+		// Save details of a single invoice.
+		if ( $this->verify_nonce( self::ACTION_EDIT )
+			&& self::validate_required( $fields_edit )
 		) {
-			// Save billing add/edit
 			$msg = $this->save_invoice( $_POST );
 
 			$redirect = esc_url_raw(
@@ -94,13 +131,32 @@ class MS_Controller_Billing extends MS_Controller {
 					remove_query_arg( array( 'invoice_id') )
 				)
 			);
-		} elseif ( self::validate_required( array( 'invoice_id' ) )
-			&& $this->verify_nonce( 'bulk' )
+		}
+
+		// Quick-Pay an invoice.
+		elseif ( $this->verify_nonce( self::ACTION_PAY_IT, 'GET' )
+			&& self::validate_required( $fields_pay, 'GET' )
 		) {
-			// Execute bulk actions.
+			$msg = $this->billing_do_action( 'pay', $_GET['invoice_id'] );
+			$redirect = esc_url_raw(
+				add_query_arg(
+					array( 'msg' => $msg ),
+					remove_query_arg(
+						array( 'action', '_wpnonce', 'invoice_id' )
+					)
+				)
+			);
+		}
+
+		// Bulk edit invoices.
+		elseif ( $this->verify_nonce( 'bulk' )
+			&& self::validate_required( $fields_bulk )
+		) {
 			$action = $_POST['action'] != -1 ? $_POST['action'] : $_POST['action2'];
 			$msg = $this->billing_do_action( $action, $_POST['invoice_id'] );
-			$redirect = esc_url_raw( add_query_arg( array( 'msg' => $msg ) ) );
+			$redirect = esc_url_raw(
+				add_query_arg( array( 'msg' => $msg ) )
+			);
 		}
 
 		if ( $redirect ) {
@@ -112,9 +168,9 @@ class MS_Controller_Billing extends MS_Controller {
 	/**
 	 * Sets up the 'Billing' navigation and list page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function admin_billing() {
+	public function admin_page() {
 		$this->print_admin_message();
 
 		// Action view page request
@@ -135,28 +191,215 @@ class MS_Controller_Billing extends MS_Controller {
 	}
 
 	/**
+	 * Ajax action handler used by the transaction logs list to change a
+	 * transaction log entry.
+	 *
+	 * Sets the Manual-State flag of an transaction.
+	 *
+	 * @since  1.0.1.0
+	 */
+	public function ajax_change_transaction() {
+		$res = MS_Helper_Billing::BILLING_MSG_NOT_UPDATED;
+		$fields_state = array( 'id', 'state' );
+		$fields_link = array( 'id', 'link' );
+
+		if ( $this->verify_nonce() ) {
+			if ( self::validate_required( $fields_state ) ) {
+				$id = intval( $_POST['id'] );
+				$state = $_POST['state'];
+
+				$log = MS_Factory::load( 'MS_Model_Transactionlog', $id );
+
+				if ( $log->manual_state( $state ) ) {
+					$log->save();
+					$res = MS_Helper_Billing::BILLING_MSG_UPDATED;
+				}
+			} elseif ( self::validate_required( $fields_link ) ) {
+				$id = intval( $_POST['id'] );
+				$link = intval( $_POST['link'] );
+
+				$log = MS_Factory::load( 'MS_Model_Transactionlog', $id );
+
+				$log->invoice_id = $link;
+				if ( $log->manual_state( 'ok' ) ) {
+					$invoice = $log->get_invoice();
+					if ( $invoice ) {
+						$invoice->pay_it( $log->gateway_id, 'manual' );
+					}
+					$log->save();
+					$res = MS_Helper_Billing::BILLING_MSG_UPDATED;
+				}
+			}
+		}
+
+		echo $res;
+		exit;
+	}
+
+	/**
+	 * Ajax action handler used by the transaction logs list to change a
+	 * transaction log entry.
+	 *
+	 * Returns a form to link a transaction with an invoice.
+	 *
+	 * @since  1.0.1.0
+	 */
+	public function ajax_link_transaction() {
+		$data = array();
+		$resp = '';
+		$fields = array( 'id' );
+
+		if ( self::validate_required( $fields ) && $this->verify_nonce() ) {
+			$id = intval( $_POST['id'] );
+
+			$log = MS_Factory::load( 'MS_Model_Transactionlog', $id );
+			if ( $log->member_id ) {
+				$data['member'] = $log->get_member();
+			} else {
+				$data['member'] = false;
+			}
+			$data['log'] = $log;
+			$data['users'] = MS_Model_Member::get_usernames( null, MS_Model_Member::SEARCH_ALL_USERS );
+
+			$view = MS_Factory::create( 'MS_View_Billing_Link' );
+			$view->data = apply_filters( 'ms_view_billing_link_data', $data );
+			$resp = $view->to_html();
+		}
+
+		echo $resp;
+		exit;
+	}
+
+	/**
+	 * Ajax action handler used by the transaction logs list to change a
+	 * transaction log entry.
+	 *
+	 * Returns a list of requested items
+	 *
+	 * @since  1.0.1.0
+	 */
+	public function ajax_link_data_transaction() {
+		$resp = array();
+		$fields = array( 'get', 'for' );
+
+		if ( self::validate_required( $fields ) && $this->verify_nonce() ) {
+			$type = $_POST['get'];
+			$id = intval( $_POST['for'] );
+			$settings = MS_Plugin::instance()->settings;
+
+			if ( 'subscriptions' == $type ) {
+				$member = MS_Factory::load( 'MS_Model_Member', $id );
+
+				$resp[0] = __( 'Select a subscription', MS_TEXT_DOMAIN );
+				$active = array();
+				$inactive = array();
+				foreach ( $member->subscriptions as $subscription ) {
+					if ( $subscription->is_system() ) { continue; }
+
+					$membership = $subscription->get_membership();
+					if ( $membership->is_free() ) {
+						$price = __( 'Free', MS_TEXT_DOMAIN );
+					} else {
+						$price = sprintf(
+							'%s %s',
+							$settings->currency,
+							MS_Helper_Billing::format_price( $membership->price )
+						);
+					}
+					$line = sprintf(
+						__( 'Membership: %s, Base price: %s', MS_TEXT_DOMAIN ),
+						$membership->name,
+						$price
+					);
+					if ( $subscription->is_expired() ) {
+						$inactive[$subscription->id] = $line;
+					} else {
+						$active[$subscription->id] = $line;
+					}
+				}
+				if ( ! count( $active ) && ! count( $inactive ) ) {
+					$resp[0] = __( 'No subscriptions found', MS_TEXT_DOMAIN );
+				} else {
+					if ( count( $active ) ) {
+						$resp[__( 'Active Subscriptions', MS_TEXT_DOMAIN )] = $active;
+					}
+					if ( count( $inactive ) ) {
+						$resp[__( 'Expired Subscriptions', MS_TEXT_DOMAIN )] = $inactive;
+					}
+				}
+			} elseif ( 'invoices' == $type ) {
+				$subscription = MS_Factory::load( 'MS_Model_Relationship', $id );
+				$invoices = $subscription->get_invoices();
+
+				$resp[0] = __( 'Select an invoice', MS_TEXT_DOMAIN );
+				$unpaid = array();
+				$paid = array();
+				foreach ( $invoices as $invoice ) {
+					$line = sprintf(
+						__( 'Invoice: %s from %s (%s)', MS_TEXT_DOMAIN ),
+						$invoice->get_invoice_number(),
+						$invoice->due_date,
+						$invoice->currency . ' ' .
+						MS_Helper_Billing::format_price( $invoice->total )
+					);
+					if ( $invoice->is_paid() ) {
+						$paid[$invoice->id] = $line;
+					} else {
+						$unpaid[$invoice->id] = $line;
+					}
+				}
+				if ( ! count( $unpaid ) && ! count( $paid ) ) {
+					$resp[0] = __( 'No invoices found', MS_TEXT_DOMAIN );
+				} else {
+					if ( count( $unpaid ) ) {
+						$resp[__( 'Unpaid Invoices', MS_TEXT_DOMAIN )] = $unpaid;
+					}
+					if ( count( $paid ) ) {
+						$resp[__( 'Paid Invoices', MS_TEXT_DOMAIN )] = $paid;
+					}
+				}
+			}
+		}
+
+		echo json_encode( $resp );
+		exit;
+	}
+
+	/**
 	 * Perform actions for each invoice.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $action The action to perform on selected invoices.
 	 * @param int[] $invoice_ids The list of invoices ids to process.
 	 */
 	public function billing_do_action( $action, $invoice_ids ) {
 		$msg = MS_Helper_Billing::BILLING_MSG_NOT_UPDATED;
 
-		if ( $this->is_admin_user() && is_array( $invoice_ids ) ) {
-			foreach ( $invoice_ids as $invoice_id ) {
-				switch ( $action ) {
-					case 'delete':
-						$invoice = MS_Factory::load( 'MS_Model_Invoice', $invoice_id );
-						$invoice->delete();
-						$msg = MS_Helper_Billing::BILLING_MSG_DELETED;
-						break;
+		if ( ! is_array( $invoice_ids ) ) {
+			$invoice_ids = array( $invoice_ids );
+		}
 
-					default:
-						do_action( 'ms_controller_billing_do_action_' . $action, $invoice_ids );
-						break;
-				}
+		foreach ( $invoice_ids as $invoice_id ) {
+			$invoice = MS_Factory::load( 'MS_Model_Invoice', $invoice_id );
+
+			switch ( $action ) {
+				case 'pay':
+					$invoice->status = MS_Model_Invoice::STATUS_PAID;
+					$invoice->changed();
+					$msg = MS_Helper_Billing::BILLING_MSG_UPDATED;
+					break;
+
+				case 'delete':
+					$invoice->delete();
+					$msg = MS_Helper_Billing::BILLING_MSG_DELETED;
+					break;
+
+				default:
+					do_action(
+						'ms_controller_billing_do_action_' . $action,
+						$invoice
+					);
+					break;
 			}
 		}
 
@@ -172,7 +415,7 @@ class MS_Controller_Billing extends MS_Controller {
 	/**
 	 * Save invoices using the invoices model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param mixed $fields Transaction fields
 	 */
@@ -188,7 +431,11 @@ class MS_Controller_Billing extends MS_Controller {
 			$membership_id = $fields['membership_id'];
 			$gateway_id = 'admin';
 
-			$subscription = MS_Model_Relationship::get_subscription( $member->id, $membership_id );
+			$subscription = MS_Model_Relationship::get_subscription(
+				$member->id,
+				$membership_id
+			);
+
 			if ( empty( $subscription ) ) {
 				$subscription = MS_Model_Relationship::create_ms_relationship(
 					$membership_id,
@@ -200,7 +447,8 @@ class MS_Controller_Billing extends MS_Controller {
 				$subscription->save();
 			}
 
-			$invoice = MS_Factory::load( 'MS_Model_Invoice', $fields['invoice_id'] );
+			$invoice_id = intval( $fields['invoice_id'] );
+			$invoice = MS_Factory::load( 'MS_Model_Invoice', $invoice_id );
 			if ( ! $invoice->is_valid() ) {
 				$invoice = $subscription->get_current_invoice();
 				$msg = MS_Helper_Billing::BILLING_MSG_ADDED;
@@ -230,7 +478,7 @@ class MS_Controller_Billing extends MS_Controller {
 	/**
 	 * Load Billing specific styles.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_styles() {
 		if ( empty( $_GET['action'] ) ) {
@@ -247,20 +495,27 @@ class MS_Controller_Billing extends MS_Controller {
 	/**
 	 * Load Billing specific scripts.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_scripts() {
+		$data = array(
+			'ms_init' => array(),
+		);
+
 		if ( isset( $_GET['action'] ) && 'edit' == $_GET['action'] ) {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			wp_enqueue_script( 'jquery-validate' );
 
-			$data = array(
-				'ms_init' => array( 'view_billing_edit' ),
+			$data['ms_init'][] = 'view_billing_edit';
+		} elseif ( isset( $_GET['show'] ) && 'logs' == $_GET['show'] ) {
+			$data['ms_init'][] = 'view_billing_transactions';
+			$data['lang'] = array(
+				'link_title' => __( 'Link Transaction', MS_TEXT_DOMAIN ),
 			);
-
-			lib2()->ui->data( 'ms_data', $data );
-			wp_enqueue_script( 'ms-admin' );
 		}
+
+		lib2()->ui->data( 'ms_data', $data );
+		wp_enqueue_script( 'ms-admin' );
 	}
 
 }

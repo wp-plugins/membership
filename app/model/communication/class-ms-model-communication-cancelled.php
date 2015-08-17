@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Communication model - membership cancelled.
  *
  * Persisted by parent class MS_Model_CustomPostType.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -34,33 +13,16 @@ class MS_Model_Communication_Cancelled extends MS_Model_Communication {
 	/**
 	 * Communication type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string The communication type.
 	 */
 	protected $type = self::COMM_TYPE_CANCELLED;
 
 	/**
-	 * Add action to cancelled event.
-	 *
-	 * @since 1.0.0
-	 * @var string The communication type.
-	 */
-	public function after_load() {
-		parent::after_load();
-
-		if ( $this->enabled ) {
-			$this->add_action(
-				'ms_model_event_' . MS_Model_Event::TYPE_MS_CANCELED,
-				'enqueue_messages', 10, 2
-			);
-		}
-	}
-
-	/**
 	 * Populates the field title/description of the Period before/after field
 	 * in the admin settings.
 	 *
-	 * @since 1.1.0.9
+	 * @since  1.0.0
 	 * @param array $field A HTML definition, passed to lib2()->html->element()
 	 */
 	public function set_period_name( $field ) {
@@ -73,7 +35,7 @@ class MS_Model_Communication_Cancelled extends MS_Model_Communication {
 	/**
 	 * Get communication description.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return string The description.
 	 */
 	public function get_description() {
@@ -83,7 +45,7 @@ class MS_Model_Communication_Cancelled extends MS_Model_Communication {
 	/**
 	 * Communication default communication.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function reset_to_default() {
 		parent::reset_to_default();
@@ -95,7 +57,6 @@ class MS_Model_Communication_Cancelled extends MS_Model_Communication {
 		$this->message = self::get_default_message();
 		$this->enabled = false;
 		$this->period_enabled = true;
-		$this->save();
 
 		do_action(
 			'ms_model_communication_reset_to_default_after',
@@ -107,7 +68,7 @@ class MS_Model_Communication_Cancelled extends MS_Model_Communication {
 	/**
 	 * Get default email message.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return string The email message.
 	 */
 	public static function get_default_message() {

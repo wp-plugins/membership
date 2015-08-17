@@ -1,33 +1,10 @@
 <?php
 /**
- * This file defines the MS_Controller_Metabox class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Creates the Membership access metabox.
  *
  * Creates simple access control UI for Posts/Page edit pages.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -37,7 +14,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * AJAX action constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +23,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * The custom post type used with Memberships and access.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -55,7 +32,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * The metabox ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -64,7 +41,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * The metabox title.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -73,7 +50,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Context for showing the metabox.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -84,7 +61,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	 *
 	 * Effects position in the metabox hierarchy.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -93,14 +70,17 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Prepare the metabox.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
 
 		$this->metabox_title = __( 'Membership Access', MS_TEXT_DOMAIN );
 
-		$post_types = array( 'page', 'post', 'attachment' );
+		$post_types = array_merge(
+			array( 'page', 'post', 'attachment' ),
+			array() // PRO VERSION PARAMETER
+		);
 
 		$this->post_types = apply_filters(
 			'ms_controller_membership_metabox_add_meta_boxes_post_types',
@@ -140,7 +120,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_ajax_toggle_metabox_access
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function ajax_action_toggle_metabox_access() {
 		$fields = array( 'membership_id', 'rule_type', 'post_id' );
@@ -156,26 +136,25 @@ class MS_Controller_Metabox extends MS_Controller {
 				$_POST['membership_id']
 			);
 
-			if ( $_POST['membership_id'] == MS_Model_Membership::get_base()->id ) {
-				$post = get_post( $_POST['post_id'] );
-				//membership metabox html returned via ajax response
-				$this->membership_metabox( $post );
-			} else {
-				echo 'true';
-			}
+			$post = get_post( $_POST['post_id'] );
+
+			// Return the updated Membership metabox html via ajax response.
+			$this->membership_metabox( $post );
+
+			do_action(
+				'ms_controller_membership_metabox_ajax_action_toggle_metabox_access',
+				$post,
+				$this
+			);
 		}
 
-		do_action(
-			'ms_controller_membership_metabox_ajax_action_toggle_metabox_access',
-			$this
-		);
 		exit;
 	}
 
 	/**
 	 * Add the metabox for defined post types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function add_meta_boxes() {
 		foreach ( $this->post_types as $post_type ) {
@@ -200,7 +179,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Membership metabox callback function for displaying the UI.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param object $post The current post object.
 	 */
@@ -210,7 +189,7 @@ class MS_Controller_Metabox extends MS_Controller {
 		if ( MS_Model_Pages::is_membership_page() ) {
 			$data['special_page'] = true;
 		} else {
-			$memberships = MS_Model_Membership::get_memberships();
+			$all_memberships = MS_Model_Membership::get_memberships();
 			$base = MS_Model_Membership::get_base();
 			$data['base_id'] = $base->id;
 
@@ -228,9 +207,11 @@ class MS_Controller_Metabox extends MS_Controller {
 			$data['rule_type'] = $rule->rule_type;
 
 			// Check each membership to see if the post is protected.
-			foreach ( $memberships as $membership ) {
+			foreach ( $all_memberships as $membership ) {
+				if ( $membership->is_base ) { continue; }
+
 				$rule = $this->get_rule( $membership, $post_type );
-				$data['access'][ $membership->id ]['has_access'] = $rule->has_access( $post->ID, false );
+				$data['access'][ $membership->id ]['has_access'] = $rule->get_rule_value( $post->ID );
 				$data['access'][ $membership->id ]['name'] = $membership->name;
 			}
 		}
@@ -249,7 +230,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Get rule accordingly to post type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Membership The membership to get rule from.
 	 * @param string $post_type The post_type name of the queried post object.
@@ -272,7 +253,15 @@ class MS_Controller_Metabox extends MS_Controller {
 				break;
 
 			default:
-				$rule = $membership->get_rule( $post_type );
+				if ( in_array( $post_type, MS_Rule_CptGroup_Model::get_custom_post_types() ) ) {
+					if ( MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_CPT_POST_BY_POST ) ) {
+						$rule = $membership->get_rule( MS_Rule_CptItem::RULE_ID );
+					} else {
+						$rule = $membership->get_rule( MS_Rule_CptGroup::RULE_ID );
+					}
+				} else {
+					$rule = $membership->get_rule( $post_type );
+				}
 				break;
 		}
 
@@ -288,7 +277,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Toggle membership access.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param int $post_id The post id or attachment id to save access to.
 	 * @param string $rule_type The membership rule type.
@@ -298,29 +287,40 @@ class MS_Controller_Metabox extends MS_Controller {
 		if ( $this->is_admin_user() ) {
 			$membership = MS_Factory::load( 'MS_Model_Membership', $membership_id );
 			$rule = $membership->get_rule( $rule_type );
+			$protected = ! $rule->get_rule_value( $post_id );
 
-			if ( $rule ) {
-				$rule->toggle_access( $post_id );
-				$membership->set_rule( $rule_type, $rule );
-				$membership->save();
-			}
-
-			// If we just enabled protection for the post then set all
-			// memberships to 'allow'.
 			if ( $membership->is_base() ) {
-				$protected = ! $rule->has_access( $post_id, false );
+				/*
+				 * If we just modified the protection for the whole post then we
+				 * have to update every single membership with the new rule
+				 * value before changing the base rule itself.
+				 */
 				$all_memberships = MS_Model_Membership::get_memberships();
 
 				foreach ( $all_memberships as $the_membership ) {
+					if ( $the_membership->is_base ) { continue; }
+
 					$the_rule = $the_membership->get_rule( $rule_type );
 					if ( $protected ) {
 						$the_rule->give_access( $post_id );
 					} else {
 						$the_rule->remove_access( $post_id );
 					}
+
 					$the_membership->set_rule( $rule_type, $the_rule );
 					$the_membership->save();
 				}
+			}
+
+			if ( $rule ) {
+				if ( $protected ) {
+					$rule->give_access( $post_id );
+				} else {
+					$rule->remove_access( $post_id );
+				}
+
+				$membership->set_rule( $rule_type, $rule );
+				$membership->save();
 			}
 		}
 
@@ -336,7 +336,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Determine whether Membership access can be changed or is read-only.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $post_type The post type of the post.
 	 * @return bool
 	 */
@@ -367,7 +367,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	 * without changing the page itself. Only after the user saves the content
 	 * it will affect the Membership page
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $content Default page content.
 	 * @return string Modified page content.
 	 */
@@ -403,7 +403,7 @@ class MS_Controller_Metabox extends MS_Controller {
 	/**
 	 * Load Membership Metabox specific scripts.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_enqueue_scripts() {
 		global $post_type;

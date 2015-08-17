@@ -1,31 +1,34 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Gateway parent model.
  *
- * Persisted by parent class MS_Model_Option. Singleton.
+ * Every payment gateway extends from this class.
+ * A payment gateway can process payments using three possible functions:
  *
- * @since 1.1.0
+ * - - - - - - - - - -
+ *
+ * function handle_return()
+ *   This function is called by M2 when the IPN URL was called.
+ *   E.g. calling "/ms-payment-return/paypalstandard" will trigger the function
+ *   handle_return() for the PayPal Standard gateway.
+ *   Subscription data must be fetched from the $_POST data collection.
+ *
+ * function process_purchase( $subscription )
+ *   Called automatically by M2 when a new subscription was created, i.e.
+ *   handles the first payment of any subscription.
+ *   This function might create a new customer account/etc via the gateway API.
+ *
+ * function request_payment( $subscription )
+ *   Called automatically by M2 when a payment is due, i.e. when the second
+ *   payment of a recurring subscription is due.
+ *
+ * - - - - - - - - - -
+ *
+ * A single gateway should not implement all three payment methods! Either use
+ *   handle_return   - or -
+ *   process_purchase and request_payment
+ *
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -34,7 +37,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway opertaion mode contants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @see $mode
 	 * @var string The operation mode.
 	 */
@@ -44,7 +47,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Singleton object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @see $type
 	 * @var string The singleton object.
 	 */
@@ -56,7 +59,7 @@ class MS_Gateway extends MS_Model_Option {
 	 * This is a label that is used to group settings together on the Payment
 	 * Settings page.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
 	protected $group = '';
@@ -64,7 +67,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway ID.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var int $id
 	 */
 	protected $id = 'admin';
@@ -72,7 +75,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway name.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $name
 	 */
 	protected $name = '';
@@ -80,7 +83,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway description.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $description
 	 */
 	protected $description = '';
@@ -88,7 +91,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway active status.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $active
 	 */
 	protected $active = false;
@@ -99,7 +102,7 @@ class MS_Gateway extends MS_Model_Option {
 	 * True: Recurring payments need to be made manually.
 	 * False: Gateway is capable of automatic recurring payments.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var bool $manual_payment
 	 */
 	protected $manual_payment = true;
@@ -107,7 +110,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * List of payment_type IDs that are not supported by this gateway.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 * @var array $unsupported_payment_types
 	 */
 	protected $unsupported_payment_types = array();
@@ -119,7 +122,7 @@ class MS_Gateway extends MS_Model_Option {
 	 * when he upgrades from another subscription that is not fully consumed
 	 * yet.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var bool
 	 */
 	protected $pro_rate = false;
@@ -129,7 +132,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Overrides default purchase button.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $pay_button_url The url or button label (text).
 	 */
 	protected $pay_button_url;
@@ -139,7 +142,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Overrides default cancel button.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $cancel_button_url The url or button label (text).
 	 */
 	protected $cancel_button_url;
@@ -149,7 +152,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Live or sandbox (test) mode.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $mode
 	 */
 	protected $mode;
@@ -159,7 +162,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * @see MS_Controller_Gateway: handle_payment_return()
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function after_load() {
 		do_action( 'ms_gateway_after_load', $this );
@@ -177,7 +180,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Registers the Gateway
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $list The gateway list.
 	 * @return array The updated gateway list.
 	 */
@@ -193,7 +196,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Checks if the specified payment type is supported by the current gateway.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string|MS_Model_Membership $payment_type Either a payment type
 	 *         identifier or a membership model object.
 	 * @return bool
@@ -212,7 +215,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Returns a list of supported payment types.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return array Payment types, index is the type-key / value the label.
 	 */
 	public function supported_payment_types() {
@@ -234,7 +237,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Overridden in child gateway classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function handle_return() {
 		do_action(
@@ -253,7 +256,7 @@ class MS_Gateway extends MS_Model_Option {
 	 * Overridden in child classes.
 	 * This parent method only covers free purchases.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Model_Relationship $ms_relationship The related membership relationship.
 	 */
 	public function process_purchase( $subscription ) {
@@ -283,7 +286,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Overridden in child classes.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param MS_Model_Relationship $subscription The membership relationship.
 	 */
 	public function cancel_membership( $subscription ) {
@@ -299,14 +302,14 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Overridden in child gateway classes.
 	 *
-	 * @since 1.0.0
-	 * @param MS_Model_Relationship $ms_relationship The membership relationship.
+	 * @since  1.0.0
+	 * @param MS_Model_Relationship $subscription The membership relationship.
 	 * @return bool True on success.
 	 */
-	public function request_payment( $ms_relationship ) {
+	public function request_payment( $subscription ) {
 		do_action(
 			'ms_gateway_request_payment',
-			$ms_relationship,
+			$subscription,
 			$this
 		);
 
@@ -319,37 +322,49 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * Save event for card expire soon.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @access protected
-	 * @param MS_Model_Relationship $ms_relationship The membership relationship.
+	 * @param MS_Model_Relationship $subscription The membership relationship.
 	 */
-	public function check_card_expiration( $ms_relationship ) {
+	public function check_card_expiration( $subscription ) {
 		do_action( 'ms_gateway_check_card_expiration_before', $this );
 
-		$member = MS_Factory::load( 'MS_Model_Member', $ms_relationship->user_id );
+		$member = MS_Factory::load( 'MS_Model_Member', $subscription->user_id );
 		$card_exp = $member->get_gateway_profile( $this->id, 'card_exp' );
 
 		if ( ! empty( $card_exp ) ) {
-			$comm = MS_Model_Communication::get_communication( MS_Model_Communication::COMM_TYPE_CREDIT_CARD_EXPIRE );
+			$comm = MS_Model_Communication::get_communication(
+				MS_Model_Communication::COMM_TYPE_CREDIT_CARD_EXPIRE
+			);
 
-			$days = MS_Helper_Period::get_period_in_days( $comm->period['period_unit'], $comm->period['period_type'] );
-			$card_expire_days = MS_Helper_Period::subtract_dates( $card_exp, MS_Helper_Period::current_date() );
+			$days = MS_Helper_Period::get_period_in_days(
+				$comm->period['period_unit'],
+				$comm->period['period_type']
+			);
+			$card_expire_days = MS_Helper_Period::subtract_dates(
+				$card_exp,
+				MS_Helper_Period::current_date()
+			);
 			if ( $card_expire_days < 0 || ( $days == $card_expire_days ) ) {
-				MS_Model_Event::save_event( MS_Model_Event::TYPE_CREDIT_CARD_EXPIRE, $ms_relationship );
+				MS_Model_Event::save_event(
+					MS_Model_Event::TYPE_CREDIT_CARD_EXPIRE,
+					$subscription
+				);
 			}
 		}
 
 		do_action(
 			'ms_gateway_check_card_expiration_after',
-			$this
+			$this,
+			$subscription
 		);
 	}
 
 	/**
 	 * Url that fires handle_return of this gateway (IPN).
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return string The return url.
 	 */
 	public function get_return_url() {
@@ -365,7 +380,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Get gateway mode types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return array {
 	 *     Returns array of ( $mode_type => $description ).
 	 *     @type string $mode_type The mode type.
@@ -388,7 +403,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Return if is live mode.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return boolean True if is in live mode.
 	 */
@@ -406,7 +421,7 @@ class MS_Gateway extends MS_Model_Option {
 	 *
 	 * To be overridden in children classes.
 	 *
-	 * @since 1.0
+	 * @since  1.0.0
 	 *
 	 * @return boolean
 	 */
@@ -424,7 +439,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Validate specific property before set.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $property The name of a property to associate.
 	 * @param mixed $value The value of a property.
@@ -467,7 +482,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Return a property value
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @access public
 	 * @param  string $name The name of a property to associate.
@@ -510,7 +525,7 @@ class MS_Gateway extends MS_Model_Option {
 	/**
 	 * Get countries code and names.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *     Returns array of ( $code => $name ).

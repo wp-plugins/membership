@@ -1,33 +1,10 @@
 <?php
 /**
- * This file defines the MS_Controller_Plugin class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Primary controller for Membership Plugin.
  *
  * Responsible for flow control, navigation and invoking other controllers.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -37,7 +14,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Plugin Menu slug.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -46,16 +23,26 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * The slug of the top-level admin page
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
 	private static $base_slug = '';
 
 	/**
+	 * Capability required to count as M2 'admin' user. Admin users have full
+	 * access to all M2 features.
+	 *
+	 * @since  1.0.0
+	 *
+	 * @var $capability
+	 */
+	protected $capability = 'manage_options';
+
+	/**
 	 * Instance of MS_Model_Plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var $model
 	 */
@@ -64,7 +51,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Pointer array for other controllers.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var $controllers
 	 */
@@ -75,7 +62,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * It is set by self::route_submenu_request() and is used by
 	 * self::handle_submenu_request()
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -86,7 +73,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 *
 	 * Created by the MS_Plugin object during the setup_theme action.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -101,6 +88,7 @@ class MS_Controller_Plugin extends MS_Controller {
 			 * It's save to redirect the request without losing form-data.
 			 */
 			if ( isset( $_GET['msg'] )
+				&& isset( $_SERVER['HTTP_REFERER'] )
 				&& MS_Helper_Utility::is_current_url( $_SERVER['HTTP_REFERER'] )
 			) {
 				// A msg is set AND the referer URL has the same msg flag!
@@ -110,11 +98,29 @@ class MS_Controller_Plugin extends MS_Controller {
 			}
 		}
 
+		/**
+		 * We allow two ways to modify the default Admin-Capability setting:
+		 *
+		 * Either by defining the constant in wp-config or by using the filter.
+		 * The constant takes priority over the filter.
+		 *
+		 * @since  1.0.0
+		 */
+		if ( defined( 'MS_ADMIN_CAPABILITY' ) ) {
+			$this->capability = MS_ADMIN_CAPABILITY;
+		} else {
+			$this->capability = apply_filters(
+				'ms_admin_user_capability',
+				$this->capability
+			);
+		}
+
 		// Create core controllers that are available on every page.
 		$this->model                               = MS_Factory::load( 'MS_Model_Plugin' );
 		$this->dialogs                             = MS_Factory::load( 'MS_Controller_Dialog' );
 		$this->controllers['widget']               = MS_Factory::load( 'MS_Controller_Widget' );
 		$this->controllers['membership']           = MS_Factory::load( 'MS_Controller_Membership' );
+		$this->controllers['protection']           = MS_Factory::load( 'MS_Controller_Protection' );
 		$this->controllers['rule']                 = MS_Factory::load( 'MS_Controller_Rule' );
 		$this->controllers['member']               = MS_Factory::load( 'MS_Controller_Member' );
 		$this->controllers['billing']              = MS_Factory::load( 'MS_Controller_Billing' );
@@ -146,7 +152,8 @@ class MS_Controller_Plugin extends MS_Controller {
 		$this->add_action( 'ms_plugin_admin_setup', 'run_admin_init' );
 
 		// Changes the current themes "single" template to the invoice form when an invoice is displayed.
-		$this->add_filter( 'single_template', 'custom_template' );
+		$this->add_filter( 'single_template', 'custom_single_template' );
+		$this->add_filter( 'page_template', 'custom_page_template' );
 
 		// Register styles and javascripts for use in front-end
 		$this->add_action( 'ms_register_public_scripts', 'register_public_scripts' );
@@ -161,7 +168,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * This is done after admin_menu (when in admin site) or
 	 * after setup_theme (on front-end)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function run_admin_init() {
 		if ( ! is_admin() && ! is_network_admin() ) { return; }
@@ -234,7 +241,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * Important: In order for this function to work as expected it needs to
 	 * be called *after* the admin-menu was registered!
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $subpage
 	 * @return string The internal hook name
 	 */
@@ -271,7 +278,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Adds Dashboard navigation menus.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function add_menu_pages() {
 		global $submenu;
@@ -387,7 +394,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * Returns the admin menu items for setting up the plugin.
 	 * Helper function used by add_menu_pages
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return array
 	 */
 	private function get_setup_menu_pages() {
@@ -415,7 +422,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * Returns the default admin menu items for Membership2.
 	 * Helper function used by add_menu_pages
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return array
 	 */
 	private function get_default_menu_pages() {
@@ -431,8 +438,12 @@ class MS_Controller_Plugin extends MS_Controller {
 				'slug' => 'protection',
 			),
 			'members' => array(
-				'title' => __( 'Members', MS_TEXT_DOMAIN ),
+				'title' => __( 'All Members', MS_TEXT_DOMAIN ),
 				'slug' => 'members',
+			),
+			'add-member' => array(
+				'title' => __( 'Add Member', MS_TEXT_DOMAIN ),
+				'slug' => 'add-member',
 			),
 			'billing' => false,
 			'addon' => array(
@@ -454,15 +465,44 @@ class MS_Controller_Plugin extends MS_Controller {
 		if ( $show_billing ) {
 			$bill_count = MS_Model_Invoice::get_unpaid_invoice_count( null, true );
 
+			if ( $bill_count > 0 ) {
+				$msg = '%1$s <span class="awaiting-mod count-%3$s"><span class="pending-count"><i class="hidden">(</i>%2$s<i class="hidden">)</i></span></span>';
+			} else {
+				$msg = '%1$s';
+			}
+
 			$pages['billing'] = array(
 				'title' => sprintf(
-					'%1$s <span class="awaiting-mod count-%3$s"><span class="pending-count"><i class="hidden">(</i>%2$s<i class="hidden">)</i></span></span>',
+					$msg,
 					__( 'Billing', MS_TEXT_DOMAIN ),
 					$bill_count,
 					sanitize_html_class( $bill_count, '0' )
 				),
 				'slug' => 'billing',
 			);
+
+			/*
+			 * This condition checks if the site has configured some payment
+			 * gateways - if not then users cannot sign up for a membership.
+			 * Show a notice if no payment gateway is configured/activated.
+			 */
+			$gateways = MS_Model_Gateway::get_gateways( true );
+			$payment_possible = false;
+			foreach ( $gateways as $key => $gateway ) {
+				if ( 'free' == $key ) { continue; }
+				$payment_possible = true;
+				break;
+			}
+			if ( ! $payment_possible ) {
+				lib2()->ui->admin_message(
+					sprintf(
+						__( 'Oops, looks like you did not activate a payment gateway yet.<br />You need to set up and activate at least one gateway, otherwise your members cannot sign up to a paid membership.<br />%sFix this now &raquo;%s', MS_TEXT_DOMAIN ),
+						'<a href="' . self::get_admin_url( 'settings', array( 'tab' => MS_Controller_Settings::TAB_PAYMENT ) ) . '">',
+						'</a>'
+					),
+					'err'
+				);
+			}
 		}
 
 		return $pages;
@@ -477,7 +517,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 *
 	 * This function will only handle submenu items of the Membership2 menu!
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function route_submenu_request() {
 		global $submenu;
@@ -500,49 +540,54 @@ class MS_Controller_Plugin extends MS_Controller {
 			if ( ! $step_add || self::is_page( 'setup' ) ) {
 				$handler = array(
 					'any',
-					array( $this->controllers['membership'], 'membership_admin_page_router' ),
+					array( $this->controllers['membership'], 'admin_page_router' ),
 				);
 			} else {
 				$handler = array(
 					'site',
-					array( $this->controllers['membership'], 'page_protected_content' ),
+					array( $this->controllers['protection'], 'admin_page' ),
 				);
 			}
 		} else  {
 			if ( self::is_page( '' ) ) {
 				$handler = array(
 					'network',
-					array( $this->controllers['membership'], 'membership_admin_page_router' ),
+					array( $this->controllers['membership'], 'admin_page_router' ),
 				);
 			} elseif ( self::is_page( 'protection' ) ) {
 				$handler = array(
 					'site',
-					array( $this->controllers['membership'], 'page_protected_content' ),
+					array( $this->controllers['protection'], 'admin_page' ),
 				);
 			} elseif ( self::is_page( 'members' ) ) {
 				$handler = array(
 					'network',
-					array( $this->controllers['member'], 'admin_member_list' ),
+					array( $this->controllers['member'], 'admin_page' ),
+				);
+			} elseif ( self::is_page( 'add-member' ) ) {
+				$handler = array(
+					'network',
+					array( $this->controllers['member'], 'admin_page_editor' ),
 				);
 			} elseif ( self::is_page( 'addon' ) ) {
 				$handler = array(
 					'network',
-					array( $this->controllers['addon'], 'admin_addon' ),
+					array( $this->controllers['addon'], 'admin_page' ),
 				);
 			} elseif ( self::is_page( 'settings' ) ) {
 				$handler = array(
 					'network',
-					array( $this->controllers['settings'], 'admin_settings' ),
+					array( $this->controllers['settings'], 'admin_page' ),
 				);
 			} elseif ( self::is_page( 'help' ) ) {
 				$handler = array(
 					'any',
-					array( $this->controllers['help'], 'admin_help' ),
+					array( $this->controllers['help'], 'admin_page' ),
 				);
 			} elseif ( self::is_page( 'billing' ) ) {
 				$handler = array(
 					'network',
-					array( $this->controllers['billing'], 'admin_billing' ),
+					array( $this->controllers['billing'], 'admin_page' ),
 				);
 			}
 		}
@@ -550,7 +595,7 @@ class MS_Controller_Plugin extends MS_Controller {
 		/**
 		 * Filter that allows Add-ons to add their own sub-menu handlers.
 		 *
-		 * @since  2.0.0
+		 * @since  1.0.0
 		 */
 		$handler = apply_filters(
 			'ms_route_submenu_request',
@@ -597,7 +642,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * This function was determined by the previous call to
 	 * self::route_submenu_request() during the admin_init hook.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function handle_submenu_request() {
 		if ( ! empty( $this->menu_handler ) ) {
@@ -609,7 +654,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Checks if the current user is on the specified Membership2 admin page.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $slug The membership2 slug (without the menu-slug prefix)
 	 * @return bool
 	 */
@@ -685,7 +730,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Get admin settings url.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 */
 	public static function get_admin_settings_url() {
@@ -696,31 +741,119 @@ class MS_Controller_Plugin extends MS_Controller {
 	}
 
 	/**
-	 * Add custom template for invoice cpt.
-	 * This replaces the themes "Single" template with our invoice form when
-	 * an invoice is displayed.
+	 * Use a special template for our custom post types.
 	 *
-	 * ** Hooks Actions/Filters: *
-	 * * single_template
+	 * Invoices:
+	 * Replaces the themes "Single" template with our invoice template when an
+	 * invoice is displayed. The theme can override this by defining its own
+	 * m2-invoice.php / single-ms_invoice.php template.
 	 *
-	 * @since 1.0.0
+	 * You can even specifiy a membership ID in the page template to create
+	 * a custom invoice form based on the membership that is billed.
+	 * Example:
+	 *     m2-invoice-100.php (Invoice form for membership 100)
+	 *
+	 * @since  1.0.0
+	 * @see filter single_template
 	 *
 	 * @param string $template The template path to filter.
 	 * @return string The template path.
 	 */
-	public function custom_template( $template ) {
+	public function custom_single_template( $default_template ) {
 		global $post;
+		$template = '';
 
 		// Checks for invoice single template.
 		if ( $post->post_type == MS_Model_Invoice::get_post_type() ) {
-			$invoice_template = apply_filters(
-				'ms_controller_plugin_invoice_template',
-				MS_Plugin::instance()->dir . 'app/template/single-invoice.php'
+			$invoice = MS_Factory::load( 'MS_Model_Invoice', $post->ID );
+
+			// First look for themes 'm2-invoice-100.php' template (membership ID).
+			$template = get_query_template(
+				'm2',
+				'm2-invoice-' . $invoice->membership_id .  '.php'
 			);
 
-			if ( file_exists( $invoice_template ) ) {
-				$template = $invoice_template;
+			// Fallback to themes 'm2-invoice.php' template.
+			if ( ! $template ) {
+				$template = get_query_template(
+					'm2',
+					'm2-invoice.php'
+				);
 			}
+
+			// Second look for themes 'single-ms_invoice.php' template.
+			if ( ! $template && strpos( $default_template, '/single-ms_invoice.php' ) ) {
+				$template = $default_template;
+			}
+
+			// Last: Use the default M2 invoice template.
+			if ( ! $template ) {
+				$invoice_template = apply_filters(
+					'ms_controller_plugin_invoice_template',
+					MS_Plugin::instance()->dir . 'app/template/single-ms_invoice.php'
+				);
+
+				if ( file_exists( $invoice_template ) ) {
+					$template = $invoice_template;
+				}
+			}
+		}
+
+		if ( ! $template ) {
+			$template = $default_template;
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Use a special template for our membership pages.
+	 *
+	 * Recognized templates are:
+	 *     m2-memberships.php
+	 *     m2-protected-content.php
+	 *     m2-account.php
+	 *     m2-register.php
+	 *     m2-registration-complete.php
+	 *
+	 * Note that certain pages receive a membership-ID when they are loaded
+	 * (like the m2-registration-complete or m2-register pages).
+	 * You can even specify special pages for each membership.
+	 *
+	 * Example:
+	 *     m2-register-100.php (register form for membership 100)
+	 *     m2-registration-complete-100.php (thank you page for membership 100)
+	 *
+	 * @since  1.0.1.0
+	 * @see filter page_template
+	 *
+	 * @param string $template The default template path to filter.
+	 * @return string The custom template path.
+	 */
+	public function custom_page_template( $default_template ) {
+		$template = '';
+
+		// Checks for invoice single template.
+		if ( $type = MS_Model_Pages::is_membership_page() ) {
+			$membership_id = apply_filters( 'ms_detect_membership_id', 0, true );
+
+			if ( $membership_id ) {
+				$template = get_query_template(
+					'm2',
+					'm2-' . $type . '-' . $membership_id . '.php'
+				);
+			}
+
+			if ( ! $template ) {
+				$template = get_query_template(
+					'm2',
+					'm2-' . $type . '.php'
+				);
+			}
+		}
+
+		if ( ! $template ) {
+			$template = $default_template;
 		}
 
 		return $template;
@@ -731,7 +864,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 *
 	 * Wrapper for MS_Model_Plugin->get_access_info()
 	 *
-	 * @since  1.0.2
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public function get_access_info() {
@@ -743,7 +876,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 *
 	 * Wrapper for MS_Model_Plugin->get_admin_menu()
 	 *
-	 * @since  1.1
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public function get_admin_menu() {
@@ -768,12 +901,12 @@ class MS_Controller_Plugin extends MS_Controller {
 
 		wp_register_script(
 			'jquery-plugins',
-			$plugin_url . 'app/assets/js/jquery.plugins.js',
+			$plugin_url . 'app/assets/js/jquery.m2.plugins.js',
 			array( 'jquery' ), $version
 		);
 		wp_register_script(
 			'jquery-validate',
-			$plugin_url . 'app/assets/js/jquery.validate.js',
+			$plugin_url . 'app/assets/js/jquery.m2.validate.js',
 			array( 'jquery' ), $version
 		);
 	}
@@ -823,12 +956,12 @@ class MS_Controller_Plugin extends MS_Controller {
 
 		wp_register_script(
 			'jquery-plugins',
-			$plugin_url . 'app/assets/js/jquery.plugins.js',
+			$plugin_url . 'app/assets/js/jquery.m2.plugins.js',
 			array( 'jquery' ), $version
 		);
 		wp_register_script(
 			'jquery-validate',
-			$plugin_url . 'app/assets/js/jquery.validate.js',
+			$plugin_url . 'app/assets/js/jquery.m2.validate.js',
 			array( 'jquery' ), $version
 		);
 	}
@@ -854,7 +987,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Adds CSS for Membership settings pages.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_plugin_admin_styles() {
 		lib2()->ui->css( 'ms-admin-styles' );
@@ -866,7 +999,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Adds CSS for Membership pages used in the front end.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void
 	 */
@@ -877,7 +1010,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Register JavasSript for Membership settings pages.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void
 	 */
@@ -888,7 +1021,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	/**
 	 * Adds JavasSript for Membership pages used in the front end.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void
 	 */
@@ -900,7 +1033,7 @@ class MS_Controller_Plugin extends MS_Controller {
 	 * Adds a javascript to the page that will translate the jQuery validator
 	 * messages.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	static public function translate_jquery_validator() {
 		ob_start();

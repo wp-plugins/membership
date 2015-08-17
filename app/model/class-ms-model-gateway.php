@@ -1,26 +1,5 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Register valid gateways.
  *
  * Gateways are stored in the directory /app/gateway/<gateway_name>/
@@ -28,7 +7,7 @@
  * This file must define class MS_Gateway_<gateway_name>.
  * This object is reponsible to initialize the the gateway logic.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -37,7 +16,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 	/**
 	 * List of gateway files to load when plugin is initialized.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var array of file-paths
 	 */
@@ -45,7 +24,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 
 	/*
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string $gateways
 	 */
 	protected static $_gateways = null;
@@ -53,7 +32,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 	/**
 	 * Load and get all registered gateways.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param bool $only_active Optional. When to return only activated gateways.
 	 */
 	public static function get_gateways( $only_active = false ) {
@@ -69,7 +48,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 			/**
 			 * Register new gateways.
 			 *
-			 * @since 1.1.0
+			 * @since  1.0.0
 			 */
 			$gateways = apply_filters(
 				'ms_model_gateway_register',
@@ -100,10 +79,28 @@ class MS_Model_Gateway extends MS_Model_Option {
 	}
 
 	/**
+	 * Checks if the specified gateway is active.
+	 *
+	 * @since  1.0.0
+	 * @param  string $gateway_id The gateway ID.
+	 * @return bool True if the gateway is active.
+	 */
+	static public function is_active( $gateway_id ) {
+		$result = false;
+		$active_gateways = self::get_gateways( true );
+
+		if ( isset( $active_gateways[ $gateway_id ] ) ) {
+			$result = true;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Checks the /app/gateway directory for a list of all gateways and loads
 	 * these files.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	static protected function load_core_gateways() {
 		$model = MS_Factory::load( 'MS_Model_Gateway' );
@@ -125,7 +122,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 			/**
 			 * Allow other plugins/themes to register custom gateways
 			 *
-			 * @since 1.1.0
+			 * @since  1.0.0
 			 *
 			 * @var array
 			 */
@@ -149,7 +146,10 @@ class MS_Model_Gateway extends MS_Model_Option {
 
 			if ( file_exists( $gateway_file ) ) {
 				if ( ! class_exists( $class ) ) {
-					include_once $gateway_file;
+					try {
+						include_once $gateway_file;
+					} catch ( Exception $ex ) {
+					}
 				}
 
 				if ( class_exists( $class ) ) {
@@ -161,7 +161,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 		/**
 		 * Allow custom gateway-initialization code to run
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 */
 		do_action( 'ms_model_gateway_load' );
 	}
@@ -169,7 +169,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 	/**
 	 * Get all registered gateway names.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param bool $only_active Optional. False (default) returns only activated gateways.
 	 * @param bool $include_gateway_free Optional. True (default) includes Gateway Free.
 	 */
@@ -183,6 +183,8 @@ class MS_Model_Gateway extends MS_Model_Option {
 
 		if ( ! $include_gateway_free ) {
 			unset( $names[ MS_Gateway_Free::ID ] );
+		} else {
+			$names['admin'] = __( 'None (Admin)', MS_TEXT_DOMAIN );
 		}
 
 		return apply_filters(
@@ -194,24 +196,42 @@ class MS_Model_Gateway extends MS_Model_Option {
 	/**
 	 * Returns the gateway name for the specified gateway ID
 	 *
-	 * @since  1.1.1.4
-	 * @param  string $gateway_id The gateway ID
-	 * @return string The gateway Name
+	 * @since  1.0.0
+	 * @api
+	 *
+	 * @param  string $gateway_id The gateway ID.
+	 * @param  bool $get_short If set to true the word "Gateway" will be removed.
+	 * @return string The gateway Name.
 	 */
-	public static function get_name( $gateway_id ) {
+	public static function get_name( $gateway_id, $get_short = false ) {
+		static $Short_names = array();
 		$known_names = self::get_gateway_names();
+		$the_name = '-';
 
 		if ( isset( $known_names[$gateway_id] ) ) {
-			return $known_names[$gateway_id];
-		} else {
-			return '-';
+			$the_name = $known_names[$gateway_id];
 		}
+
+		if ( $get_short ) {
+			if ( ! isset( $Short_names[$gateway_id] ) ) {
+				$Short_names[$gateway_id] = trim(
+					str_replace(
+						__( 'Gateway', MS_TEXT_DOMAIN ),
+						'',
+						$the_name
+					)
+				);
+			}
+			$the_name = $Short_names[$gateway_id];
+		}
+
+		return $the_name;
 	}
 
 	/**
 	 * Validate gateway.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $gateway_id The gateway ID to validate.
 	 */
 	public static function is_valid_gateway( $gateway_id ) {
@@ -226,7 +246,7 @@ class MS_Model_Gateway extends MS_Model_Option {
 	/**
 	 * Gateway factory.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param string $gateway_id The gateway ID to create.
 	 */
 	public static function factory( $gateway_id ) {

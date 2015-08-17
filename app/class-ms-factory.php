@@ -1,31 +1,8 @@
 <?php
 /**
- * This file defines the MS_Factory object.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Factory class for all Models.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  */
@@ -34,7 +11,7 @@ class MS_Factory {
 	/**
 	 * Holds a list of all singleton objects
 	 *
-	 * @since 1.0.4.5
+	 * @since  1.0.0
 	 *
 	 * @var   array
 	 */
@@ -43,9 +20,9 @@ class MS_Factory {
 	/**
 	 * Used to cache the original blog-ID when using network-wide protection
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 *
-	 * @var   int[]
+	 * @var   array
 	 */
 	static private $Prev_Blog_Id = array();
 
@@ -53,7 +30,7 @@ class MS_Factory {
 	 * This is only used for Unit-Testing to reset all cached singleton
 	 * instances before running a new test.
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 */
 	static public function _reset() {
 		self::$Singleton = array();
@@ -63,7 +40,7 @@ class MS_Factory {
 	/**
 	 * Create an MS Object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $class The class to create object from.
 	 * @return object The created object.
@@ -117,7 +94,7 @@ class MS_Factory {
 	/**
 	 * Load a MS Object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $class The class to load object from.
 	 * @param int $model_id Retrieve model object using ID.
@@ -187,7 +164,7 @@ class MS_Factory {
 	 * This function was introduced to store the simulation subscription as
 	 * a singleton with subscription ID -1
 	 *
-	 * @since 1.1.0.9
+	 * @since  1.0.0
 	 * @param string $key
 	 * @param any $obj
 	 */
@@ -207,17 +184,26 @@ class MS_Factory {
 			$obj->_in_cache = true;
 		}
 
-		self::$Singleton[ $key ] = apply_filters(
-			'ms_factory_set_' . $class,
+		$obj = apply_filters(
+			'ms_factory_set-' . strtolower( $class ),
 			$obj,
 			$model_id
 		);
+
+		$obj = apply_filters(
+			'ms_factory_set',
+			$obj,
+			$class,
+			$model_id
+		);
+
+		self::$Singleton[ $key ] = $obj;
 	}
 
 	/**
 	 * Clears the factory cache.
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 */
 	static public function clear() {
 		wp_cache_flush();
@@ -226,7 +212,7 @@ class MS_Factory {
 	/**
 	 * Initialize the object after it was created or loaded.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  MS_Hook &$obj Any Membership2 object to initialize.
 	 */
 	static private function prepare_obj( &$obj ) {
@@ -264,7 +250,7 @@ class MS_Factory {
 	 * To support network-wide protection we use our convenience function
 	 * self::get_option().
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_option $model The empty model instance.
 	 * @return MS_Model_Option The retrieved object.
@@ -296,7 +282,7 @@ class MS_Factory {
 	 * To support network-wide protection we use our convenience function
 	 * self::get_transient().
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Transient $model The empty model instance.
 	 * @return MS_Model_Transient The retrieved object.
@@ -325,7 +311,7 @@ class MS_Factory {
 	 * Load from post and postmeta.
 	 * For network-wide protection we get the data from first blog
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_CustomPostType $model The empty model instance.
 	 * @param int $model_id The model id to retrieve.
@@ -346,11 +332,19 @@ class MS_Factory {
 
 				if ( ! empty( $post ) && $model->get_post_type() === $post->post_type ) {
 					$post_meta = get_post_meta( $model_id );
+					$post_meta['id'] = array( $post->ID );
+					$post_meta['description'] = array( $post->post_content );
+					$post_meta['user_id'] = array( $post->post_author );
 					self::populate_model( $model, $post_meta, true );
 
-					$model->id = $post->ID;
-					$model->description = $post->post_content;
-					$model->user_id = $post->post_author;
+					/**
+					 * Allow child classes of the CustomPostType model to load
+					 * custom values from the posts/postmeta table
+					 *
+					 * @since  1.0.1.0
+					 */
+					$model->load_meta_data( $post_meta );
+					$model->load_post_data( $post );
 				} else {
 					$model->id = 0;
 				}
@@ -372,7 +366,7 @@ class MS_Factory {
 	 * Load from user and user meta.
 	 * This data is always network-wide.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param MS_Model_Member $model The empty member instance.
 	 * @param int $user_id The user/member ID.
@@ -390,6 +384,7 @@ class MS_Factory {
 
 			if ( ! empty( $wp_user->ID ) ) {
 				$member_details = get_user_meta( $user_id );
+
 				$model->id = $wp_user->ID;
 				$model->username = $wp_user->user_login;
 				$model->email = $wp_user->user_email;
@@ -424,7 +419,7 @@ class MS_Factory {
 	/**
 	 * Populate fields of the model
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 *
 	 * @param  MS_Model $model
 	 * @param  array $settings
@@ -432,7 +427,9 @@ class MS_Factory {
 	 */
 	static public function populate_model( &$model, $settings, $postmeta = false ) {
 		$fields = $model->get_object_vars();
-		$vars = get_class_vars( get_class( $model ) );
+		$class = get_class( $model );
+		$vars = get_class_vars( $class );
+		$saved_data = array();
 
 		$ignore = isset( $vars['ignore_fields'] ) ? $vars['ignore_fields'] : array();
 		$ignore[] = 'instance'; // Don't deserialize the double-serialized model!
@@ -450,27 +447,67 @@ class MS_Factory {
 			if ( false === $postmeta ) {
 				if ( isset( $settings[ $field ] ) ) {
 					$value = $settings[ $field ];
+				} elseif ( isset( $settings[ '_' . $field ] ) ) {
+					$value = $settings[ '_' . $field ];
 				}
-			} else if ( true === $postmeta ) {
+			} elseif ( true === $postmeta ) {
 				if ( isset( $settings[ $field ][0] ) ) {
-					$value = maybe_unserialize( $settings[ $field ][ 0 ] );
+					$value = $settings[ $field ][ 0 ];
+				} elseif ( isset( $settings[ '_' . $field ][0] ) ) {
+					$value = $settings[ '_' . $field ][ 0 ];
 				}
-			} else if ( is_string( $postmeta ) ) {
+			} elseif ( is_string( $postmeta ) ) {
 				if ( isset( $settings[ $postmeta . $field ][0] ) ) {
-					$value = maybe_unserialize( $settings[ $postmeta . $field ][ 0 ] );
+					$value = $settings[ $postmeta . $field ][ 0 ];
+				} elseif ( isset( $settings[ '_' . $postmeta . $field ][0] ) ) {
+					$value = $settings[ '_' . $postmeta . $field ][ 0 ];
 				}
 			}
 
+			if ( $value ) {
+				$value = maybe_unserialize( $value );
+			}
+
+			$saved_data[ $field ] = $value;
 			if ( null !== $value ) {
 				$model->set_field( $field, $value );
 			}
 		}
+
+		$model->_saved_data = $saved_data;
+
+		/**
+		 * Filter the serialized data collection before it is returned.
+		 *
+		 * Typically it is written to database right after this function call,
+		 * so this hook allows us to modify data before it's written to the DB.
+		 *
+		 * @var object $model The completely populated object.
+		 * @var string $class Class name of the object.
+		 * @var array $settings The source data (serialized array).
+		 * @var bool|string $postmeta The post-meta flag defines how the
+		 *      $settings array is formatted.
+		 */
+		$model = apply_filters(
+			'ms_factory_populate',
+			$model,
+			$class,
+			$settings,
+			$postmeta
+		);
+
+		$model = apply_filters(
+			'ms_factory_populate-' . strtolower( $class ),
+			$model,
+			$settings,
+			$postmeta
+		);
 	}
 
 	/**
 	 * Converts an MS_Model into an array
 	 *
-	 * @since  1.0.4.5
+	 * @since  1.0.0
 	 *
 	 * @param  MS_Model $model
 	 * @return array
@@ -478,6 +515,7 @@ class MS_Factory {
 	static public function serialize_model( &$model ) {
 		$data = array();
 		$ignore = array();
+		$class = get_class( $model );
 
 		if ( is_object( $model ) ) {
 			if ( method_exists( $model, '__sleep' ) ) {
@@ -506,6 +544,29 @@ class MS_Factory {
 			$data[ $field ] = $model->$field;
 		}
 
+		/**
+		 * Filter the serialized data collection before it is returned.
+		 *
+		 * Typically it is written to database right after this function call,
+		 * so this hook allows us to modify data before it's written to the DB.
+		 *
+		 * @var array $data Serialized data array.
+		 * @var string $class Class name of the source object.
+		 * @var object $model The source object (unserialized)
+		 */
+		$data = apply_filters(
+			'ms_factory_serialize',
+			$data,
+			$class,
+			$model
+		);
+
+		$data = apply_filters(
+			'ms_factory_serialize-' . strtolower( $class ),
+			$data,
+			$model
+		);
+
 		ksort( $data );
 		return $data;
 	}
@@ -519,7 +580,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to get an option value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Option Key
 	 * @return mixed Option value
 	 */
@@ -536,7 +597,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to delete an option value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Option Key
 	 */
 	static public function delete_option( $key ) {
@@ -550,7 +611,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to update an option value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Option Key
 	 * @param  mixed $value New option value
 	 */
@@ -565,7 +626,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to get an transient value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Transient Key
 	 * @return mixed Transient value
 	 */
@@ -582,7 +643,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to delete an transient value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Transient Key
 	 */
 	static public function delete_transient( $key ) {
@@ -596,7 +657,7 @@ class MS_Factory {
 	/**
 	 * Wrapper to update an transient value (regards network-wide protection mode)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @param  string $key Transient Key
 	 * @param  mixed $value New transient value
 	 */
@@ -617,14 +678,18 @@ class MS_Factory {
 	 * built-in function switch_to_blog() because it does not run all the
 	 * initialization logic (update user-roles, etc) when switching a blog.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	static public function select_blog( $site_id = null ) {
 		global $wpdb;
 
 		if ( MS_Plugin::is_network_wide() ) {
 			if ( null === $site_id ) {
-				$site_id = BLOG_ID_CURRENT_SITE;
+				if ( defined( 'BLOG_ID_CURRENT_SITE' ) ) {
+					$site_id = BLOG_ID_CURRENT_SITE;
+				} else {
+					$site_id = 1;
+				}
 			}
 			self::$Prev_Blog_Id[] = $GLOBALS['blog_id'];
 
@@ -639,7 +704,7 @@ class MS_Factory {
 	/**
 	 * Reverts back to the original blog during network wide protection.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	static public function revert_blog() {
 		global $wpdb;
@@ -660,7 +725,7 @@ class MS_Factory {
 	 * original blog-id, even when switched to a different blog by calling
 	 * self::select_blog()
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return int The requested blog-ID.
 	 */
 	static public function current_blog_id() {

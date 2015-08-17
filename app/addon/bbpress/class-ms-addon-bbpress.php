@@ -1,39 +1,17 @@
 <?php
-/**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-
 class MS_Addon_Bbpress extends MS_Addon {
 
 	/**
 	 * The Add-on ID
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	const ID = 'bbpress';
 
 	/**
 	 * Checks if the current Add-on is enabled
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function is_active() {
@@ -48,9 +26,19 @@ class MS_Addon_Bbpress extends MS_Addon {
 	}
 
 	/**
+	 * Returns the Add-on ID (self::ID).
+	 *
+	 * @since  1.0.1.0
+	 * @return string
+	 */
+	public function get_id() {
+		return self::ID;
+	}
+
+	/**
 	 * Initializes the Add-on. Always executed.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function init() {
 		// Always remove bbpress from MS_Rule_CptGroup_Model.
@@ -60,7 +48,11 @@ class MS_Addon_Bbpress extends MS_Addon {
 		);
 
 		if ( self::is_active() ) {
-			$this->add_filter( 'ms_controller_membership_tabs', 'rule_tabs' );
+			$this->add_filter(
+				'ms_controller_protection_tabs',
+				'rule_tabs'
+			);
+
 			MS_Factory::load( 'MS_Addon_Bbpress_Rule' );
 		}
 	}
@@ -68,7 +60,7 @@ class MS_Addon_Bbpress extends MS_Addon {
 	/**
 	 * Registers the Add-On
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $list The Add-Ons list.
 	 * @return array The updated Add-Ons list.
 	 */
@@ -76,6 +68,7 @@ class MS_Addon_Bbpress extends MS_Addon {
 		$list[ self::ID ] = (object) array(
 			'name' => __( 'bbPress Integration', MS_TEXT_DOMAIN ),
 			'description' => __( 'Enable bbPress rules integration.', MS_TEXT_DOMAIN ),
+			'icon' => 'dashicons dashicons-format-chat',
 		);
 
 		if ( ! self::bbpress_active() ) {
@@ -92,7 +85,7 @@ class MS_Addon_Bbpress extends MS_Addon {
 	/**
 	 * Returns true, when the BuddyPress plugin is activated.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function bbpress_active() {
@@ -102,7 +95,7 @@ class MS_Addon_Bbpress extends MS_Addon {
 	/**
 	 * Add bbpress rule tabs in membership level edit.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @filter ms_controller_membership_get_tabs
 	 *
@@ -120,7 +113,7 @@ class MS_Addon_Bbpress extends MS_Addon {
 	/**
 	 * Exclude BBPress custom post type from MS_Rule_CptGroup_Model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @filter ms_rule_cptgroup_model_get_excluded_content
 	 *

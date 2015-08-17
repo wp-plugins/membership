@@ -4,7 +4,7 @@
  *
  * Extends MS_View for rendering methods and magic methods.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage View
  */
@@ -13,7 +13,7 @@ class MS_Gateway_Paypalstandard_View_Cancel extends MS_View {
 	/**
 	 * Create the Cancel Button.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @return string
 	 */
 	public function get_button() {
@@ -21,11 +21,11 @@ class MS_Gateway_Paypalstandard_View_Cancel extends MS_View {
 		$button = null;
 
 		if ( ! empty( $this->data['ms_relationship'] ) ) {
-			$ms_relationship = $this->data['ms_relationship'];
-			$membership = $ms_relationship->get_membership();
+			$subscription = $this->data['ms_relationship'];
+			$membership = $subscription->get_membership();
 
 			if ( MS_Model_Membership::PAYMENT_TYPE_RECURRING == $membership->payment_type
-				|| $membership->trial_period_enabled
+				|| $membership->has_trial()
 			) {
 				if ( MS_Gateway::MODE_LIVE == $gateway->mode ) {
 					$cancel_url = 'https://www.paypal.com/cgi-bin/webscr';

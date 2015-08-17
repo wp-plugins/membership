@@ -1,31 +1,8 @@
 <?php
 /**
- * This file defines the MS_Controller_Help class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Controller for Plugin documentation and help.
  *
- * @since 1.1.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -35,7 +12,7 @@ class MS_Controller_Help extends MS_Controller {
 	/**
 	 * Prepare the component.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -44,7 +21,7 @@ class MS_Controller_Help extends MS_Controller {
 	/**
 	 * Initialize the admin-side functions.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_init() {
 		$hook = MS_Controller_Plugin::admin_page_hook( 'help' );
@@ -55,13 +32,13 @@ class MS_Controller_Help extends MS_Controller {
 	/**
 	 * Load and render the Documentation view.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
-	public function admin_help() {
+	public function admin_page() {
 		/**
 		 * Create / Filter the view.
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Controller_Help object.
 		 */
 		$view = MS_Factory::create( 'MS_View_Help' );
@@ -75,7 +52,7 @@ class MS_Controller_Help extends MS_Controller {
 	/**
 	 * Get available tabs.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @return array The tabs configuration.
 	 */
@@ -93,6 +70,14 @@ class MS_Controller_Help extends MS_Controller {
 			'advanced' => array(
 				'title' => __( 'Advanced Settings', MS_TEXT_DOMAIN ),
 			),
+			'branding' => array(
+				'title' => __( 'Customize Membership 2', MS_TEXT_DOMAIN ),
+			),
+			'api' => array(
+				'title' => __( 'API Docs', MS_TEXT_DOMAIN ),
+				'url' => MS_Plugin::instance()->url . 'docs/namespaces/default.html',
+				'target' => '_blank',
+			),
 		);
 
 		if ( ! is_multisite() ) {
@@ -104,11 +89,13 @@ class MS_Controller_Help extends MS_Controller {
 		$page = sanitize_html_class( $_GET['page'], $def_key );
 
 		foreach ( $tabs as $key => $tab ) {
-			$tabs[ $key ]['url'] = sprintf(
-				'admin.php?page=%1$s&tab=%2$s',
-				esc_attr( $page ),
-				esc_attr( $key )
-			);
+			if ( empty( $tabs[ $key ]['url'] ) ) {
+				$tabs[ $key ]['url'] = sprintf(
+					'admin.php?page=%1$s&tab=%2$s',
+					esc_attr( $page ),
+					esc_attr( $key )
+				);
+			}
 		}
 
 		return apply_filters(
@@ -121,7 +108,7 @@ class MS_Controller_Help extends MS_Controller {
 	/**
 	 * Load specific scripts.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_scripts() {
 		$data = array(

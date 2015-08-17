@@ -1,31 +1,8 @@
 <?php
 /**
- * This file defines the MS_Controller_Settings class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
- */
-
-/**
  * Controller for managing Membership Pages.
  *
- * @since 1.0.4.5
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -35,7 +12,7 @@ class MS_Controller_Pages extends MS_Controller {
 	/**
 	 * AJAX action constants.
 	 *
-	 * @since 1.0.4.5
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +23,7 @@ class MS_Controller_Pages extends MS_Controller {
 	/**
 	 * Construct Settings manager.
 	 *
-	 * @since 1.0.4.5
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -59,7 +36,7 @@ class MS_Controller_Pages extends MS_Controller {
 	/**
 	 * Initialize the admin-side functions.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_init() {
 		// Add a special "state" to membership pages in the WP Page-list
@@ -69,7 +46,7 @@ class MS_Controller_Pages extends MS_Controller {
 	/**
 	 * Get MS_Model_Pages model
 	 *
-	 * @since 1.0.4.5
+	 * @since  1.0.0
 	 *
 	 * @return MS_Model_Settings
 	 */
@@ -83,7 +60,7 @@ class MS_Controller_Pages extends MS_Controller {
 	 * Related action hooks:
 	 * - wp_ajax_update_pages
 	 *
-	 * @since 1.0.4.5
+	 * @since  1.0.0
 	 */
 	public function ajax_action_update_pages() {
 		$msg = MS_Helper_Settings::SETTINGS_MSG_NOT_UPDATED;
@@ -108,7 +85,7 @@ class MS_Controller_Pages extends MS_Controller {
 	 * Related action hooks:
 	 * - wp_ajax_toggle_menu
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function ajax_action_toggle_menu() {
 		$msg = MS_Helper_Settings::SETTINGS_MSG_NOT_UPDATED;
@@ -132,7 +109,7 @@ class MS_Controller_Pages extends MS_Controller {
 			}
 		}
 
-		echo '' . $msg;
+		echo $msg;
 		exit;
 	}
 
@@ -143,7 +120,7 @@ class MS_Controller_Pages extends MS_Controller {
 	 * Related action hooks:
 	 * - wp_ajax_create_menu
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function ajax_action_create_menu() {
 		$msg = MS_Helper_Settings::SETTINGS_MSG_NOT_UPDATED;
@@ -158,7 +135,7 @@ class MS_Controller_Pages extends MS_Controller {
 			$msg = MS_Helper_Settings::SETTINGS_MSG_UPDATED;
 		}
 
-		echo '' . $msg . ':' . $content;
+		echo $msg . ':' . $content;
 		exit;
 	}
 
@@ -167,7 +144,7 @@ class MS_Controller_Pages extends MS_Controller {
 	 * display all available Posts/Pages. We use this filter to add a note
 	 * to all pages that are special membership pages.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $states
 	 * @param  WP_Post $post
 	 * @return array

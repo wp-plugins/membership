@@ -2,7 +2,7 @@
 Contributors: WPMUDEV
 Tags: Membership, Membership 2, Subscription, Registration, Content Protection, Control Access, Paid Membership, Pay Wall, Paying Users, Restrict Content, WordPress Membership, Multisite Membership, WPMU DEV
 Requires at least: 3.7
-Tested up to: 4.2.2
+Tested up to: 4.2.4
 Stable tag: trunk
 
 Membership 2 transforms your WordPress website into a fully functional membership site.
@@ -108,6 +108,67 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 11. Highly configurable with **a lot** of options and hooks / filters available.
 
 == Changelog ==
+
+= 4.0.0.3 =
+* Add a dedicated Edit Membership page with improved layout
+* Add a new Add/Edit Member page where subscription details can be modified
+* Improve caching and reduce SQL queries to make the plugin faster
+* Improve HTML output of shortcodes to be compatible with most themes (remove line breaks inside HTML tags)
+* Improve payment logs to display additional/better information for errors
+* Improve the Billings list (status-indicator, overdue payments, quick-pay for manual payment gateway)
+* Add a new Automated Email Response: User account created (i.e. welcome email)
+* Add a warning when BuddyPress pages conflict with M2 Membership pages
+* Add a warning when using a wrong value in the PayPal Standard settings
+* Add an admin notice when no payment gateway is active but paid memberships exist
+* Add an edit page to change the Membership Type at any time
+* Add bulk actions to the Members admin page
+* Add link to Members-List from the Membership list (click on the member-count value)
+* Add logging for payment gateway transactions, can be viewed via "Billings > View Transaction logs"
+* Add new functions to Payment Logs to manually handle invalid payments
+* Add new option to customize which users are considered Admin users (details in the Help > Advanced page)
+* Add new template tag function `ms_has_membership()`
+* Add possibility to change payment options even when membership has active subscribers!
+* Add template support so themes can define custom Membership pages (m2-account.php, m2-memberships.php, m2-protected-content.php, m2-register.php, m2-registration-complete.php, m2-invoice.php)
+* Fix a caching issue that caused problems with Subscriptions when memcache was enabled
+* Fix a critical bug that caused protection rules to be reset on plugin activation
+* Fix a minor security hole in the data import module
+* Fix a PHP error that occured when paying the first invoice of a member via manual gateway
+* Fix a rare 403 error that happened when a user was accessing protected content
+* Fix a typo in the PayPal Single gateway that caused M2 to ignore some payment information
+* Fix a wrong action hook used in registration form that would display wrong fields when certain plugins are activated
+* Fix a wrong parameters that limited search results of list tables to 5 items in some cases
+* Fix Billings search logic to find all users that contain the search word (no exact username required anymore)
+* Fix bug that did not activate Subscription when an invoice was paid via Manual Gateway
+* Fix bug that prevented deleting invoices
+* Fix bug that set the wrong expire date for "Finite Access" subscriptions
+* Fix bug that would always add M2 menu items when a new membership is created
+* Fix bug that would not give access to protected content while user is in trial period
+* Fix bug that would send some emails even when the 'MS_STOP_EMAILS' flag was active
+* Fix bugs that prevented removing protection from individual posts or pages
+* Fix compatibility issue with WP Recaptcha during user registration
+* Fix issue that did not display any "Page" rules in the Membership Overview screen
+* Fix Mailchimp Add-on to fetch all lists from Mailchimp, not only 25
+* Fix plugin logic to allow changing Protection Rules even when Content Protection is disabled
+* Fix plugin translation using .mo files, added a readme file with instructions to /languages dir
+* Fix possible memory issue that happened when updating the plugin
+* Fix protection of the Private Message feature in the BuddyPress Add-on
+* Fix rare error that happened when dripped content had no/invalid date settings
+* Fix registration logic to honor domain limitation for signup email addresses
+* Fix the bulk actions in the Protecion Rules page
+* Fix the description text of the ms-protected-content shortcode for admin users
+* Fix the search function on the Members page
+* Fix two possible infinite loops that resulted in timeouts or rule values not being saved
+* Fix wrong rounding-logic in Stripe gateway
+* Fix wrong subscription logic that activated Subscriptions without payment in a few cases
+* Fix wrong WordPress action that was called in the user-registration form
+* Hide inactive memberships in the Members and Protection Rules pages
+* Hide the Guest and Default memberships in the Members list, as they are useless there
+* Remove condition that auto-injected missing M2 shortcodes on Membership pages
+* Improve the BuddyPress Add-on to optionally use the M2 registration page
+* Improve Transaction logs to also log inactice or invalid gateway calls
+* Improved third party library by adding a class prefix to avoid class collisions (Stripe, Mailchimp, AuthorizeNet)
+* Improved and added some API functions (see the API Docs link in the Help page)
+* A lot of small improvements behind the scenes (cleanup, fix warnings, add new filters, etc.)
 
 = 4.0.0.2 =
 * Fix the import tool to import data from old Membership plugin correctly (recurring payments, subscription status and end date)

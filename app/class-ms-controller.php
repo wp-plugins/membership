@@ -1,35 +1,12 @@
 <?php
 /**
- * This file defines the MS_Controller object.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Abstract class for all Controllers.
  *
  * All controllers will extend or inherit from the MS_Controller class.
  * Methods of this class will control the flow and behaviour of the plugin
  * by using MS_Model and MS_View objects.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @uses MS_Model
  * @uses MS_View
@@ -39,18 +16,9 @@
 class MS_Controller extends MS_Hooker {
 
 	/**
-	 * Capability required to use access metabox.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var $capability
-	 */
-	protected $capability = 'manage_options';
-
-	/**
 	 * Ajax response flag.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @see _resp_ok()
 	 * @var bool
@@ -60,7 +28,7 @@ class MS_Controller extends MS_Hooker {
 	/**
 	 * Ajax response error-code.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @see _resp_code()
 	 * @var string
@@ -70,13 +38,13 @@ class MS_Controller extends MS_Hooker {
 	/**
 	 * Parent constuctor of all controllers.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		/**
 		 * Actions to execute when constructing the parent controller.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Controller object.
 		 */
 		do_action( 'ms_controller_construct', $this );
@@ -86,7 +54,7 @@ class MS_Controller extends MS_Hooker {
 	 * Does admin-side initialization. This function is called by the
 	 * MS_Controller_Plugin object and is only executed when is_admin() is true.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_init() {
 		// Nothing by default. Can be overwritten by child classes.
@@ -165,12 +133,11 @@ class MS_Controller extends MS_Hooker {
 	 * @return boolean True if can, false otherwise.
 	 */
 	public function is_admin_user() {
-		$is_admin_user = MS_Model_Member::is_admin_user( null, $this->capability );
+		$is_admin_user = MS_Model_Member::is_admin_user();
 
 		return apply_filters(
-			'ms_controller_current_user_can',
-			$is_admin_user,
-			$this->capability
+			'ms_controller_is_admin_user',
+			$is_admin_user
 		);
 	}
 

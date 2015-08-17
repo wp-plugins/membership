@@ -1,7 +1,7 @@
 <?php
 
-class Mailchimp_Lists {
-    public function __construct(Mailchimp $master) {
+class M2_Mailchimp_Lists {
+    public function __construct(M2_Mailchimp $master) {
         $this->master = $master;
     }
 

@@ -1,31 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership Replace-Menu Rule class.
  *
- * Persisted by Membership class.
- *
- * @since 1.0.4.2
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Model
@@ -35,7 +12,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Rule type.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @var string $rule_type
 	 */
@@ -51,7 +28,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * Returns the active flag for a specific rule.
 	 * State depends on Add-on
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	static public function is_active() {
@@ -65,7 +42,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * This rule will return NULL (not relevant), because the menus are
 	 * protected via a wordpress hook instead of protecting the current page.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to verify access.
 	 * @return bool|null True if has access, false otherwise.
@@ -78,7 +55,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Set initial protection.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 */
 	public function protect_content() {
 		parent::protect_content();
@@ -98,13 +75,21 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * Relevant Action Hooks:
 	 * - theme_mod_nav_menu_locations
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @param array $default The default menu assignment array.
 	 */
 	public function replace_menus( $defaults ) {
+		// We ignore the base membership for this rule-type.
+		if ( $this->is_base_rule ) { return $defaults; }
+
+		$base_rule = MS_Model_Membership::get_base()->get_rule( $this->rule_type );
+
 		foreach ( $defaults as $key => $menu ) {
-			$replacement = $this->get_rule_value( $key );
+			$replace = $this->get_rule_value( $key );
+			if ( ! $replace ) { continue; }
+
+			$replacement = $base_rule->get_rule_value( $key );
 
 			if ( is_numeric( $replacement ) && $replacement > 0 ) {
 				$defaults[ $key ] = intval( $replacement );
@@ -121,7 +106,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Get content to protect.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 * @return array The contents array.
 	 */
@@ -175,7 +160,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * Returns an array of matching options that are displayed in a select
 	 * list for each item.
 	 *
-	 * @since  1.0.4.2
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public function get_matching_options( $args = null ) {
@@ -196,7 +181,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Get menu array.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *      @type string $menu_id The menu id.
@@ -232,7 +217,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Get navigational areas.
 	 *
-	 * @since 1.0.4.2
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *      @type string $menu_id The menu id.
@@ -260,7 +245,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Get rule value for a specific content.
 	 *
-	 * @since 1.1.1.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to get rule value for.
 	 * @return boolean The rule value for the requested content. Default $rule_value_default.
@@ -291,7 +276,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Set access status to content.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @param string $id The content id to set access to.
 	 * @param int $access The access status to set.
 	 */
@@ -319,7 +304,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	/**
 	 * Give access to content.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @param string $id The content id to give access.
 	 */
 	public function give_access( $id ) {
@@ -345,7 +330,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * We don't use the PHP `serialize()` function to serialize the whole object
 	 * because a lot of unrequired and duplicate data will be serialized
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return array The serialized values of the Rule.
 	 */
 	public function serialize() {
@@ -358,7 +343,7 @@ class MS_Rule_ReplaceLocation_Model extends MS_Rule {
 	 * This function is used when de-serializing a membership to re-create the
 	 * rules associated with the membership.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $values A list of allowed IDs.
 	 */
 	public function populate( $values ) {

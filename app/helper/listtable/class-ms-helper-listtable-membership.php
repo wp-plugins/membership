@@ -1,31 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership List Table
  *
- *
- * @since 4.0.0
- *
+ * @since  1.0.0
  */
 class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 
@@ -43,12 +20,16 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 
 	public function get_columns() {
 		$columns = array(
+			'priority' => sprintf(
+				'<span title="%s">#</span>',
+				__( 'Membership Order', MS_TEXT_DOMAIN )
+			),
 			'name' => __( 'Membership Name', MS_TEXT_DOMAIN ),
-			'type_description' => __( 'Type of Membership', MS_TEXT_DOMAIN ),
 			'active' => __( 'Active', MS_TEXT_DOMAIN ),
+			'type_description' => __( 'Type of Membership', MS_TEXT_DOMAIN ),
 			'members' => __( 'Members', MS_TEXT_DOMAIN ),
 			'price' => __( 'Payment', MS_TEXT_DOMAIN ),
-			'shortcode' => __( 'Membership Shortcode', MS_TEXT_DOMAIN ),
+			'shortcode' => __( 'Protection Shortcode', MS_TEXT_DOMAIN ),
 		);
 
 		return apply_filters(
@@ -68,28 +49,12 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 		return apply_filters(
 			'membership_helper_listtable_membership_sortable_columns',
 			array(
+				'priority' => array( 'menu_order', true ),
 				'name' => array( 'name', true ),
 				'type_description' => array( 'type', true ),
 				'active' => array( 'active', true ),
 			)
 		);
-	}
-
-	public function column_active( $item ) {
-		$toggle = array(
-			'id' => 'ms-toggle-' . $item->id,
-			'type' => MS_Helper_Html::INPUT_TYPE_RADIO_SLIDER,
-			'value' => $item->active,
-			'data_ms' => array(
-				'action' => MS_Controller_Membership::AJAX_ACTION_TOGGLE_MEMBERSHIP,
-				'field' => 'active',
-				'membership_id' => $item->id,
-			),
-		);
-
-		$html = MS_Helper_Html::html_element( $toggle, true );
-
-		return $html;
 	}
 
 	public function prepare_items() {
@@ -120,25 +85,35 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 		);
 	}
 
+	public function column_priority( $item ) {
+		$result = '-';
+
+		if ( ! $item->is_system() ) {
+			$result = $item->priority;
+		}
+
+		return $result;
+	}
+
 	public function column_name( $item ) {
 		$actions = array();
 
-		$edit_args = array(
-			'membership_id' => $item->id,
-		);
-
+		// Prepare the Membership actions.
 		$actions['edit'] = sprintf(
-			'<span class="edit"><a href="#" data-ms-dialog="%s" data-ms-data="%s">%s</a></span>',
-			'View_Membership_Edit_Dialog',
-			esc_attr( json_encode( $edit_args ) ),
+			'<a href="?page=%1$s&step=%2$s&tab=%3$s&membership_id=%4$s">%5$s</a>',
+			esc_attr( $_REQUEST['page'] ),
+			MS_Controller_Membership::STEP_EDIT,
+			MS_Controller_Membership::TAB_DETAILS,
+			esc_attr( $item->id ),
 			__( 'Edit', MS_TEXT_DOMAIN )
 		);
 
 		if ( ! $item->is_system() ) {
 			$actions['payment'] = sprintf(
-				'<a href="?page=%1$s&step=%2$s&membership_id=%3$s&tab=page&edit=1">%4$s</a>',
+				'<a href="?page=%1$s&step=%2$s&tab=%3$s&membership_id=%4$s">%5$s</a>',
 				esc_attr( $_REQUEST['page'] ),
-				MS_Controller_Membership::STEP_PAYMENT,
+				MS_Controller_Membership::STEP_EDIT,
+				MS_Controller_Membership::TAB_PAYMENT,
 				esc_attr( $item->id ),
 				$item->is_free ? __( 'Access options', MS_TEXT_DOMAIN ) : __( 'Payment options', MS_TEXT_DOMAIN )
 			);
@@ -159,11 +134,12 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 		);
 
 		$actions = apply_filters(
-			'ms_helper_listtable_' . $this->id . '_column_name_actions',
+			'ms_helper_listtable_membership_column_name_actions',
 			$actions,
 			$item
 		);
 
+		// Add the badge to special memberships.
 		if ( $item->is_guest() ) {
 			$badge = sprintf(
 				'<span class="ms-badge ms-guest-badge" data-wpmui-tooltip="%2$s" data-width="180">%1$s</span>',
@@ -177,7 +153,12 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 				__( 'All logged-in users that have not signed up for any membership', MS_TEXT_DOMAIN )
 			);
 		} else {
-			$badge = '';
+			$badge = apply_filters(
+				'ms_helper_listtable_memberships_name_badge',
+				'',
+				$item,
+				$this
+			);
 		}
 
 		return sprintf(
@@ -194,11 +175,39 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 		);
 	}
 
+	public function column_active( $item ) {
+		$toggle = array(
+			'id' => 'ms-toggle-' . $item->id,
+			'type' => MS_Helper_Html::INPUT_TYPE_RADIO_SLIDER,
+			'value' => $item->active,
+			'data_ms' => array(
+				'action' => MS_Controller_Membership::AJAX_ACTION_TOGGLE_MEMBERSHIP,
+				'field' => 'active',
+				'membership_id' => $item->id,
+			),
+		);
+
+		$html = MS_Helper_Html::html_element( $toggle, true );
+
+		return $html;
+	}
+
 	public function column_members( $item, $column_name ) {
 		$html = '';
 
 		if ( ! $item->is_system() ) {
-			$html = $item->get_members_count();
+			$count = $item->get_members_count();
+
+			$url = MS_Controller_Plugin::get_admin_url(
+				'members',
+				array( 'membership_id' => $item->id )
+			);
+
+			$html = sprintf(
+				'<a href="%2$s">%1$s</a>',
+				intval( $count ),
+				$url
+			);
 		}
 
 		return $html;
@@ -208,7 +217,7 @@ class MS_Helper_ListTable_Membership extends MS_Helper_ListTable {
 		$html = '';
 
 		$html .= sprintf(
-			'<span class="ms-img-type-%1$s small"></span> ',
+			'<span class="ms-img-type ms-img-type-%1$s small"></span> ',
 			esc_attr( $item->type )
 		);
 

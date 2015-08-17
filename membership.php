@@ -2,7 +2,7 @@
 /**
 Plugin Name: Membership 2
 Plugin URI:  https://wordpress.org/plugins/membership
-Version:     4.0.0.2
+Version:     4.0.0.3
 Description: The most powerful, easy to use and flexible membership plugin for WordPress sites available.
 Author:      WPMU DEV
 Author URI:  http://premium.wpmudev.org/
@@ -39,32 +39,54 @@ function membership2_init_old_app() {
 	require_once 'app_old/membership.php';
 }
 
-function membership2_init_app() {
+/**
+ * Initializes constants and create the main plugin object MS_Plugin.
+ * This function is called *instantly* when this file was loaded.
+ *
+ * @since  1.0.0
+ */
+function membership2_init_free_app() {
+	if ( defined( 'MS_TEXT_DOMAIN' ) ) {
+		if ( is_admin() ) {
+			// Can happen in Multisite installs where a sub-site has activated the
+			// plugin and then the plugin is also activated in network-admin.
+			printf(
+				'<div class="notice error"><p><strong>%s</strong>: %s</p></div>',
+				sprintf(
+					__( 'Could not load the plugin %s, because another version of the plugin is already loaded', MS_TEXT_DOMAIN ),
+					'Membership 2 (free)'
+				),
+				MS_PLUGIN . ' (v' . MS_PLUGIN_VERSION . ')'
+			);
+		}
+		return;
+	}
+
 	/**
 	 * Plugin version
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	define( 'MS_PLUGIN_VERSION', '4.0.0.2' );
+	define( 'MS_PLUGIN_VERSION', '4.0.0.3' );
 
 	/**
 	 * Plugin text domain.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	define( 'MS_TEXT_DOMAIN', 'membership2' );
 
 	/**
 	 * Plugin identifier constant.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 */
 	define( 'MS_PLUGIN', plugin_basename( __FILE__ ) );
 
 	/**
 	 * Plugin name dir constant.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	define( 'MS_PLUGIN_NAME', dirname( MS_PLUGIN ) );
 
@@ -76,47 +98,47 @@ function membership2_init_app() {
 		require_once $path;
 	}
 
-	add_filter( 'ms_class_path_overrides', 'ms_class_path_overrides' );
+	// Load the WDev-Frash module.
+	include_once 'lib/wdev-frash/module.php';
+
+	// Register the current plugin.
+	do_action(
+		'wdev-register-plugin',
+		/*             Plugin ID */ plugin_basename( __FILE__ ),
+		/*          Plugin Title */ 'Membership 2',
+		/* https://wordpress.org */ '/plugins/membership/',
+		/*      Email Button CTA */ __( 'Get Members!', MS_TEXT_DOMAIN ),
+		/*  getdrip Plugin param */ 'Membership'
+	);
+
+	/**
+	 * translate_plugin adds correct hook to translate the plugin via the
+	 * WordPress function `load_text_domain`.
+	 *
+	 * Tipp:
+	 *   The translation files must have the filename [TEXT-DOMAIN]-[locale].mo
+	 *   Example: membership2-en_EN.mo  /  membership2-de_DE.mo
+	 *
+	 * Important:
+	 *   This function must be called instantly (i.e. BEFORE the hook
+	 *   `plugins_loaded` is fired!)
+	 *
+	 * @param  string $domain The plugins text-domain.
+	 * @param  string $rel_dir Translation directory, relative to WP_PLUGIN_DIR.
+	 */
+	lib2()->translate_plugin(
+		MS_TEXT_DOMAIN,
+		dirname( plugin_basename( __FILE__ ) ) . '/languages'
+	);
 
 	/**
 	 * Create an instance of the plugin object.
 	 *
 	 * This is the primary entry point for the Membership plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	MS_Plugin::instance();
-}
-
-/**
- * Hooks 'ms_class_path_overrides'.
- *
- * Overrides plugin class paths to adhere to naming conventions
- * where object names are separated by underscores or for special cases.
- *
- * @since 1.0.0
- *
- * @param  array $overrides Array passed in by filter.
- * @return array(class=>path) Classes with new file paths.
- */
-function ms_class_path_overrides( $overrides ) {
-	// MODELS
-	$models_base = 'app/model/';
-	$models = array(
-		'MS_Model_Communication_After_Finishes' => 'communication/class-ms-model-communication-after-finishes.php',
-		'MS_Model_Communication_After_Payment_Due' => 'communication/class-ms-model-communication-after-payment-due.php',
-		'MS_Model_Communication_Before_Finishes' => 'communication/class-ms-model-communication-before-finishes.php',
-		'MS_Model_Communication_Before_Payment_Due' => 'communication/class-ms-model-communication-before-payment-due.php',
-		'MS_Model_Communication_Before_Trial_Finishes' => 'communication/class-ms-model-communication-before-trial-finishes.php',
-		'MS_Model_Communication_Credit_Card_Expire' => 'communication/class-ms-model-communication-credit-card-expire.php',
-		'MS_Model_Communication_Failed_Payment' => 'communication/class-ms-model-communication-failed-payment.php',
-		'MS_Model_Communication_Info_Update' => 'communication/class-ms-model-communication-info-update.php',
-		'MS_Model_Communication_Registration_Free' => 'communication/class-ms-model-communication-registration-free.php',
-	);
-
-	foreach ( $models as $key => $path ) { $overrides[ $key ] = $models_base . $path; }
-
-	return $overrides;
 }
 
 /**
@@ -129,16 +151,17 @@ function ms_class_path_overrides( $overrides ) {
  * Note: Even all properties are marked private, they are made public via the
  * magic __get() function.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @return object Plugin instance.
  */
+if ( ! class_exists( 'MS_Plugin' ) ) {
 class MS_Plugin {
 
 	/**
 	 * Singletone instance of the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var MS_Plugin
 	 */
@@ -147,7 +170,7 @@ class MS_Plugin {
 	/**
 	 * Modifier values.
 	 *
-	 * @since 1.1.0.5
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -156,7 +179,7 @@ class MS_Plugin {
 	/**
 	 * The WordPress internal plugin identifier.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $id;
@@ -164,7 +187,7 @@ class MS_Plugin {
 	/**
 	 * The plugin name.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $name;
@@ -172,7 +195,7 @@ class MS_Plugin {
 	/**
 	 * The plugin version.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $version;
@@ -180,7 +203,7 @@ class MS_Plugin {
 	/**
 	 * The plugin file.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $file;
@@ -188,7 +211,7 @@ class MS_Plugin {
 	/**
 	 * The plugin path.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $dir;
@@ -196,7 +219,7 @@ class MS_Plugin {
 	/**
 	 * The plugin URL.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   string
 	 */
 	private $url;
@@ -204,7 +227,7 @@ class MS_Plugin {
 	/**
 	 * The plugin settings.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   MS_Model_Settings
 	 */
 	private $settings;
@@ -212,7 +235,7 @@ class MS_Plugin {
 	/**
 	 * The plugin add-on settings.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   MS_Model_Addon
 	 */
 	private $addon;
@@ -220,7 +243,7 @@ class MS_Plugin {
 	/**
 	 * The main controller of the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var   MS_Controller_Plugin
 	 */
 	private $controller;
@@ -228,7 +251,7 @@ class MS_Plugin {
 	/**
 	 * The API controller (for convenience)
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @var    MS_Controller_Api
 	 */
 	public static $api = null;
@@ -238,20 +261,20 @@ class MS_Plugin {
 	 *
 	 * Set properties, registers hooks and loads the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 
 		/**
 		 * Actions to execute before the plugin construction starts.
 		 *
-		 * @since 2.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Plugin object.
 		 */
 		do_action( 'ms_plugin_init', $this );
 
 		/**
-		 * @since      1.0.0
+		 * @since  1.0.0
 		 * @deprecated since 2.0.0
 		 */
 		do_action( 'ms_plugin_construct_start', $this );
@@ -264,22 +287,9 @@ class MS_Plugin {
 		$this->dir = plugin_dir_path( __FILE__ );
 		$this->url = plugin_dir_url( __FILE__ );
 
-		/**
-		 * Filter the languages path before loading the textdomain.
-		 *
-		 * @uses load_plugin_textdomain()
-		 *
-		 * @since 1.0.0
-		 * @param object $this The MS_Plugin object.
-		 */
-		load_plugin_textdomain(
-			MS_TEXT_DOMAIN,
-			false,
-			apply_filters(
-				'ms_plugin_languages_path',
-				$this->name . '/languages/',
-				$this
-			)
+		add_filter(
+			'ms_class_path_overrides',
+			array( $this, 'ms_class_path_overrides' )
 		);
 
 		// Creates the class autoloader.
@@ -328,7 +338,7 @@ class MS_Plugin {
 		/**
 		 * Creates and Filters the Settings Model.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Plugin object.
 		 */
 		$this->settings = MS_Factory::load( 'MS_Model_Settings' );
@@ -336,7 +346,7 @@ class MS_Plugin {
 		/**
 		 * Creates and Filters the Addon Model.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Plugin object.
 		 */
 		$this->addon = MS_Factory::load( 'MS_Model_Addon' );
@@ -357,10 +367,42 @@ class MS_Plugin {
 		/**
 		 * Actions to execute when the Plugin object has successfully constructed.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Plugin object.
 		 */
 		do_action( 'ms_plugin_construct_end', $this );
+	}
+
+	/**
+	 * Hooks 'ms_class_path_overrides'.
+	 *
+	 * Overrides plugin class paths to adhere to naming conventions
+	 * where object names are separated by underscores or for special cases.
+	 *
+	 * @since  1.0.0
+	 *
+	 * @param  array $overrides Array passed in by filter.
+	 * @return array(class=>path) Classes with new file paths.
+	 */
+	public function ms_class_path_overrides( $overrides ) {
+		$models_base = 'app/model/';
+		$models = array(
+			'MS_Model_Communication_After_Finishes' => 'communication/class-ms-model-communication-after-finishes.php',
+			'MS_Model_Communication_After_Payment_Due' => 'communication/class-ms-model-communication-after-payment-due.php',
+			'MS_Model_Communication_Before_Finishes' => 'communication/class-ms-model-communication-before-finishes.php',
+			'MS_Model_Communication_Before_Payment_Due' => 'communication/class-ms-model-communication-before-payment-due.php',
+			'MS_Model_Communication_Before_Trial_Finishes' => 'communication/class-ms-model-communication-before-trial-finishes.php',
+			'MS_Model_Communication_Credit_Card_Expire' => 'communication/class-ms-model-communication-credit-card-expire.php',
+			'MS_Model_Communication_Failed_Payment' => 'communication/class-ms-model-communication-failed-payment.php',
+			'MS_Model_Communication_Info_Update' => 'communication/class-ms-model-communication-info-update.php',
+			'MS_Model_Communication_Registration_Free' => 'communication/class-ms-model-communication-registration-free.php',
+		);
+
+		foreach ( $models as $key => $path ) {
+			$overrides[ $key ] = $models_base . $path;
+		}
+
+		return $overrides;
 	}
 
 	/**
@@ -369,7 +411,7 @@ class MS_Plugin {
 	 * Related Action Hooks:
 	 * - setup_theme
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function ms_plugin_constructing() {
 		/**
@@ -378,7 +420,7 @@ class MS_Plugin {
 		 * ---> MAIN ENTRY POINT CONTROLLER FOR PLUGIN <---
 		 *
 		 * @uses  MS_Controller_Plugin
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 */
 		$this->controller = MS_Factory::create( 'MS_Controller_Plugin' );
 	}
@@ -386,7 +428,7 @@ class MS_Plugin {
 	/**
 	 * Register plugin custom post types.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function register_custom_post_types() {
 		do_action( 'ms_plugin_register_custom_post_types_before', $this );
@@ -410,14 +452,14 @@ class MS_Plugin {
 	/**
 	 * Add rewrite rules.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function add_rewrite_rules() {
 		$settings = MS_Factory::load( 'MS_Model_Settings' );
 
 		// Gateway return - IPN.
 		add_rewrite_rule(
-			'^ms-payment-return/(.+)/?$',
+			'ms-payment-return/(.+)/?',
 			'index.php?paymentgateway=$matches[1]',
 			'top'
 		);
@@ -458,7 +500,7 @@ class MS_Plugin {
 	/**
 	 * Add rewrite tags.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function add_rewrite_tags() {
 		// Membership site pages.
@@ -476,7 +518,7 @@ class MS_Plugin {
 	/**
 	 * Actions executed in plugin activation.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function plugin_activation() {
 		// Prevent recursion during plugin activation.
@@ -486,21 +528,28 @@ class MS_Plugin {
 		// Update the Membership2 database entries after activation.
 		MS_Model_Upgrade::update( true );
 
-		do_action( 'ms_plugin_activation ', $this );
+		do_action( 'ms_plugin_activation', $this );
 	}
 
 	/**
 	 * Redirect page and request plugin to flush the WordPress rewrite rules
 	 * on next request.
 	 *
-	 * @since  1.0.4.4
+	 * @since  1.0.0
 	 * @param string $url The URL to load after flushing the rewrite rules.
 	 */
 	static public function flush_rewrite_rules( $url = false ) {
-		$refresh = lib2()->session->get( 'refresh_url_rules' );
+		if ( isset( $_GET['ms_flushed'] ) && 'yes' == $_GET['ms_flushed'] ) {
+			$refresh = true;
+		} else {
+			$refresh = lib2()->session->get( 'refresh_url_rules' );
+		}
+
 		if ( $refresh ) { return; }
 
 		lib2()->session->add( 'refresh_url_rules', true );
+
+		// The URL param is only to avoid cache.
 		$url = esc_url_raw(
 			add_query_arg( 'ms_ts', time(), $url )
 		);
@@ -511,14 +560,11 @@ class MS_Plugin {
 	/**
 	 * Flush the WordPress rewrite rules.
 	 *
-	 * @since  1.0.4.4
+	 * @since  1.0.0
 	 */
 	public function maybe_flush_rewrite_rules() {
 		$refresh = lib2()->session->get_clear( 'refresh_url_rules' );
 		if ( ! $refresh ) { return; }
-
-		// Flush WP rewrite rules.
-		flush_rewrite_rules();
 
 		// Set up the plugin specific rewrite rules again.
 		$this->add_rewrite_rules();
@@ -526,7 +572,8 @@ class MS_Plugin {
 
 		do_action( 'ms_plugin_flush_rewrite_rules', $this );
 
-		$url = esc_url_raw( remove_query_arg( 'ms_ts' ) );
+		$url = remove_query_arg( 'ms_ts' );
+		$url = esc_url_raw( add_query_arg( 'ms_flushed', 'yes', $url ) );
 		wp_safe_redirect( $url );
 		exit;
 	}
@@ -538,7 +585,7 @@ class MS_Plugin {
 	 * Avoids creating include functions for each file in the MVC structure.
 	 * **MS_** namespace ONLY will be based on folder structure in /app/
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param  string $class Uses PHP autoloader function.
 	 * @return boolean
@@ -549,7 +596,7 @@ class MS_Plugin {
 		/**
 		 * Actions to execute before the autoloader loads a class.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @param object $this The MS_Plugin object.
 		 */
 		do_action( 'ms_plugin_class_loader_pre_processing', $this );
@@ -561,7 +608,7 @@ class MS_Plugin {
 			/**
 			 * Adds and Filters class path overrides.
 			 *
-			 * @since 1.0.0
+			 * @since  1.0.0
 			 * @param object $this The MS_Plugin object.
 			 */
 			$Path_overrides = apply_filters( 'ms_class_path_overrides', array(), $this );
@@ -577,7 +624,7 @@ class MS_Plugin {
 			/**
 			 * Overrides the filename and path.
 			 *
-			 * @since 1.0.0
+			 * @since  1.0.0
 			 * @param object $this The MS_Plugin object.
 			 */
 			$file_path = apply_filters( 'ms_class_file_override', $file_path, $this );
@@ -605,7 +652,7 @@ class MS_Plugin {
 			/**
 			 * Overrides the filename and path.
 			 *
-			 * @since 1.0.0
+			 * @since  1.0.0
 			 * @param object $this The MS_Plugin object.
 			 */
 			$file_path = apply_filters( 'ms_class_file_override', $file_path, $this );
@@ -626,7 +673,7 @@ class MS_Plugin {
 	/**
 	 * Add link to settings page in plugins page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param array $links WordPress default array of links.
 	 * @return array Array of links with settings page links added.
@@ -643,7 +690,7 @@ class MS_Plugin {
 			/**
 			 * Filter the plugin settings link.
 			 *
-			 * @since 1.0.0
+			 * @since  1.0.0
 			 * @param object $this The MS_Plugin object.
 			 */
 			$settings_link = apply_filters(
@@ -660,7 +707,7 @@ class MS_Plugin {
 	/**
 	 * Returns singleton instance of the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @static
 	 * @access public
@@ -668,7 +715,7 @@ class MS_Plugin {
 	 * @return MS_Plugin
 	 */
 	public static function instance() {
-		if ( is_null( self::$instance ) ) {
+		if ( ! self::$instance ) {
 			self::$instance = new MS_Plugin();
 
 			self::$instance = apply_filters(
@@ -683,7 +730,7 @@ class MS_Plugin {
 	/**
 	 * Returns plugin enabled status.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @static
@@ -697,7 +744,7 @@ class MS_Plugin {
 	/**
 	 * Returns plugin wizard status.
 	 *
-	 * @since 1.0.4.3
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @static
@@ -714,7 +761,7 @@ class MS_Plugin {
 	 * This flag can be changed by setting the MS_PROTECT_NETWORK flag to true
 	 * in wp-config.php
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @return bool False means that only the current site is protected.
 	 *         True means that memberships are shared among all network sites.
 	 */
@@ -736,7 +783,7 @@ class MS_Plugin {
 	 * The set_modifier() value will always take precedence over wp-config.php
 	 * definitions.
 	 *
-	 * @since  1.1.0.5
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key Name of the modifier.
@@ -758,17 +805,17 @@ class MS_Plugin {
 	 * Changes a modifier option.
 	 * @see get_modifier() for more details.
 	 *
-	 * @since  1.1.0.5
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key Name of the modifier.
 	 * @param  mixed $value Value of the modifier. `null` unsets the modifier.
 	 */
 	public static function set_modifier( $key, $value = null ) {
-		if ( null === $value && isset( self::$modifiers[$key] ) ) {
+		if ( null === $value ) {
 			unset( self::$modifiers[$key] );
 		} else {
-			self::$modifiers[$key];
+			self::$modifiers[$key] = $value;
 		}
 	}
 
@@ -776,7 +823,7 @@ class MS_Plugin {
 	 * This funciton initializes the api property for easy access to the plugin
 	 * API. This function is *only* called by MS_Controller_Api::__construct()!
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 * @internal
 	 * @param MS_Controller_Api $controller The initialized API controller.
 	 */
@@ -787,7 +834,7 @@ class MS_Plugin {
 	/**
 	 * Returns property associated with the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @access public
 	 * @param string $property The name of a property.
@@ -799,8 +846,9 @@ class MS_Plugin {
 		}
 	}
 }
+} // end: if ! class_exists
 
-function membership2_use_old() {
+function membership2_is_old_app() {
 	return true != get_option( 'm2_use_new_version' );
 }
 
@@ -808,8 +856,8 @@ function membership2_use_m2() {
 	update_option( 'm2_use_new_version', true );
 }
 
-if ( membership2_use_old() ) {
+if ( membership2_is_old_app() ) {
 	membership2_init_old_app();
 } else {
-	membership2_init_app();
+	membership2_init_free_app();
 }

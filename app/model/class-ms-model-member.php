@@ -11,7 +11,7 @@
  * There are magic methods \_\_get() and \_\_set() that do some validation before
  * accessing the properties.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -20,15 +20,15 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Members search constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 */
-	const SEARCH_ONLY_MEMBERS = 'only members';
+	const SEARCH_ONLY_MEMBERS = 'only members'; //TODO: replace space with _ !!!!
 
 	/**
 	 * Members search constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 */
 	const SEARCH_NOT_MEMBERS = 'not_members';
@@ -36,7 +36,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Members search constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 */
 	const SEARCH_ALL_USERS = 'all_users';
@@ -44,7 +44,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Cache for function is_admin_user()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var bool[]
 	 */
@@ -53,7 +53,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Cache for function is_normal_admin()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var bool[]
 	 */
@@ -62,7 +62,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Cache for function is_simulated_user()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var bool[]
 	 */
@@ -71,7 +71,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Cache for function is_normal_user()
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var bool[]
 	 */
@@ -83,7 +83,7 @@ class MS_Model_Member extends MS_Model {
 	 * Note: This field is populated by MS_Factory when the Member instance is
 	 * created.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array {
 	 *     @type int $membership_id The membership ID.
 	 *     @type MS_Model_Relationship The membership relationship model object.
@@ -92,27 +92,24 @@ class MS_Model_Member extends MS_Model {
 	protected $subscriptions = array();
 
 	/**
-	 * Indicator if the user is a valid Member.
+	 * Indicator if the user is an active M2 Member.
 	 *
-	 * Only members have access to memberships.
-	 * False indicates blocked members (if signed up for a membership).
+	 * This is a convenience/redudant flag to speed up SQL queries.
+	 * Actually everyone that has an active or trial status membership is
+	 * considered an active member.
 	 *
-	 * @since 1.0.0
+	 * This flag is set when:
+	 * - In MS_Model_Relationship, when a payment is recorded
+	 *   via add_payment()
+	 *
+	 * This flag is reset when:
+	 * - In MS_Model_Relationship, when a subscription is deactivated
+	 *   via check_membership_status()
+	 *
+	 * @since  1.0.0
 	 * @var boolean
 	 */
 	protected $is_member = false;
-
-	/**
-	 * Active status.
-	 *
-	 * Staus to activate or deactivate a user independently of the membership
-	 * status. False indicates blocked members (if signed up for a membership).
-	 * For further use. (For temporary member blocking).
-	 *
-	 * @since 1.0.0
-	 * @var boolean
-	 */
-	protected $active = true;
 
 	/**
 	 * Member's username.
@@ -120,10 +117,10 @@ class MS_Model_Member extends MS_Model {
 	 * Mapped from wordpress $wp_user object.
 	 * @see WP_User $user_login.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected $username;
+	protected $username = '';
 
 	/**
 	 * Member's email.
@@ -131,10 +128,10 @@ class MS_Model_Member extends MS_Model {
 	 * Mapped from wordpress $wp_user object.
 	 * @see WP_User $user_email.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected $email;
+	protected $email = '';
 
 	/**
 	 * Member's name.
@@ -142,10 +139,10 @@ class MS_Model_Member extends MS_Model {
 	 * Mapped from wordpress $wp_user object.
 	 * @see WP_User $user_nicename.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected $name;
+	protected $name = '';
 
 	/**
 	 * Member's first name.
@@ -153,10 +150,10 @@ class MS_Model_Member extends MS_Model {
 	 * Mapped from wordpress $wp_user object.
 	 * @see WP_User $first_name
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected $first_name;
+	protected $first_name = '';
 
 	/**
 	 * Member's last name.
@@ -164,39 +161,39 @@ class MS_Model_Member extends MS_Model {
 	 * Mapped from wordpress $wp_user object.
 	 * @see WP_User $last_name.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 */
-	protected $last_name;
+	protected $last_name = '';
 
 	/**
 	 * Member's password.
 	 *
 	 * Used when registering.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var string
 	 */
-	protected $password;
+	protected $password = '';
 
 	/**
 	 * Member's password confirmation.
 	 *
 	 * Used when registering.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 * @var string
 	 */
-	protected $password2;
+	protected $password2 = '';
 
 	/**
 	 * Member's gateway profiles info.
 	 *
 	 * Save gateway IDs.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array {
 	 *     Return structure: $gateway[ $field ] => $value;
 	 *
@@ -205,16 +202,16 @@ class MS_Model_Member extends MS_Model {
 	 *     @type mixed $value The field value to store.
 	 * }
 	 */
-	protected $gateway_profiles;
+	protected $gateway_profiles = array();
 
 	/**
 	 * The associated WP_User object
 	 *
-	 * @since 1.1
+	 * @since  1.0.0
 	 * @internal
 	 * @var WP_User
 	 */
-	protected $wp_user;
+	protected $wp_user = null;
 
 	/**
 	 * Custom data can be used by other plugins via the set_custom_data() and
@@ -223,7 +220,7 @@ class MS_Model_Member extends MS_Model {
 	 * This can be used to store additional information on user-level, e.g.
 	 * settings needed by some Add-ons or even by other plugins.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -238,7 +235,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get current member.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @return MS_Model_Member The current member.
@@ -250,7 +247,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Checks if user-signup is enabled for this site or not.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return bool
@@ -282,7 +279,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Allows users to register for this site.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return bool
@@ -308,7 +305,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get members total count.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @param $args The query user args
@@ -331,15 +328,19 @@ class MS_Model_Member extends MS_Model {
 	 * Get members IDs.
 	 * The IDs are cached and only fetched once for each set of $args.
 	 *
-	 * @since 1.0.4.4
+	 * @since  1.0.0
 	 * @internal
 	 *
-	 * @param $args The query user args
-	 *				@see @link http://codex.wordpress.org/Class_Reference/WP_User_Query
+	 * @param  $args The query user args
+	 *         @see @link http://codex.wordpress.org/Class_Reference/WP_User_Query
 	 * @return array List of member IDs
 	 */
 	public static function get_member_ids( $args = null, $search_option = self::SEARCH_ALL_USERS ) {
 		static $Members = array();
+		if ( ! isset( $args['number'] ) ) {
+			$args['number'] = 0;
+		}
+
 		$key = json_encode( $args );
 
 		if ( ! isset( $Members[$key] ) ) {
@@ -365,11 +366,11 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get members.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
-	 * @param $args The query user args
-	 *				@see @link http://codex.wordpress.org/Class_Reference/WP_User_Query
+	 * @param  $args The query user args
+	 *         @see @link http://codex.wordpress.org/Class_Reference/WP_User_Query
 	 * @return MS_Model_Member[] The selected members.
 	 */
 	public static function get_members( $args = null, $search_option = self::SEARCH_ALL_USERS ) {
@@ -391,7 +392,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get usernames.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @param $args The query user args
@@ -440,7 +441,7 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * Default search arguments for this model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @param $args The query user args
@@ -511,7 +512,7 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * Much of this logic is taken from wp-includes/pluggable.php
 	 *
-	 * @since  1.1.1.4
+	 * @since  1.0.0
 	 * @internal
 	 * @return int|false
 	 */
@@ -567,7 +568,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Verify is user is logged in.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @return boolean True if user is logged in.
@@ -581,14 +582,16 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Verify is user is Admin user.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
-	 * @param int|false $user_id Optional. The user ID. Default to current user.
-	 * @param string $capability The capability to check for admin users.
+	 * @param  int|false $user_id Optional. The user ID. Default to current user.
+	 * @param  bool $deprecated Do not use.
 	 * @return boolean True if user is admin.
 	 */
-	static public function is_admin_user( $user_id = false, $capability = 'manage_options' ) {
+	static public function is_admin_user( $user_id = false ) {
+		$cache_result = true;
+
 		if ( ! isset( self::$_is_admin_user[ $user_id ] ) ) {
 			$is_admin = false;
 			$default_user_id = null;
@@ -599,41 +602,64 @@ class MS_Model_Member extends MS_Model {
 			}
 
 			if ( is_super_admin( $user_id ) ) {
+				// Superadmin always is considered admin user, no discussion...
 				$is_admin = true;
+			} else {
+				/**
+				 * Use the capability defined by the main plugin controller.
+				 *
+				 * This capability defines which user is considered admin user.
+				 * An Admin user has full permissions to edit M2 settings.
+				 *
+				 * To modify the capability:
+				 *   Use filter `ms_admin_user_capability`  or
+				 *   define( 'MS_ADMIN_CAPABILITY', '...' )
+				 *
+				 * @var string|bool A WordPress capability or boolean false.
+				 */
+				$controller = MS_Plugin::instance()->controller;
+				if ( $controller ) {
+					$capability = $controller->capability;
+				} else {
+					// This is used in case the function is called too early.
+					$capability = 'manage_options';
+					$cache_result = false;
+				}
+
+				if ( ! empty( $capability ) ) {
+					if ( empty( $user_id ) ) {
+						$is_admin = current_user_can( $capability );
+					} else {
+						$is_admin = user_can( $user_id, $capability );
+					}
+				}
+
+				$is_admin = apply_filters(
+					'ms_model_member_is_admin_user',
+					$is_admin,
+					$user_id,
+					$capability
+				);
 			}
 
-			$capability = apply_filters(
-				'ms_model_member_is_admin_user_capability',
-				$capability
-			);
+			if ( $cache_result ) {
+				self::$_is_admin_user[ $user_id ] = $is_admin;
 
-			if ( ! empty( $capability ) ) {
-				if ( empty( $user_id ) ) {
-					$is_admin = current_user_can( $capability );
-				} else {
-					$is_admin = user_can( $user_id, $capability );
+				if ( null !== $default_user_id ) {
+					self::$_is_admin_user[ $default_user_id ] = $is_admin;
 				}
 			}
-
-			$res = apply_filters(
-				'ms_model_member_is_admin_user',
-				$is_admin,
-				$user_id
-			);
-			self::$_is_admin_user[ $user_id ] = $res;
-
-			if ( null !== $default_user_id ) {
-				self::$_is_admin_user[ $default_user_id ] = $res;
-			}
+		} else {
+			$is_admin = self::$_is_admin_user[ $user_id ];
 		}
 
-		return self::$_is_admin_user[ $user_id ];
+		return $is_admin;
 	}
 
 	/**
 	 * Verify is user is Admin user and simulation mode is deactivated.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int|false $user_id Optional. The user ID. Default to current user.
@@ -656,7 +682,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Verify is user is Admin user and simulation mode is active.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int|false $user_id Optional. The user ID. Default to current user.
@@ -679,7 +705,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Verify is user is not Admin user and simulation mode is deactivated.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int|false $user_id Optional. The user ID. Default to current user.
@@ -702,7 +728,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get email addresses of all admin users.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @return string[] The admin emails.
@@ -733,7 +759,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get username from user_id.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $user_id The user ID to get username.
@@ -765,7 +791,7 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * @todo Change this to use WP-Cron instead of own implementation...
 	 *
-	 * @since  1.0.4.4
+	 * @since  1.0.0
 	 * @internal
 	 */
 	static public function clean_db() {
@@ -817,14 +843,20 @@ class MS_Model_Member extends MS_Model {
 	 * Returns a list of variables that should be included in serialization,
 	 * i.e. these values are the only ones that are stored in DB
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 * @return array
 	 */
 	public function __sleep() {
 		return array(
+			'id',
+			'username',
+			'email',
+			'name',
+			'first_name',
+			'last_name',
+			'subscriptions',
 			'is_member',
-			'active',
 			'gateway_profiles',
 			'custom_data',
 		);
@@ -835,7 +867,7 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * We ensure that the custom_data field is an array.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function prepare_obj() {
 		parent::prepare_obj();
@@ -853,7 +885,7 @@ class MS_Model_Member extends MS_Model {
 	 * Set cache for further use in MS_Factory::load.
 	 * The usermeta are prefixed with 'ms_'.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return MS_Model_Member The saved member object.
@@ -872,7 +904,6 @@ class MS_Model_Member extends MS_Model {
 			$wp_user->user_nicename = $this->username;
 			$wp_user->first_name = $this->first_name;
 			$wp_user->last_name = $this->last_name;
-			$wp_user->display_name = $this->username;
 
 			if ( ! empty( $this->password )
 				&& $this->password == $this->password2
@@ -897,7 +928,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Create new WP user.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 * @throws Exception
 	 */
@@ -917,8 +948,20 @@ class MS_Model_Member extends MS_Model {
 			'password2'  => __( 'Password confirmation', MS_TEXT_DOMAIN ),
 		);
 
+		/**
+		 * Filter the required field list to customize the fields that are
+		 * mandatory.
+		 *
+		 * @since 1.0.1.0
+		 * @var   array
+		 */
+		$required = apply_filters(
+			'ms_model_member_create_user_required_fields',
+			$required
+		);
+
 		foreach ( $required as $field => $message ) {
-			if ( empty( $this->$field ) ) {
+			if ( empty( $this->$field ) && empty( $_POST[$field] ) ) {
 				$validation_errors->add(
 					$field,
 					sprintf(
@@ -964,6 +1007,41 @@ class MS_Model_Member extends MS_Model {
 			);
 		}
 
+		// Check the multisite Email-Domain limitation for new registrations.
+		if ( is_multisite() ) {
+			$illegal_names = get_site_option( 'illegal_names' );
+			$limited_domains = get_site_option( 'limited_email_domains' );
+			$banned_domains = get_site_option( 'banned_email_domains' );
+			$email_domain = substr( strrchr( $this->email, '@' ), 1 );
+
+			if ( $illegal_names && is_array( $illegal_names ) ) {
+				if ( in_array( $this->username, $illegal_names ) ) {
+					$validation_errors->add(
+						'illegalname',
+						__( 'The username is not valid, sorry.', MS_TEXT_DOMAIN )
+					);
+				}
+			}
+
+			if ( $limited_domains && is_array( $limited_domains ) ) {
+				if ( ! in_array( $email_domain, $limited_domains ) ) {
+					$validation_errors->add(
+						'emaildomain',
+						__( 'That email domain is not allowed for registration, sorry.', MS_TEXT_DOMAIN )
+					);
+				}
+			}
+
+			if ( $banned_domains && is_array( $banned_domains ) ) {
+				if ( in_array( $email_domain, $banned_domains ) ) {
+					$validation_errors->add(
+						'emaildomain',
+						__( 'That email domain is not allowed for registration, sorry.', MS_TEXT_DOMAIN )
+					);
+				}
+			}
+		}
+
 		$validation_errors = apply_filters(
 			'ms_model_membership_create_new_user_validation_errors',
 			$validation_errors
@@ -972,23 +1050,38 @@ class MS_Model_Member extends MS_Model {
 		// Compatibility with WangGuard
 		$_POST['user_email'] = $this->email;
 
-		$result = apply_filters(
-			'wpmu_validate_user_signup',
-			array(
-				'user_name' => $this->username,
-				'orig_username' => $this->username,
-				'user_email' => $this->email,
-				'errors' => $validation_errors,
-			)
+		$user_data = array(
+			'user_name' => $this->username,
+			'orig_username' => $this->username,
+			'user_email' => $this->email,
+			'errors' => $validation_errors,
 		);
 
-		$validation_errors = $result['errors'];
+		$user_data = apply_filters(
+			'wpmu_validate_user_signup',
+			$user_data
+		);
+
+		if ( is_wp_error( $user_data ) ) {
+			/*
+			 * Some plugins incorrectly return a WP_Error object as result of
+			 * the wpmu_validate_user_signup filter.
+			 */
+			$validation_errors = $user_data;
+		} else {
+			$validation_errors = $user_data['errors'];
+		}
+
 		$errors = $validation_errors->get_error_messages();
 
 		if ( ! empty( $errors ) ) {
 			throw new Exception( implode( '<br/>', $errors ) );
 		} else {
-			$user_id = wp_create_user( $this->username, $this->password, $this->email );
+			$user_id = wp_create_user(
+				$this->username,
+				$this->password,
+				$this->email
+			);
 
 			if ( is_wp_error( $user_id ) ) {
 				$validation_errors->add(
@@ -1003,6 +1096,7 @@ class MS_Model_Member extends MS_Model {
 					)
 				);
 			}
+
 			$this->id = $user_id;
 		}
 
@@ -1012,11 +1106,19 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Marks the current user as "confirmed"
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 */
 	public function confirm() {
 		global $wpdb;
+
+		$auto_confirm = apply_filters(
+			'ms_model_member_auto_confirm',
+			true,
+			$this
+		);
+
+		if ( ! $auto_confirm ) { return; }
 
 		$sql = "UPDATE $wpdb->users SET user_status = 0 WHERE ID = %d";
 		$sql = $wpdb->prepare( $sql, $this->id );
@@ -1026,7 +1128,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Sign on user.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 */
 	public function signon_user() {
@@ -1060,7 +1162,7 @@ class MS_Model_Member extends MS_Model {
 	 * Note: Remember to prefix the $key with a unique string to prevent
 	 * conflicts with other plugins that also use this function.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -1073,7 +1175,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Removes a custom data field from this object.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -1085,7 +1187,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Returns the value of a custom data field.
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param  string $key The field-key.
@@ -1103,7 +1205,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Returns a list of all membership IDs of the current user.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return array
@@ -1125,12 +1227,12 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * Only add a membership if a user is not already a member.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $membership_id The membership id to add to.
 	 * @param string $gateway_id Optional. The gateway used to add the membership.
-	 * @param int $move_from_id Optional. The membership id to move from if any.
+	 * @param int|string $move_from_id Optional. The membership id(s) to cancel.
 	 *
 	 * @return object|null $subscription
 	 */
@@ -1138,7 +1240,7 @@ class MS_Model_Member extends MS_Model {
 		$subscription = null;
 
 		if ( MS_Model_Membership::is_valid_membership( $membership_id ) ) {
-			if ( ! array_key_exists( $membership_id, $this->subscriptions ) ) {
+			if ( ! $this->get_subscription( $membership_id ) ) {
 				$subscription = MS_Model_Relationship::create_ms_relationship(
 					$membership_id,
 					$this->id,
@@ -1151,10 +1253,26 @@ class MS_Model_Member extends MS_Model {
 				}
 
 				if ( MS_Model_Relationship::STATUS_PENDING !== $subscription->status ) {
-					$this->subscriptions[ $membership_id ] = $subscription;
+					$this->subscriptions[] = $subscription;
+
+					usort(
+						$this->subscriptions,
+						array( 'MS_Model_Relationship', 'sort_by_priority' )
+					);
 				}
 			} else {
-				$subscription = $this->subscriptions[ $membership_id ];
+				$subscription = $this->get_subscription( $membership_id );
+			}
+
+			// Reset the status and start/expire dates when added by admin.
+			if ( 'admin' == $gateway_id ) {
+				$subscription->start_date = null; // Will calculate correct date.
+				$subscription->trial_expire_date = null;
+				$subscription->expire_date = null;
+				$subscription->status = MS_Model_Relationship::STATUS_ACTIVE;
+				$subscription->save();
+
+				$this->is_member = true;
 			}
 		}
 
@@ -1173,22 +1291,32 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * Only update the status to deactivated.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $membership_id The membership id to drop.
 	 */
 	public function drop_membership( $membership_id ) {
-		if ( array_key_exists( $membership_id,  $this->subscriptions ) ) {
+		$subscription = $this->get_subscription( $membership_id, $key );
+		if ( $subscription ) {
 			do_action(
 				'ms_model_membership_drop_membership',
-				$this->subscriptions[ $membership_id ],
+				$subscription,
 				$this
 			);
 
-			$this->subscriptions[ $membership_id ]->deactivate_membership();
-			unset( $this->subscriptions[ $membership_id ] );
+			$subscription->deactivate_membership();
+			unset( $this->subscriptions[$key] );
 		}
+
+		$is_member = false;
+		foreach ( $this->subscriptions as $subscription ) {
+			if ( ! $subscription->is_system() ) {
+				$is_member = true;
+				break;
+			}
+		}
+		$this->is_member = $is_member;
 
 		do_action(
 			'ms_model_membership_drop_membership',
@@ -1202,30 +1330,31 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * The membership remains valid until expiration date.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $membership_id The membership id to drop.
 	 */
 	public function cancel_membership( $membership_id ) {
-		if ( array_key_exists( $membership_id, $this->subscriptions ) ) {
+		$subscription = $this->get_subscription( $membership_id );
+		if ( $subscription ) {
 			do_action(
 				'ms_model_membership_cancel_membership',
-				$this->subscriptions[ $membership_id ],
+				$subscription,
 				$this
 			);
 
-			$this->subscriptions[ $membership_id ]->cancel_membership();
+			$subscription->cancel_membership();
 		} else {
 			// The membership might be on status "PENDING" which is not included
 			// in $this->subscriptions.
-			$relationship = MS_Model_Relationship::get_subscription(
+			$subscription = MS_Model_Relationship::get_subscription(
 				$this->id,
 				$membership_id
 			);
 
-			if ( $relationship->user_id == $this->id ) {
-				$relationship->cancel_membership();
+			if ( $subscription->user_id == $this->id ) {
+				$subscription->cancel_membership();
 			}
 		}
 
@@ -1239,28 +1368,28 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Move a membership.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $old_membership_id The membership id to move from.
 	 * @param int $mew_membership_id The membership id to move to.
 	 */
 	public function move_membership( $old_membership_id, $mew_membership_id ) {
-		if ( array_key_exists( $old_membership_id,  $this->subscriptions ) ) {
-			$move_from = $this->subscriptions[ $old_membership_id ];
-			$ms_relationship = MS_Model_Relationship::create_ms_relationship(
+		$old_subscription = $this->get_subscription( $old_membership_id );
+		if ( $old_subscription ) {
+			$new_subscription = MS_Model_Relationship::create_ms_relationship(
 				$mew_membership_id,
 				$this->id,
-				$move_from->gateway_id,
+				$old_subscription->gateway_id,
 				$old_membership_id
 			);
 
 			$this->cancel_membership( $old_membership_id );
-			$this->subscriptions[ $mew_membership_id ] = $ms_relationship;
+			$this->subscriptions[] = $new_subscription;
 
 			MS_Model_Event::save_event(
 				MS_Model_Event::TYPE_MS_MOVED,
-				$this->subscriptions[ $mew_membership_id ]
+				$new_subscription
 			);
 		}
 
@@ -1277,7 +1406,7 @@ class MS_Model_Member extends MS_Model {
 	 *
 	 * Canceled status is allowed until it expires.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param int $membership_id Optional. The specific membership to verify.
@@ -1302,17 +1431,18 @@ class MS_Model_Member extends MS_Model {
 		}
 
 		if ( ! empty( $membership_id ) ) {
+			$subscription = $this->get_subscription( $membership_id );
 			// Membership-ID specified: Check if user has this membership
-			if ( array_key_exists( $membership_id, $this->subscriptions )
-				&& in_array( $this->subscriptions[ $membership_id ]->get_status(), $allowed_status )
+			if ( $subscription
+				&& in_array( $subscription->get_status(), $allowed_status )
 			) {
 				$has_membership = true;
 			}
 		} elseif ( ! empty ( $this->subscriptions ) ) {
 			// No membership-ID: Check if user has *any* membership
-			foreach ( $this->subscriptions as $membership_relationship ) {
-				if ( $membership_relationship->is_system() ) { continue; }
-				if ( in_array( $membership_relationship->get_status(), $allowed_status ) ) {
+			foreach ( $this->subscriptions as $subscription ) {
+				if ( $subscription->is_system() ) { continue; }
+				if ( in_array( $subscription->get_status(), $allowed_status ) ) {
 					$has_membership = true;
 					break;
 				}
@@ -1330,19 +1460,37 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Return the subscription object for the specified membership.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
-	 * @param int $membership_id The specific membership to return.
+	 * @param  int|string $membership_id The specific membership to return.
+	 *         Value 'priority' will return the subcription with lowest priority.
 	 * @return MS_Model_Relationship The subscription object.
 	 */
-	public function get_subscription( $membership_id ) {
+	public function get_subscription( $membership_id, &$key = -1 ) {
 		$subscription = null;
+		$key = -1;
 
-		if ( ! empty( $membership_id ) ) {
+		if ( 'priority' == $membership_id ) {
+			// Find subscription with the lowest priority.
+			$cur_priority = -1;
+			foreach ( $this->subscriptions as $ind => $item ) {
+				$membership = $item->get_membership();
+				if ( ! $membership->active ) { continue; }
+				if ( $cur_priority < 0 || $membership->priority < $cur_priority ) {
+					$subscription = $item;
+					$cur_priority = $membership->priority;
+					$key = $ind;
+				}
+			}
+		} elseif ( ! empty( $membership_id ) ) {
 			// Membership-ID specified: Check if user has this membership
-			if ( array_key_exists( $membership_id,  $this->subscriptions ) ) {
-				$subscription = $this->subscriptions[$membership_id];
+			foreach ( $this->subscriptions as $ind => $item ) {
+				if ( $item->membership_id == $membership_id ) {
+					$subscription = $item;
+					$key = $ind;
+					break;
+				}
 			}
 		}
 
@@ -1355,11 +1503,131 @@ class MS_Model_Member extends MS_Model {
 	}
 
 	/**
+	 * Returns a list of memberships for all active subscriptions of the member.
+	 *
+	 * @since  1.0.1.0
+	 * @return array
+	 */
+	protected function get_active_memberships() {
+		$active_memberships = array();
+
+		$active_status = array(
+			MS_Model_Relationship::STATUS_ACTIVE,
+			MS_Model_Relationship::STATUS_TRIAL,
+			MS_Model_Relationship::STATUS_CANCELED,
+		);
+
+		foreach ( $this->subscriptions as $sub ) {
+			if ( $sub->is_base() ) { continue; }
+			if ( ! in_array( $sub->status, $active_status ) ) { continue; }
+
+			$membership = $sub->get_membership();
+			$active_memberships[$membership->id] = $membership;
+		}
+
+		return $active_memberships;
+	}
+
+	/**
+	 * Checks if the current user is allowed to subscribe to the specified
+	 * membership.
+	 *
+	 * @since  1.0.1.0
+	 * @api
+	 * @param  int $membership_id A membership_id.
+	 * @return bool Whether subscription is allowed or not.
+	 */
+	public function can_subscribe_to( $membership_id ) {
+		static $Access_Flags = null;
+
+		if ( null === $Access_Flags ) {
+			$Access_Flags = array();
+			$active_memberships = $this->get_active_memberships();
+			$all_memberships = MS_Model_Membership::get_memberships();
+
+			/**
+			 * Controls how to handle conflicts in upgrade path settings when a
+			 * member has multiple memberships.
+			 *
+			 * Default is true:
+			 *     If one membership forbids the upgrade, then that's it.
+			 *
+			 * Custom set to false:
+			 *     If one membership allows the upgrade, then allow it.
+			 *
+			 * @since 1.0.1.0
+			 * @var   bool
+			 */
+			$prefer_forbidden = apply_filters(
+				'ms_model_member_can_subscribe_to_prefer_forbidden',
+				true
+			);
+
+			foreach ( $active_memberships as $membership ) {
+				$base_id = $membership->id;
+				if ( $membership->is_guest() || $membership->is_user() ) {
+					$base_id = 'guest';
+				}
+
+				foreach ( $all_memberships as $ms ) {
+					if ( isset( $active_memberships[$ms->id] ) ) { continue; }
+
+					$is_allowed = $ms->update_allowed( $base_id );
+
+					if ( ! isset( $Access_Flags[$ms->id] ) ) {
+						$Access_Flags[$ms->id] = $is_allowed;
+					} else {
+						if ( $prefer_forbidden && ! $is_allowed ) {
+							$Access_Flags[$ms->id] = $is_allowed;
+						} elseif ( ! $prefer_forbidden && $is_allowed ) {
+							$Access_Flags[$ms->id] = $is_allowed;
+						}
+					}
+				}
+			}
+		}
+
+		$result = true;
+		if ( isset( $Access_Flags[$membership_id] ) ) {
+			$result = $Access_Flags[$membership_id];
+		}
+
+		return apply_filters(
+			'ms_model_member_can_subscribe_to',
+			$result,
+			$membership_id
+		);
+	}
+
+	/**
+	 * Returns an array of existing subscriptions that should be cancelled when
+	 * the user signs up to the specified membership.
+	 *
+	 * @since  1.0.1.0
+	 * @param  int $membership_id A membership ID.
+	 * @return array Might be an empty array or a list of membership IDs.
+	 */
+	public function cancel_ids_on_subscription( $membership_id ) {
+		$result = array();
+
+		$membership = MS_Factory::load( 'MS_Model_Membership', $membership_id );
+		$active_memberships = $this->get_active_memberships();
+
+		foreach ( $active_memberships as $ms ) {
+			if ( $membership->update_replaces( $ms->id ) ) {
+				$result[] = $ms->id;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Delete member usermeta.
 	 *
 	 * Delete all plugin related usermeta.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 */
 	public function delete_all_membership_usermeta() {
@@ -1376,7 +1644,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Returns the WP_User object that is linked to the current member
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return WP_User
@@ -1386,9 +1654,33 @@ class MS_Model_Member extends MS_Model {
 	}
 
 	/**
+	 * Returns a value from the user-meta table.
+	 *
+	 * @since  1.0.1.0
+	 * @api
+	 * @param  string $key The meta-key.
+	 * @return mixed The meta-value.
+	 */
+	public function get_meta( $key ) {
+		return get_user_meta( $this->id, $key, true );
+	}
+
+	/**
+	 * Updates a value in the user-meta table.
+	 *
+	 * @since 1.0.1.0
+	 * @api
+	 * @param string $key The meta-key.
+	 * @param mixed $value The new meta-value.
+	 */
+	public function set_meta( $key, $value ) {
+		update_user_meta( $this->id, $key, $value );
+	}
+
+	/**
 	 * Verify if current object is valid.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @return boolean True if is valid.
@@ -1402,7 +1694,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get gateway profile.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param string $gateway The gateway ID.
@@ -1433,7 +1725,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Set gateway profile.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @api
 	 *
 	 * @param string $gateway The gateway ID.
@@ -1455,7 +1747,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Validate member info.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @return boolean True if validated.
@@ -1493,7 +1785,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Get specific property.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @param string $name The name of a property to associate.
@@ -1524,7 +1816,7 @@ class MS_Model_Member extends MS_Model {
 	/**
 	 * Set specific property.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @internal
 	 *
 	 * @param string $name The name of a property to associate.

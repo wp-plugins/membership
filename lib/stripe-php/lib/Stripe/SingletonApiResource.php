@@ -1,9 +1,12 @@
 <?php
 
-abstract class Stripe_SingletonApiResource extends Stripe_ApiResource
+abstract class M2_Stripe_SingletonApiResource extends M2_Stripe_ApiResource
 {
   protected static function _scopedSingletonRetrieve($class, $apiKey=null)
   {
+    if ( false === stripos( $class, 'M2_' ) ) {
+      $class = 'M2_' . $class;
+    }
     $instance = new $class(null, $apiKey);
     $instance->refresh();
     return $instance;

@@ -11,15 +11,14 @@
  * If you would still like to make use of the class, you should make a copy to use and distribute
  * with your own project, or else use it at your own risk.
  *
- * @since 1.0.0
- *
+ * @since  1.0.0
  */
 class MS_Helper_ListTable {
 
 	/**
 	 * The default number of items per list page.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @var   int
 	 */
 	const DEFAULT_PAGE_SIZE = 20;
@@ -27,7 +26,7 @@ class MS_Helper_ListTable {
 	/**
 	 * The list table id
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array
 	 * @access protected
 	 */
@@ -36,7 +35,7 @@ class MS_Helper_ListTable {
 	/**
 	 * The current list of items
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array
 	 * @access protected
 	 */
@@ -45,7 +44,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Various information about the current table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array
 	 * @access private
 	 */
@@ -54,7 +53,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Various information needed for displaying the pagination
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array
 	 * @access private
 	 */
@@ -63,7 +62,7 @@ class MS_Helper_ListTable {
 	/**
 	 * The current screen
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var object
 	 * @access protected
 	 */
@@ -72,7 +71,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Cached bulk actions
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var array
 	 * @access private
 	 */
@@ -81,7 +80,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Cached pagination output
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @var string
 	 * @access private
 	 */
@@ -135,7 +134,7 @@ class MS_Helper_ListTable {
 	 * Checks the current user's permissions
 	 * @uses wp_die()
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 * @abstract
 	 */
@@ -147,7 +146,7 @@ class MS_Helper_ListTable {
 	 * Prepares the list of items for displaying.
 	 * @uses WP_ListTable::set_pagination_args()
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 * @abstract
 	 */
@@ -196,7 +195,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Access the pagination args
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @param string $key
@@ -215,7 +214,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Whether the table has items to display or not
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @return bool
@@ -227,7 +226,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Message to be displayed when there are no items
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 */
 	public function no_items() {
@@ -241,7 +240,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display the search box.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @param string $text The search button text
@@ -269,6 +268,14 @@ class MS_Helper_ListTable {
 				'post_mime_type',
 				'detached',
 			);
+			$search_fields = array_merge(
+				array(
+					'action',
+					'search_options',
+					's',
+				),
+				$fields
+			);
 
 			if ( $this->is_search() ) {
 				?>
@@ -284,7 +291,9 @@ class MS_Helper_ListTable {
 					);
 					printf(
 						' <a href="%1$s" title="%3$s" class="ms-clear-search">%2$s</a>',
-						lib2()->net->current_url(),
+						esc_url_raw(
+							remove_query_arg( $search_fields )
+						),
 						'<span class="dashicons dashicons-dismiss"></span>',
 						__( 'Clear search results', MS_TEXT_DOMAIN )
 					);
@@ -293,8 +302,18 @@ class MS_Helper_ListTable {
 				<?php
 			}
 			?>
-			<form class="search-box" action="" method="post">
+			<form class="search-box" action="" method="get">
 				<?php
+				// Keep current URL params during the search
+				foreach ( $_GET as $name => $value ) {
+					if ( '' == $value ) { continue; }
+					printf(
+						'<input type="hidden" name="%1$s" value="%2$s">',
+						esc_attr( $name ),
+						esc_attr( $value )
+					);
+				}
+				// Add the search fields to the form.
 				foreach ( $fields as $field ) {
 					if ( ! empty( $_REQUEST[$field] ) ) {
 						$value = $_REQUEST[$field];
@@ -330,7 +349,7 @@ class MS_Helper_ListTable {
 	 * Get an associative array ( id => link ) with the list
 	 * of views available on this table.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return array
@@ -342,7 +361,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Displays text or additional filters above the list-table
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	protected function list_head() {
 		// Child classes can overwrite this to output a description or filters...
@@ -351,7 +370,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display the list of views available on this table.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 */
 	public function views() {
@@ -369,7 +388,7 @@ class MS_Helper_ListTable {
 		 * The dynamic portion of the hook name, $this->screen->id, refers
 		 * to the ID of the current screen, usually a string.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 *
 		 * @param array $views An array of available list table views.
 		 */
@@ -388,7 +407,7 @@ class MS_Helper_ListTable {
 	 * Outputs a list of filter-links. This is used to display the views above
 	 * the list but can also be used in other parts of the table.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $links {
 	 *     The list of links to display
 	 *
@@ -447,7 +466,7 @@ class MS_Helper_ListTable {
 	 * Get an associative array ( option_name => option_title ) with the list
 	 * of bulk actions available on this table.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return array
@@ -459,7 +478,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display the bulk actions dropdown.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @param  bool $echo Output or return the HTML code? Default is output.
@@ -479,7 +498,7 @@ class MS_Helper_ListTable {
 			 *
 			 * This filter can currently only be used to remove bulk actions.
 			 *
-			 * @since 1.0.0
+			 * @since  1.0.0
 			 *
 			 * @param array $actions An array of the available bulk actions.
 			 */
@@ -502,7 +521,7 @@ class MS_Helper_ListTable {
 		 * Note that this action is only triggered when bulk actions are
 		 * actually displayed.
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 */
 		do_action( 'ms_listtable_before_bulk_actions', $this );
 
@@ -546,7 +565,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Get the current action selected from the bulk actions dropdown.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @return string|bool The action name or False if no action was selected
@@ -566,7 +585,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generate row actions div
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param array $actions The list of actions
@@ -595,7 +614,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display a monthly dropdown for filtering items
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 */
 	protected function months_dropdown( $post_type ) {
@@ -616,7 +635,7 @@ class MS_Helper_ListTable {
 		/**
 		 * Filter the 'Months' drop-down results.
 		 *
-		 * @since 3.7.0
+		 * @since  1.0.0
 		 *
 		 * @param object $months    The months drop-down query results.
 		 * @param string $post_type The post type.
@@ -658,7 +677,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display a view switcher
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 */
 	protected function view_switcher( $current_mode ) {
@@ -683,7 +702,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display a comment count bubble
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param int $post_id
@@ -711,7 +730,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Get the current page number
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return int
@@ -732,7 +751,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Get number of items to display on a single page
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return int
@@ -756,7 +775,7 @@ class MS_Helper_ListTable {
 		 * 'edit_comments_per_page', 'sites_network_per_page', 'site_themes_network_per_page',
 		 * 'themes_netework_per_page', 'users_network_per_page', 'edit_{$post_type}', etc.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 *
 		 * @param int $per_page Number of items to be displayed. Default 20.
 		 */
@@ -782,7 +801,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Checks if the current list displays search results.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 *
 	 * @return bool
 	 */
@@ -795,7 +814,7 @@ class MS_Helper_ListTable {
 	 *
 	 * Override this in the specific class!
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function is_view() {
@@ -805,7 +824,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Returns the current search-string for display.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @return string
 	 */
 	public function display_search() {
@@ -824,7 +843,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display the pagination.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param  string $which Either 'top' or 'bottom'
@@ -956,7 +975,7 @@ class MS_Helper_ListTable {
 	 * Get a list of columns. The format is:
 	 * 'internal-name' => 'Title'
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 * @abstract
 	 *
@@ -974,7 +993,7 @@ class MS_Helper_ListTable {
 	 *
 	 * The second format will make the initial sorting order be descending
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return array
@@ -986,7 +1005,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Get a list of all, hidden and sortable columns, with filter applied
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return array
@@ -1006,7 +1025,7 @@ class MS_Helper_ListTable {
 		 * The dynamic portion of the hook name, $this->screen->id, refers
 		 * to the ID of the current screen, usually a string.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 *
 		 * @param array $sortable_columns An array of sortable columns.
 		 */
@@ -1034,7 +1053,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Return number of visible columns
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @return int
@@ -1048,7 +1067,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Print column headers, accounting for hidden and sortable columns.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param bool $with_id Whether to set the id attribute or not
@@ -1129,10 +1148,11 @@ class MS_Helper_ListTable {
 			}
 
 			printf(
-				'<th scope="col" id="%2$s" class="%3$s" $style>%1$s</th>',
+				'<th scope="col" id="%2$s" class="%3$s" %4$s>%1$s</th>',
 				$column_display_name,
 				esc_attr( $id ),
-				esc_attr( $class )
+				esc_attr( $class ),
+				$style
 			);
 		}
 	}
@@ -1140,7 +1160,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Display the table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 */
 	public function display() {
@@ -1178,7 +1198,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Get a list of CSS classes for the <table> tag
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @return array
@@ -1190,7 +1210,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 */
 	protected function display_tablenav( $which ) {
@@ -1225,7 +1245,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Extra controls to be displayed between bulk actions and pagination
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param  string $which Either 'top' or 'bottom'
@@ -1236,7 +1256,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generate the <tbody> part of the table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 */
 	protected function display_rows_or_placeholder() {
@@ -1268,7 +1288,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generate the table rows
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param array $items Optional. An array of items to display. This is used
 	 *           to generate HTML code of a single row only -> in Ajax response.
@@ -1284,7 +1304,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generates content for a single row of the table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param object $item The current item.
@@ -1313,7 +1333,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Returns the row-class to be used for the specified table item.
 	 *
-	 * @since  1.0.4.4
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param  object $item The current item.
@@ -1326,7 +1346,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Generates the columns for a single row of the table
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access protected
 	 *
 	 * @param object $item The current item
@@ -1381,7 +1401,7 @@ class MS_Helper_ListTable {
 	/**
 	 * Handle an incoming ajax request (called from admin-ajax.php)
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access public
 	 */
 	public function ajax_response() {
@@ -1418,7 +1438,7 @@ class MS_Helper_ListTable {
 	 *
 	 * To customize the inline form overwrite this function in a child class.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @access protected
 	 */
 	protected function inline_edit() {

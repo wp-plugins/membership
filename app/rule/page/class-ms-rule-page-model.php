@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership Page Rule class.
  *
  * Persisted by Membership class.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Model
@@ -35,7 +14,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Rule type.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string $rule_type
 	 */
@@ -44,7 +23,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Initialize the rule.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 * @param int $membership_id
 	 */
 	public function __construct( $membership_id ) {
@@ -60,7 +39,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Set initial protection (front-end only)
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function protect_content() {
 		parent::protect_content();
@@ -71,7 +50,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Filters protected pages.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * Related action hook:
 	 * - get_pages
@@ -106,7 +85,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Get the current page id.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return int The page id, or null if it is not a page.
 	 */
@@ -128,7 +107,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Verify access to the current page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param int $id The page_id to verify access.
 	 * @return bool|null True if has access, false otherwise.
@@ -167,7 +146,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Verify if has dripped rules.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $id The content id to verify.
 	 * @return boolean True if has dripped rules.
@@ -183,7 +162,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Get the total content count.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Function_Reference/get_pages
@@ -206,7 +185,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Get content to protect.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @param $args The query post args
 	 *     @see @link http://codex.wordpress.org/Function_Reference/get_pages
 	 * @return array The contents array.
@@ -221,12 +200,13 @@ class MS_Rule_Page_Model extends MS_Rule {
 		$offset = absint( $args['offset'] );
 		$limit = $offset + absint( $args['number'] );
 		$args['offset'] = 0;
-		$args['number'] = $limit;
+		$args['number'] = 0;
 
 		$args = $this->get_query_args( $args );
 
 		$pages = get_pages( $args );
 		$contents = array();
+		if ( 0 == $limit ) { $limit = count( $pages ); }
 
 		for ( $num = $offset; $num < $limit; $num += 1 ) {
 			if ( ! isset( $pages[$num] ) ) { continue; }
@@ -235,7 +215,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 			$name = $content->post_title;
 
 			$parent = get_post( $content->post_parent );
-			while ( ! empty( $parent ) ) {
+			for ( $level = 0; $level < 5 && $parent; $level += 1 ) {
 				$name = '&mdash; ' . $name;
 				$parent = get_post( $parent->post_parent );
 			}
@@ -258,7 +238,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	/**
 	 * Get the default query args.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $args The query post args.
 	 *     @see @link http://codex.wordpress.org/Function_Reference/get_pages
@@ -272,7 +252,7 @@ class MS_Rule_Page_Model extends MS_Rule {
 	 * Exclude the special Membership2 pages from the results as they
 	 * cannot be protected.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  array $excluded
 	 * @param  array $args
 	 * @return array

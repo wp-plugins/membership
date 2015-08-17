@@ -1,31 +1,40 @@
 <?php
 
-class MS_Addon_Mailchimp_View_Settings extends MS_View {
+class MS_Addon_Mailchimp_View extends MS_View {
 
+	/**
+	 * Returns the HTML code of the Settings form.
+	 *
+	 * @since  1.0.0
+	 * @return string
+	 */
 	public function render_tab() {
 		$fields = $this->prepare_fields();
 		ob_start();
 		?>
-		<div class="ms-wrap">
-			<div class="ms-settings">
-				<?php
-				MS_Helper_Html::settings_tab_header(
-					array( 'title' => __( 'MailChimp Settings', MS_TEXT_DOMAIN ) )
-				);
-				?>
+		<div class="ms-addon-wrap">
+			<?php
+			MS_Helper_Html::settings_tab_header(
+				array( 'title' => __( 'MailChimp Settings', MS_TEXT_DOMAIN ) )
+			);
 
-				<form action="" method="post">
-					<?php MS_Helper_Html::settings_box( $fields ); ?>
-				</form>
-				<?php MS_Helper_Html::settings_footer(); ?>
-			</div>
+			foreach ( $fields as $field ) {
+				MS_Helper_Html::html_element( $field );
+			}
+			?>
 		</div>
 		<?php
 		$html = ob_get_clean();
-		echo '' . $html;
+		echo $html;
 	}
 
-	public function prepare_fields() {
+	/**
+	 * Prepare fields that are displayed in the form.
+	 *
+	 * @since  1.0.1.0
+	 * @return array
+	 */
+	protected function prepare_fields() {
 		$api_status = MS_Addon_Mailchimp::get_api_status();
 		$settings = $this->data['settings'];
 

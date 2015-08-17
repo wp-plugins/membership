@@ -479,6 +479,7 @@
 .wpmui-grid-12 [class*='col-'] {
   float: left;
   padding-right: 20px;
+  position: relative;
 }
 
 .wpmui-grid-8 [class*='col-']:last-of-type,

@@ -1,29 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Main class for protection.
  *
- * @since 1.0.0
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Model
  */
@@ -32,7 +11,7 @@ class MS_Model_Plugin extends MS_Model {
 	/**
 	 * Current Member object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string $member
 	 */
@@ -44,7 +23,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * rule is loaded long after the menu is rendered and therefore does not
 	 * have access to the full list of menu items.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 *
 	 * @var array
 	 */
@@ -53,21 +32,13 @@ class MS_Model_Plugin extends MS_Model {
 	/**
 	 * Prepare object.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		do_action( 'ms_model_plugin_constructor', $this );
 
 		// Upgrade membership database if needs to.
 		MS_Model_Upgrade::init();
-
-		if ( ! MS_Plugin::is_enabled() ) { return; }
-
-		$this->add_filter( 'cron_schedules', 'cron_time_period' );
-		$this->add_filter( 'ms_run_cron_services', 'run_cron_services' );
-
-		$this->add_action( 'template_redirect', 'protect_current_page', 1 );
-		$this->add_action( 'ms_cron_check_membership_status', 'check_membership_status' );
 
 		/*
 		 * Create our own copy of the full admin menu to be used in the
@@ -84,8 +55,8 @@ class MS_Model_Plugin extends MS_Model {
 		$this->add_action( 'admin_menu', 'store_admin_menu', 99999 );
 
 		// Register all Add-ons and load rules BEFORE the user is initialized.
-		$this->add_action( 'ms_load_member', 'load_addons' );
-		$this->add_action( 'ms_load_member', 'load_rules' );
+		$this->add_action( 'ms_load_member', 'load_addons', 1 );
+		$this->add_action( 'ms_load_member', 'load_rules', 1 );
 
 		// Setup the page protection AFTER the user was initialized.
 		$this->add_action( 'ms_init_done', 'setup_rules', 1 );
@@ -105,11 +76,26 @@ class MS_Model_Plugin extends MS_Model {
 
 		// Initialize the current member
 		$this->run_action( 'init', 'init_member', 1 );
+
+		/*
+		 * ******************************************************************* *
+		 *   Hooks below are only set up when Content Protection is enabled
+		 * ******************************************************************* *
+		 */
+
+		if ( ! MS_Plugin::is_enabled() ) { return; }
+
+		// Setup the CRON hooks.
 		$this->run_action( 'init', 'setup_cron_services', 1 );
+		$this->add_filter( 'cron_schedules', 'cron_time_period' );
+		$this->add_filter( 'ms_run_cron_services', 'run_cron_services' );
+		$this->add_action( 'ms_cron_check_membership_status', 'check_membership_status' );
+
+		$this->add_action( 'template_redirect', 'protect_current_page', 1 );
 
 		// Init gateways and communications to register actions/filters
 		$this->run_action( 'init', array( 'MS_Model_Gateway', 'get_gateways' ), 2 );
-		$this->run_action( 'init', array( 'MS_Model_Communication', 'load_communications' ), 2 );
+		$this->run_action( 'init', array( 'MS_Model_Communication', 'init' ), 2 );
 	}
 
 	/**
@@ -120,37 +106,36 @@ class MS_Model_Plugin extends MS_Model {
 	 * If user is logged in but has not any memberships, assign a default membership.
 	 * Deactivated users (active == false) get visitor membership assigned.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function init_member() {
 		do_action( 'ms_load_member', $this );
 
 		$this->member = MS_Model_Member::get_current_member();
 
-		// Deactivated status invalidates all memberships
-		if ( ! $this->member->is_member || ! $this->member->active ) {
-			$this->member->subscriptions = array();
-		}
-
-		if ( ! is_user_logged_in() ) {
-			// If a Guest-Membership exists we also assign it to the user.
-			$ms_guest = MS_Model_Membership::get_guest();
-			if ( $ms_guest->is_valid() && $ms_guest->active ) {
-				$this->member->add_membership( $ms_guest->id );
+		if ( MS_Plugin::is_enabled() ) {
+			if ( ! is_user_logged_in() ) {
+				// If a Guest-Membership exists we also assign it to the user.
+				$ms_guest = MS_Model_Membership::get_guest();
+				if ( $ms_guest->is_valid() && $ms_guest->active ) {
+					$this->member->add_membership( $ms_guest->id );
+				}
+			} elseif ( ! $this->member->has_membership() ) {
+				// Apply User-Membership to logged-in users without subscriptions.
+				$ms_user = MS_Model_Membership::get_user();
+				if ( $ms_user->is_valid() && $ms_user->active ) {
+					$this->member->add_membership( $ms_user->id );
+				}
+			} elseif ( ! $this->member->is_member ) {
+				$this->member->subscriptions = array();
 			}
-		} elseif ( ! $this->member->has_membership() ) {
-			// Apply User-Membership to logged-in users without subscriptions.
-			$ms_user = MS_Model_Membership::get_user();
-			if ( $ms_user->is_valid() && $ms_user->active ) {
-				$this->member->add_membership( $ms_user->id );
-			}
-		}
 
-		// No subscription: Assign the base membership, which only denies access.
-		if ( ! $this->member->has_membership() ) {
-			$this->member->add_membership(
-				MS_Model_Membership::get_base()->id
-			);
+			// No subscription: Assign the base membership, which only denies access.
+			if ( ! $this->member->has_membership() ) {
+				$this->member->add_membership(
+					MS_Model_Membership::get_base()->id
+				);
+			}
 		}
 
 		/**
@@ -177,7 +162,7 @@ class MS_Model_Plugin extends MS_Model {
 	/**
 	 * Returns an array with access-information on the current page/user
 	 *
-	 * @since  1.0.2
+	 * @since  1.0.0
 	 *
 	 * @return array {
 	 *     Access information
@@ -342,7 +327,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - template_redirect
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function protect_current_page() {
 		do_action( 'ms_model_plugin_protect_current_page_before', $this );
@@ -366,7 +351,7 @@ class MS_Model_Plugin extends MS_Model {
 			if ( ! MS_Model_Pages::is_membership_page( null, MS_Model_Pages::MS_PAGE_PROTECTED_CONTENT ) ) {
 				$no_access_page_url = esc_url_raw(
 					add_query_arg(
-						array( 'redirect_to' => $current_page_url ),
+						array( 'redirect_to' => urlencode( $current_page_url ) ),
 						$no_access_page_url
 					)
 				);
@@ -390,7 +375,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - ms_load_member
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function load_addons() {
 		do_action( 'ms_load_addons', $this );
@@ -405,7 +390,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - ms_load_member
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function load_rules() {
 		do_action( 'ms_load_rules', $this );
@@ -424,7 +409,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - ms_init_done
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function setup_rules() {
 		// Make sure we stick to the correct workflow.
@@ -453,7 +438,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - ms_init_done
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function setup_protection() {
 		if ( is_admin() ) { return; }
@@ -492,7 +477,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - ms_init_done
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function setup_admin_protection() {
 		if ( ! is_admin() ) { return; }
@@ -532,7 +517,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Related Action Hooks:
 	 * - cron_schedules
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function cron_time_period( $periods ) {
 		if ( ! is_array( $periods ) ) {
@@ -555,10 +540,10 @@ class MS_Model_Plugin extends MS_Model {
 	}
 
 	/**
-	 * Runs a single Membership2 cron service and then re-schedules it.
+	 * Runs a single Membership 2 cron service and then re-schedules it.
 	 * This function is used to manually trigger the cron services.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 */
 	public function run_cron_services( $hook ) {
 		wp_clear_scheduled_hook( $hook );
@@ -579,7 +564,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * The Cron jobs can be manually executed by opening the admin page
 	 * "Membership2 > Settings" and adding URL param "&run_cron=1"
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function setup_cron_services( $reschedule = null ) {
 		do_action( 'ms_model_plugin_setup_cron_services_before', $this );
@@ -604,7 +589,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * Execute actions when time/period condition are met.
 	 * E.g. change membership status, add communication to queue, create invoices.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function check_membership_status() {
 		do_action( 'ms_model_plugin_check_membership_status_before', $this );
@@ -631,7 +616,7 @@ class MS_Model_Plugin extends MS_Model {
 	 * by WordPress or an Plugin. This menu-information is used on the
 	 * Membership2/Accessible Content settings pages
 	 *
-	 * @since  1.1
+	 * @since  1.0.0
 	 * @global array $menu
 	 * @global array $submenu
 	 */
@@ -657,7 +642,7 @@ class MS_Model_Plugin extends MS_Model {
 	/**
 	 * Returns the previously stored admin menu items.
 	 *
-	 * @since  1.1
+	 * @since  1.0.0
 	 *
 	 * @return array
 	 */

@@ -1,13 +1,19 @@
 <?php
-
+/**
+ * The News section is a sub-page of the Overview.
+ *
+ * It displays a full list of events and can be displayed via button
+ * "View More News".
+ *
+ * @since  1.0.0
+ */
 class MS_View_Membership_News extends MS_View {
 
 	/**
-	 * Overrides parent's to_html() method.
+	 * Create view output.
 	 *
-	 * @since 1.0
-	 *
-	 * @return object
+	 * @since  1.0.0
+	 * @return string
 	 */
 	public function to_html() {
 		$list_table = MS_Factory::create( 'MS_Helper_ListTable_Event' );
@@ -20,7 +26,10 @@ class MS_View_Membership_News extends MS_View {
 				$membership->get_name_tag()
 			);
 			$url = esc_url_raw(
-				add_query_arg( array( 'step' => MS_Controller_Membership::STEP_OVERVIEW ) )
+				add_query_arg(
+					array( 'step' => MS_Controller_Membership::STEP_OVERVIEW ),
+					remove_query_arg( array( 'paged', 'order', 'post_mime_type', 'detached', 'orderby', 's' ) )
+				)
 			);
 			$back_link = array(
 				'id' => 'back',
@@ -45,10 +54,10 @@ class MS_View_Membership_News extends MS_View {
 
 			MS_Helper_Html::html_element( $back_link );
 
+			$list_table->search_box();
 			$list_table->views();
 			?>
 			<form action="" method="post">
-				<?php $list_table->search_box(); ?>
 				<?php $list_table->display(); ?>
 			</form>
 		</div>

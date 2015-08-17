@@ -1,35 +1,12 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Renders Membership Plugin Settings.
  *
  * Extends MS_View for rendering methods and magic methods.
  *
  * @uses MS_Helper_Html Helper used to create form elements and vertical navigation.
  *
- * @since 1.0
- *
- * @return object
+ * @since  1.0.0
  */
 class MS_View_Settings_Edit extends MS_View {
 
@@ -44,7 +21,7 @@ class MS_View_Settings_Edit extends MS_View {
 	 * @todo Could use callback functions to call dynamic methods from within the helper, thus
 	 * creating the navigation with a single method call and passing method pointers in the $tabs array.
 	 *
-	 * @since 4.0.0
+	 * @since  1.0.0
 	 *
 	 * @return object
 	 */
@@ -85,7 +62,7 @@ class MS_View_Settings_Edit extends MS_View {
 				<?php
 				$html = call_user_func( $render_callback );
 				$html = apply_filters( 'ms_view_settings_' . $callback_name, $html );
-				echo '' . $html;
+				echo $html;
 				?>
 			</div>
 		</div>
@@ -104,7 +81,7 @@ class MS_View_Settings_Edit extends MS_View {
 	/**
 	 * Display advanced setting forms that can be triggered via an URL param.
 	 *
-	 * @since  1.1.0.5
+	 * @since  1.0.0
 	 *
 	 * @param  array $desc Array of items to display in the settings header.
 	 * @return array New Array of items to display. Might include a HTML form.
@@ -215,7 +192,7 @@ class MS_View_Settings_Edit extends MS_View {
 	 * The footer will show information on the next scheduled cron jobs and also
 	 * allow the user to run these jobs instantly.
 	 *
-	 * @since  1.1.0
+	 * @since  1.0.0
 	 * @param  string $tab_name Name of the currently open settings-tab.
 	 */
 	protected function render_settings_footer( $tab_name ) {
@@ -268,9 +245,19 @@ class MS_View_Settings_Edit extends MS_View {
 		if ( MS_Plugin::get_modifier( 'MS_STOP_EMAILS' ) ) {
 			_e( 'Sending Email Responses is disabled.', MS_TEXT_DOMAIN );
 		} else {
+			$count = MS_Model_Communication::get_queue_count();
+			if ( ! $count ) {
+				$msg = __( 'No pending Email Responses found', MS_TEXT_DOMAIN );
+			} elseif ( 1 == $count ) {
+				$msg = __( 'Send 1 pending Email Response %1$s', MS_TEXT_DOMAIN );
+			} else {
+				$msg = __( 'Send %2$s pending Email Responses %1$s', MS_TEXT_DOMAIN );
+			}
+
 			printf(
-				__( 'Send pending Email Responses %s.' ),
-				'<a href="' . $email_url . '"title="' . $lbl_run . '">' . $email_delay . '</a>'
+				$msg,
+				'<a href="' . $email_url . '"title="' . $lbl_run . '">' . $email_delay . '</a>',
+				$count
 			);
 		}
 
@@ -303,7 +290,7 @@ class MS_View_Settings_Edit extends MS_View {
 	 *                               PROTECTION MESSAGE
 	 * ====================================================================== */
 
-	public function render_tab_messages_protection() {
+	public function render_tab_messages() {
 		$tab = MS_Factory::create( 'MS_View_Settings_Page_Messages' );
 		$tab->data = $this->data;
 
@@ -314,7 +301,7 @@ class MS_View_Settings_Edit extends MS_View {
 	 *                               AUTOMATED MESSAGES
 	 * ====================================================================== */
 
-	public function render_tab_messages_automated() {
+	public function render_tab_emails() {
 		$tab = MS_Factory::create( 'MS_View_Settings_Page_Communications' );
 		$tab->data = $this->data;
 

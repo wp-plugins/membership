@@ -12,8 +12,9 @@ class MS_Gateway_Paypalstandard_View_Settings extends MS_View {
 		<form class="ms-gateway-settings-form ms-form">
 			<?php
 			$description = sprintf(
-				'%s <br />%s <strong>%s</strong> <br /><a href="%s" target="_blank">%s</a>',
-				__( 'In order for Membership2 to function correctly you must setup an IPN listening URL with PayPal. Make sure to complete this step, otherwise we are not notified when a member cancels their subscription.', MS_TEXT_DOMAIN ),
+				'%s<br />&nbsp;<br />%s<br />&nbsp;<br />%s <strong>%s</strong><br /><a href="%s" target="_blank">%s</a>',
+				__( 'This advanced PayPal gateway will handle all payment types, including trial periods and recurring payments. However, it should not be used for permanent type meberships, as here it will display "pay again after 5 years" during checkout.', MS_TEXT_DOMAIN ),
+				__( 'In order for Membership 2 to function correctly you must setup an IPN listening URL with PayPal. Make sure to complete this step, otherwise we are not notified when a member cancels their subscription.', MS_TEXT_DOMAIN ),
 				__( 'Your IPN listening URL is:', MS_TEXT_DOMAIN ),
 				$this->data['model']->get_return_url(),
 				'https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNSetup/',
@@ -42,7 +43,13 @@ class MS_Gateway_Paypalstandard_View_Settings extends MS_View {
 				'id' => 'merchant_id',
 				'type' => MS_Helper_Html::INPUT_TYPE_TEXT,
 				'title' => __( 'PayPal Merchant Account ID', MS_TEXT_DOMAIN ),
+				'desc' => sprintf(
+					__( 'Note: This is <i>not the email address</i> but the merchant ID found in %syour PayPal profile%s. (in Sandbox mode use your Sandbox Email address)', MS_TEXT_DOMAIN ),
+					'<a href="https://www.paypal.com/webapps/customerprofile/summary.view" target="_blank">',
+					'</a>'
+				),
 				'value' => $gateway->merchant_id,
+				'placeholder' => 'SGGGX43FAKKXN',
 				'class' => 'ms-text-large',
 				'ajax_data' => array( 1 ),
 			),
@@ -70,7 +77,11 @@ class MS_Gateway_Paypalstandard_View_Settings extends MS_View {
 			'pay_button_url' => array(
 				'id' => 'pay_button_url',
 				'type' => MS_Helper_Html::INPUT_TYPE_TEXT,
-				'title' => __( 'Payment button label or URL', MS_TEXT_DOMAIN ),
+				'title' => apply_filters(
+					'ms_translation_flag',
+					__( 'Payment button label or URL', MS_TEXT_DOMAIN ),
+					'gateway-button' . $gateway->id
+				),
 				'value' => $gateway->pay_button_url,
 				'class' => 'ms-text-large',
 				'ajax_data' => array( 1 ),

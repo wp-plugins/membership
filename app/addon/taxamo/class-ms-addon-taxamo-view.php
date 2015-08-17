@@ -9,23 +9,20 @@ class MS_Addon_Taxamo_View extends MS_View {
 		$fields = $this->prepare_fields();
 		ob_start();
 		?>
-		<div class="ms-wrap">
-			<div class="ms-settings">
-				<?php
-				MS_Helper_Html::settings_tab_header(
-					array( 'title' => __( 'Taxamo Settings', MS_TEXT_DOMAIN ) )
-				);
-				?>
+		<div class="ms-addon-wrap">
+			<?php
+			MS_Helper_Html::settings_tab_header(
+				array( 'title' => __( 'Taxamo Settings', MS_TEXT_DOMAIN ) )
+			);
 
-				<form action="" method="post">
-					<?php MS_Helper_Html::settings_box( $fields ); ?>
-				</form>
-				<?php MS_Helper_Html::settings_footer(); ?>
-			</div>
+			foreach ( $fields as $field ) {
+				MS_Helper_Html::html_element( $field );
+			}
+			?>
 		</div>
 		<?php
 		$html = ob_get_clean();
-		echo '' . $html;
+		echo $html;
 	}
 
 	public function prepare_fields() {

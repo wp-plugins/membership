@@ -1,29 +1,8 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Membership List Table
  *
- * @since 1.0.0
+ * @since  1.0.0
  */
 class MS_Helper_ListTable_Event extends MS_Helper_ListTable {
 
@@ -71,7 +50,7 @@ class MS_Helper_ListTable_Event extends MS_Helper_ListTable {
 	/**
 	 * Prepare list items.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function prepare_items() {
 		$this->_column_headers = array(
@@ -87,12 +66,26 @@ class MS_Helper_ListTable_Event extends MS_Helper_ListTable {
 		$current_page = $this->get_pagenum();
 
 		$args = array(
-			'number' => $per_page,
+			'posts_per_page' => $per_page,
 			'offset' => ( $current_page - 1 ) * $per_page,
 		);
 
 		if ( isset( $_REQUEST['membership_id'] ) ) {
 			$args['membership_id'] = $_REQUEST['membership_id'];
+		}
+
+		if ( ! empty( $_REQUEST['s'] ) ) {
+			$args['s'] = $_REQUEST['s'];
+			$this->search_string = $args['s'];
+			$args['posts_per_page'] = -1;
+			$args['number'] = false;
+			$args['offset'] = 0;
+		}
+
+		// Prepare order by statement.
+		if ( ! empty( $_REQUEST['orderby'] ) && ! empty( $_REQUEST['order'] ) ) {
+			$args['orderby'] = $_REQUEST['orderby'];
+			$args['order'] = $_REQUEST['order'];
 		}
 
 		$total_items = MS_Model_Event::get_event_count( $args );

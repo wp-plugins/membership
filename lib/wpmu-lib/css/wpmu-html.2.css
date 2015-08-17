@@ -66,6 +66,11 @@ body .wpmui-field-label {
   font-style: normal;
   color: #222;
 }
+#wpwrap .wpmui-field-label.inline-label,
+body .wpmui-field-label.inline-label {
+  display: inline-block;
+  margin: 6px 10px 6px 0;
+}
 #wpwrap h3.wpmui-field-label,
 body h3.wpmui-field-label {
   margin-bottom: 10px;
@@ -138,6 +143,14 @@ body .wpmui-fa {
 }
 #wpwrap .no-click,
 body .no-click {
+  cursor: default;
+}
+
+/***
+ * HTML BLOCK (read only) *
+ ***/
+#wpwrap .wpmui-html-text-wrapper label,
+body .wpmui-html-text-wrapper label {
   cursor: default;
 }
 

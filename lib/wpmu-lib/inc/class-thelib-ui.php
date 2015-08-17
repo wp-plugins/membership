@@ -294,6 +294,7 @@ class TheLib_2_0_3_Ui extends TheLib_2_0_3 {
 	 */
 	public function _enqueue_style_callback( $hook = '' ) {
 		$items = $this->_get( 'css' );
+		$this->_clear( 'css' );
 
 		if ( empty( $hook ) ) { $hook = 'front'; }
 
@@ -324,6 +325,7 @@ class TheLib_2_0_3_Ui extends TheLib_2_0_3 {
 	 */
 	public function _enqueue_script_callback( $hook = '' ) {
 		$items = $this->_get( 'js' );
+		$this->_clear( 'js' );
 
 		if ( empty( $hook ) ) { $hook = 'front'; }
 

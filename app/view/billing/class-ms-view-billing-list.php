@@ -1,31 +1,10 @@
 <?php
 /**
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Renders Billing/Transaction History.
  *
  * Extends MS_View for rendering methods and magic methods.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage View
@@ -35,35 +14,94 @@ class MS_View_Billing_List extends MS_View {
 	/**
 	 * Create view output.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string
 	 */
 	public function to_html() {
 		$this->check_simulation();
 
-		$billing_list = MS_Factory::create( 'MS_Helper_ListTable_Billing' );
-		$billing_list->prepare_items();
+		$buttons = array();
 
-		$title = __( 'Billing', MS_TEXT_DOMAIN );
+		// Count invalid transactions.
+		$args = array( 'state' => 'err' );
+		$error_count = MS_Model_Transactionlog::get_item_count( $args );
 
-		if ( ! empty( $_GET['gateway_id'] ) ) {
-			$gateway = MS_Model_Gateway::factory( $_GET['gateway_id'] );
-			if ( $gateway->name ) {
-				$title .= ' - '. $gateway->name;
+		if ( $error_count && ( empty( $_GET['state'] ) || 'err' != $_GET['state'] ) ) {
+			if ( 1 == $error_count ) {
+				$message = __( 'One transaction failed. Please %2$sreview the logs%3$s and decide if you want to ignore the transaction or manually assign it to an invoice.', MS_TEXT_DOMAIN );
+			} else {
+				$message = __( '%1$s transactions failed. Please %2$sreview the logs%3$s and decide if you want to ignore the transaction or manually assign it to an invoice.', MS_TEXT_DOMAIN );
 			}
+			$review_url = MS_Controller_Plugin::get_admin_url(
+				'billing',
+				array(
+					'show' => 'logs',
+					'state' => 'err',
+				)
+			);
+
+			lib2()->ui->admin_message(
+				sprintf(
+					$message,
+					$error_count,
+					'<a href="' . $review_url . '">',
+					'</a>'
+				),
+				'err'
+			);
 		}
 
-		$add_new_button = array(
-			'id' => 'add_new',
-			'type' => MS_Helper_Html::TYPE_HTML_LINK,
-			'url' => MS_Controller_Plugin::get_admin_url(
-				'billing',
-				array( 'action' => 'edit', 'invoice_id' => 0 )
-			),
-			'value' => __( 'Add New', MS_TEXT_DOMAIN ),
-			'class' => 'button',
-		);
+		if ( isset( $_GET['show'] ) && 'logs' == $_GET['show'] ) {
+			$title = __( 'Transaction Logs', MS_TEXT_DOMAIN );
+
+			$listview = MS_Factory::create( 'MS_Helper_ListTable_TransactionLog' );
+			$listview->prepare_items();
+
+			$buttons[] = array(
+				'type' => MS_Helper_Html::TYPE_HTML_LINK,
+				'url' => MS_Controller_Plugin::get_admin_url(
+					'billing'
+				),
+				'value' => __( 'Show Invoices', MS_TEXT_DOMAIN ),
+				'class' => 'button',
+			);
+		} else {
+			$title = __( 'Billing', MS_TEXT_DOMAIN );
+
+			$listview = MS_Factory::create( 'MS_Helper_ListTable_Billing' );
+			$listview->prepare_items();
+
+			$buttons[] = array(
+				'id' => 'add_new',
+				'type' => MS_Helper_Html::TYPE_HTML_LINK,
+				'url' => MS_Controller_Plugin::get_admin_url(
+					'billing',
+					array(
+						'action' => MS_Controller_Billing::ACTION_EDIT,
+						'invoice_id' => 0,
+					)
+				),
+				'value' => __( 'Create new Invoice', MS_TEXT_DOMAIN ),
+				'class' => 'button',
+			);
+			$buttons[] = array(
+				'type' => MS_Helper_Html::TYPE_HTML_LINK,
+				'url' => MS_Controller_Plugin::get_admin_url(
+					'billing',
+					array( 'show' => 'logs' )
+				),
+				'value' => __( 'Show Transaction Logs', MS_TEXT_DOMAIN ),
+				'class' => 'button',
+			);
+
+			if ( ! empty( $_GET['gateway_id'] ) ) {
+				$gateway = MS_Model_Gateway::factory( $_GET['gateway_id'] );
+				if ( $gateway->name ) {
+					$title .= ' - ' . $gateway->name;
+				}
+			}
+		}
 
 		ob_start();
 		?>
@@ -78,14 +116,21 @@ class MS_View_Billing_List extends MS_View {
 			);
 			?>
 			<div>
-				<?php MS_Helper_Html::html_element( $add_new_button );?>
+				<?php
+				foreach ( $buttons as $button ) {
+					MS_Helper_Html::html_element( $button );
+				}
+				?>
 			</div>
 			<?php
-			$billing_list->search_box( __( 'Search user', MS_TEXT_DOMAIN ), 'search' );
-			$billing_list->views();
+			$listview->views();
+			$listview->search_box(
+				__( 'User', MS_TEXT_DOMAIN ),
+				'search'
+			);
 			?>
 			<form action="" method="post">
-				<?php $billing_list->display(); ?>
+				<?php $listview->display(); ?>
 			</form>
 		</div>
 

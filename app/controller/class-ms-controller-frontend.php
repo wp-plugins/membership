@@ -1,31 +1,8 @@
 <?php
 /**
- * This file defines the MS_Controller_Registration class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
- */
-
-/**
  * Creates the controller for Membership/User registration.
  *
- * @since 1.0.0
+ * @since  1.0.0
  *
  * @package Membership2
  * @subpackage Controller
@@ -35,7 +12,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Signup/register process step constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -50,7 +27,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * AJAX action constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -63,7 +40,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * Whether Membership2 will handle the registration process or not.
 	 * This should not be changed directly but via filter ms_frontend_handle_registration
 	 *
-	 * @since 1.1.1.3
+	 * @since  1.0.0
 	 *
 	 * @var bool
 	 */
@@ -72,7 +49,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * User registration errors.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -81,7 +58,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Allowed actions to execute in template_redirect hook.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
@@ -90,7 +67,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Prepare for Member registration.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -116,6 +93,12 @@ class MS_Controller_Frontend extends MS_Controller {
 			// Clears the shortcode memory at the beginning of the_content
 			$this->add_filter( 'the_content', 'clear_content_memory', 1 );
 
+			// Compact code for output on the front end.
+			add_filter(
+				'ms_compact_code',
+				array( 'MS_Helper_Html', 'compact_code' )
+			);
+
 			/**
 			 * This allows WordPress to provide the default register form.
 			 *
@@ -123,7 +106,7 @@ class MS_Controller_Frontend extends MS_Controller {
 			 * handling the registration process. WordPress or other plugins can
 			 * register users in that case.
 			 *
-			 * @since 1.1.1.3
+			 * @since  1.0.0
 			 */
 			self::$handle_registration = apply_filters(
 				'ms_frontend_handle_registration',
@@ -149,7 +132,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * Related Action Hooks:
 	 * - template_redirect
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function process_actions() {
 		$action = $this->get_action();
@@ -175,7 +158,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * Related Action Hooks:
 	 * - template_redirect
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function check_for_membership_pages() {
 		global $post, $wp_query;
@@ -217,9 +200,20 @@ class MS_Controller_Frontend extends MS_Controller {
 						);
 						exit;
 					}
-					// no break;
+					if ( MS_Helper_Membership::MEMBERSHIP_ACTION_CANCEL == $this->get_action() ) {
+						$this->membership_cancel();
+					} else {
+						$this->signup_process();
+					}
+					break;
 
 				case MS_Model_Pages::MS_PAGE_REGISTER:
+					if ( MS_Model_Member::is_logged_in() ) {
+						wp_safe_redirect(
+							MS_Model_Pages::get_page_url( MS_Model_Pages::MS_PAGE_MEMBERSHIPS )
+						);
+						exit;
+					}
 					if ( MS_Helper_Membership::MEMBERSHIP_ACTION_CANCEL == $this->get_action() ) {
 						$this->membership_cancel();
 					} else {
@@ -228,7 +222,7 @@ class MS_Controller_Frontend extends MS_Controller {
 					break;
 
 				case MS_Model_Pages::MS_PAGE_ACCOUNT:
-					$this->user_account_mgr();
+					$this->user_account_manager();
 					break;
 
 				case MS_Model_Pages::MS_PAGE_PROTECTED_CONTENT:
@@ -238,10 +232,11 @@ class MS_Controller_Frontend extends MS_Controller {
 					break;
 
 				case MS_Model_Pages::MS_PAGE_REG_COMPLETE:
-					$this->add_filter( 'the_content', 'reg_complete_page', 1 );
+					// Do nothing...
 					break;
 
 				default:
+					// Do nothing...
 					break;
 			}
 		}
@@ -252,18 +247,26 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * current user is registered to. This allows webdesigners to adjust layout
 	 * or hide elements based on the membership a user has.
 	 *
-	 * @since  1.0.2
+	 * @since  1.0.0
 	 *
 	 * @param  array $class Class-names to attach to the body.
 	 * @return array Modified class-names to attach to the body.
 	 */
-	public function body_class( $class ) {
-		$info = MS_Plugin::instance()->controller->get_access_info();
-		foreach ( $info['memberships'] as $membership_id ) {
-			$class[] = 'ms-' . absint( $membership_id );
+	public function body_class( $classes ) {
+		$member = MS_Model_Member::get_current_member();
+		if ( ! $member->is_logged_in() ) {
+			$classes[] = 'ms-guest';
+		} else {
+			$classes[] = 'ms-member';
+			$classes[] = 'ms-member-' . $member->id;
 		}
 
-		return $class;
+		$info = MS_Plugin::instance()->controller->get_access_info();
+		foreach ( $info['memberships'] as $membership_id ) {
+			$classes[] = 'ms-' . absint( $membership_id );
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -274,7 +277,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * is a theme-specific scenario). Or if the page contains an excerpt and a
 	 * main content block, ...
 	 *
-	 * @since  1.0.4.6
+	 * @since  1.0.0
 	 * @param  string $content The page content
 	 * @return string Value of $content (unmodified)
 	 */
@@ -310,10 +313,11 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Handle entire signup process.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function signup_process() {
 		$step = $this->get_signup_step();
+		$member = MS_Model_Member::get_current_member();
 
 		do_action( 'ms_frontend_register-' . $step );
 
@@ -322,7 +326,7 @@ class MS_Controller_Frontend extends MS_Controller {
 			 * Initial state.
 			 */
 			case self::STEP_CHOOSE_MEMBERSHIP:
-				$this->add_filter( 'the_content', 'choose_membership', 1 );
+				// Nothing, simply display Membership page.
 				break;
 
 			/**
@@ -342,9 +346,30 @@ class MS_Controller_Frontend extends MS_Controller {
 
 			/**
 			 * Show payment table.
+			 *
+			 * The payment table is only available if the current user has
+			 * permission to subscribe to the specified membership.
 			 */
 			case self::STEP_PAYMENT_TABLE:
-				$this->add_filter( 'the_content', 'payment_table', 1 );
+				$add_filter = false;
+				if ( ! empty( $_REQUEST['membership_id'] ) ) {
+					$membership_id = $_REQUEST['membership_id'];
+					if ( $member->can_subscribe_to( $membership_id ) ) {
+						$add_filter = true;
+					}
+				}
+
+				if ( $add_filter ) {
+					$this->add_filter( 'the_content', 'payment_table', 1 );
+				} else {
+					wp_safe_redirect(
+						esc_url_raw(
+							add_query_arg(
+								array( 'step' => self::STEP_CHOOSE_MEMBERSHIP )
+							)
+						)
+					);
+				}
 				break;
 
 			/**
@@ -378,7 +403,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Get signup process step (multi step form).
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string The current signup step after validation.
 	 */
@@ -442,38 +467,11 @@ class MS_Controller_Frontend extends MS_Controller {
 	}
 
 	/**
-	 * Show choose membership form.
-	 *
-	 * Search for signup shortcode, injecting if not found.
-	 *
-	 * Related Filter Hooks:
-	 * * the_content
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $content The page content to filter.
-	 * @return string The filtered content.
-	 */
-	public function choose_membership( $content ) {
-		remove_filter( 'the_content', 'wpautop' );
-
-		if ( ! MS_Helper_Shortcode::has_shortcode( MS_Helper_Shortcode::SCODE_SIGNUP, $content ) ) {
-			$content .= do_shortcode( '['. MS_Helper_Shortcode::SCODE_SIGNUP .']' );
-		}
-
-		return apply_filters(
-			'ms_controller_frontend_choose_membership_content',
-			$content,
-			$this
-		);
-	}
-
-	/**
 	 * Returns the URL to user registration page.
 	 * If Membership2 handles registration we can provide the registration
 	 * step via function param $step.
 	 *
-	 * @since  1.1.1.3
+	 * @since  1.0.0
 	 * @param  string $step Empty uses default step (choose_membership).
 	 *                      'choose_membership' show list of memberships.
 	 *                      'register' shows the registration form.
@@ -492,12 +490,10 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Show register user form.
 	 *
-	 * Search for register user shortcode, injecting if not found.
-	 *
 	 * Related Filter Hooks:
 	 * - the_content
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $content The page content to filter.
 	 * @return string The filtered content.
@@ -510,14 +506,16 @@ class MS_Controller_Frontend extends MS_Controller {
 
 		// Do not parse the form when building the excerpt
 		global $wp_current_filter;
-		if ( in_array( 'get_the_excerpt', $wp_current_filter ) ) { return ''; }
+		if ( in_array( 'get_the_excerpt', $wp_current_filter ) ) {
+			return '';
+		}
 
 		/**
 		 * Add-ons or other plugins can use this filter to define a completely
 		 * different registration form. If this filter returns any content, then
 		 * the default form will not be generated
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 * @var string
 		 */
 		$custom_code = apply_filters(
@@ -527,29 +525,29 @@ class MS_Controller_Frontend extends MS_Controller {
 			$this
 		);
 
-		if ( ! empty( $custom_code ) ) {
-			return $custom_code;
-		}
+		if ( $custom_code ) {
+			$content = $custom_code;
+		} else {
+			remove_filter( 'the_content', 'wpautop' );
 
-		remove_filter( 'the_content', 'wpautop' );
-
-		$did_form = MS_Helper_Shortcode::has_shortcode(
-			MS_Helper_Shortcode::SCODE_REGISTER_USER,
-			$content
-		);
-
-		if ( ! $did_form ) {
-			$scode = sprintf(
-				'[%s errors="%s"]',
+			$did_form = MS_Helper_Shortcode::has_shortcode(
 				MS_Helper_Shortcode::SCODE_REGISTER_USER,
-				str_replace( '"', "'", $this->register_errors )
+				$content
 			);
-			$reg_form = do_shortcode( $scode );
 
-			if ( ! MS_Model_Member::is_logged_in() ) {
-				$content = $reg_form;
-			} else {
-				$content .= $reg_form;
+			if ( ! $did_form ) {
+				$scode = sprintf(
+					'[%s errors="%s"]',
+					MS_Helper_Shortcode::SCODE_REGISTER_USER,
+					str_replace( '"', "'", $this->register_errors )
+				);
+				$reg_form = do_shortcode( $scode );
+
+				if ( ! MS_Model_Member::is_logged_in() ) {
+					$content = $reg_form;
+				} else {
+					$content .= $reg_form;
+				}
 			}
 		}
 
@@ -565,7 +563,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 *
 	 * On validation errors, step back to register form.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function register_user() {
 		do_action( 'ms_controller_frontend_register_user_before', $this );
@@ -621,7 +619,6 @@ class MS_Controller_Frontend extends MS_Controller {
 		}
 		catch( Exception $e ) {
 			$this->register_errors = $e->getMessage();
-			MS_Helper_Debug::log( $this->register_errors );
 
 			// step back
 			$this->add_action( 'the_content', 'register_form', 1 );
@@ -638,7 +635,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * Related Filter Hooks:
 	 * - the_content
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $content The page content to filter.
 	 * @return string The filtered content.
@@ -651,9 +648,22 @@ class MS_Controller_Frontend extends MS_Controller {
 
 		lib2()->array->equip_request( 'membership_id', 'move_from_id', 'ms_relationship_id' );
 
-		if ( ! empty( $_REQUEST['membership_id'] ) ) {
+		if ( ! empty( $_POST['ms_relationship_id'] ) ) {
+			// Error path, showing payment table again with error msg
+			$subscription = MS_Factory::load(
+				'MS_Model_Relationship',
+				absint( intval( $_POST['ms_relationship_id'] ) )
+			);
+			$membership = $subscription->get_membership();
+			$membership_id = $membership->id;
+
+			if ( ! empty( $_POST['error'] ) ) {
+				lib2()->array->strip_slashes( $_POST, 'error' );
+				$data['error'] = $_POST['error'];
+			}
+		} elseif ( ! empty( $_REQUEST['membership_id'] ) ) {
 			// First time loading
-			$membership_id = $_REQUEST['membership_id'];
+			$membership_id = intval( $_REQUEST['membership_id'] );
 			$membership = MS_Factory::load( 'MS_Model_Membership', $membership_id );
 			$move_from_id = absint( $_REQUEST['move_from_id'] );
 			$subscription = MS_Model_Relationship::create_ms_relationship(
@@ -662,20 +672,6 @@ class MS_Controller_Frontend extends MS_Controller {
 				'',
 				$move_from_id
 			);
-		} elseif ( ! empty( $_POST['ms_relationship_id'] ) ) {
-			// Error path, showing payment table again with error msg
-			$subscription = MS_Factory::load(
-				'MS_Model_Relationship',
-				absint( $_POST['ms_relationship_id'] )
-			);
-			$membership = $subscription->get_membership();
-			$membership_id = $membership->id;
-
-			if ( ! empty( $_POST['error'] ) ) {
-				lib2()->array->strip_slashes( $_POST, 'error' );
-
-				$data['error'] = $_POST['error'];
-			}
 		} else {
 			MS_Helper_Debug::log( 'Error: missing POST params' );
 			MS_Helper_Debug::log( $_POST );
@@ -690,7 +686,7 @@ class MS_Controller_Frontend extends MS_Controller {
 		 *
 		 * E.g. Coupon discount is applied by this hook.
 		 *
-		 * @since 1.1.0
+		 * @since  1.0.0
 		 */
 		$invoice = apply_filters(
 			'ms_signup_payment_details',
@@ -725,7 +721,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Handles membership_cancel action.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function membership_cancel() {
 		if ( ! empty( $_REQUEST['membership_id'] ) && $this->verify_nonce( null, 'any' ) ) {
@@ -743,12 +739,45 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Manage user account actions.
 	 *
-	 * @since 1.0.0
-	 *
+	 * @since  1.0.0
+	 * @internal
 	 */
-	public function user_account_mgr() {
+	public function user_account_manager() {
 		$action = $this->get_action();
 		$member = MS_Model_Member::get_current_member();
+
+		/**
+		 * These actions are always executed when any user account page loads.
+		 *
+		 * @since  1.0.1.0
+		 */
+		do_action(
+			'ms_frontend_user_account_manager-' . $action,
+			$this
+		);
+		do_action(
+			'ms_frontend_user_account_manager',
+			$action,
+			$this
+		);
+
+		if ( $this->verify_nonce() ) {
+			/**
+			 * The following two actions are only executed when a form was
+			 * submitted on a user account page.
+			 *
+			 * @since  1.0.1.0
+			 */
+			do_action(
+				'ms_frontend_user_account_manager_submit-' . $action,
+				$this
+			);
+			do_action(
+				'ms_frontend_user_account_manager_submit',
+				$action,
+				$this
+			);
+		}
 
 		switch ( $action ) {
 			case self::ACTION_EDIT_PROFILE:
@@ -828,82 +857,9 @@ class MS_Controller_Frontend extends MS_Controller {
 				break;
 
 			default:
-				do_action( 'ms_controller_frontend_user_account_mgr_' . $action, $this );
-				$this->add_filter( 'the_content', 'user_account', 1 );
+				// Do nothing...
 				break;
 		}
-	}
-
-	/**
-	 * Show user account page.
-	 *
-	 * Search for account shortcode, injecting if not found.
-	 *
-	 * Related Filter Hooks:
-	 * * the_content
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $content The page content to filter.
-	 * @return string The filtered content.
-	 */
-	public function user_account( $content ) {
-		remove_filter( 'the_content', 'wpautop' );
-
-		if ( ! MS_Helper_Shortcode::has_shortcode( MS_Helper_Shortcode::SCODE_MS_ACCOUNT, $content ) ) {
-			$content .= do_shortcode( '['. MS_Helper_Shortcode::SCODE_MS_ACCOUNT .']' );
-		}
-
-		return apply_filters(
-			'ms_controller_frontend_user_account',
-			$content,
-			$this
-		);
-	}
-
-	/**
-	 * Show registration complete page.
-	 *
-	 * Related Filter Hooks:
-	 * * the_content
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $content The page content to filter.
-	 * @return string The filtered content.
-	 */
-	public function reg_complete_page( $content ) {
-		return apply_filters(
-			'ms_controller_frontend_reg_complete_page',
-			$content,
-			$this
-		);
-	}
-
-	/**
-	 * Display login form.
-	 *
-	 * Search for login shortcode, injecting if not found.
-	 *
-	 * Related Filter Hooks:
-	 * * the_content
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $content The page content to filter.
-	 * @return string The filtered content.
-	 */
-	public function display_login_form( $content ) {
-		if ( ! MS_Helper_Shortcode::has_shortcode( MS_Helper_Shortcode::SCODE_LOGIN, $content ) ) {
-			$scode = '[' . MS_Helper_Shortcode::SCODE_LOGIN . ']';
-			$content = do_shortcode( $scode );
-		}
-
-		return apply_filters(
-			'ms_controller_frontend_display_login_form',
-			$content,
-			$this
-		);
 	}
 
 	/**
@@ -916,7 +872,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * - wp_signup_location
 	 * - register_url
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $url The url to filter.
 	 * @return The new signup url.
@@ -937,7 +893,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_login
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param type $login The login info.
 	 * @param WP_User $user The user to login.
@@ -964,7 +920,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	 *
 	 * Only redirect when no previous redirect_to is set or when going to /wp-admin/.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $redirect_to URL to redirect to.
 	 * @param string $request URL the user is coming from.
@@ -991,7 +947,7 @@ class MS_Controller_Frontend extends MS_Controller {
 	/**
 	 * Adds CSS and JS for Membership special pages used in the front end.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return void
 	 */

@@ -1,32 +1,8 @@
 <?php
 /**
- * This file defines the MS_Controller_Membership class.
- *
- * @copyright Incsub (http://incsub.com/)
- *
- * @license http://opensource.org/licenses/GPL-2.0 GNU General Public License, version 2 (GPL-2.0)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
- * MA 02110-1301 USA
- *
-*/
-
-/**
  * Controller for managing Memberships and Membership Rules.
  *
- * @since 1.0.0
- *
+ * @since  1.0.0
  * @package Membership2
  * @subpackage Controller
  */
@@ -35,27 +11,42 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * AJAX action constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
 	const AJAX_ACTION_TOGGLE_MEMBERSHIP = 'toggle_membership';
 	const AJAX_ACTION_UPDATE_MEMBERSHIP = 'update_membership';
+	const AJAX_ACTION_SET_CUSTOM_FIELD = 'membership_set_custom_field';
 
 	/**
 	 * Membership page step constants.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @var string
 	 */
-	const STEP_MS_LIST = 'ms_list';
-	const STEP_OVERVIEW = 'ms_overview';
-	const STEP_NEWS = 'ms_news';
+	const STEP_MS_LIST = 'list';
+	const STEP_EDIT = 'edit';
+	const STEP_OVERVIEW = 'overview';
+	const STEP_NEWS = 'news';
 	const STEP_WELCOME_SCREEN = 'welcome';
-	const STEP_PROTECTED_CONTENT = 'protected_content';
 	const STEP_ADD_NEW = 'add';
 	const STEP_PAYMENT = 'payment';
+
+	/**
+	 * Membership Editor tabs.
+	 *
+	 * @since 1.0.1.0
+	 *
+	 * @var   string
+	 */
+	const TAB_DETAILS = 'details';
+	const TAB_TYPE = 'type';
+	const TAB_PAYMENT = 'payment';
+	const TAB_PAGES = 'pages';
+	const TAB_MESSAGES = 'messages';
+	const TAB_EMAILS = 'emails';
 
 	// Actions
 	const ACTION_SAVE = 'save_membership';
@@ -63,47 +54,70 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * The model to use for loading/saving Membership data.
 	 *
-	 * @since 4.0.0
+	 * @since  1.0.0
 	 * @var MS_Model_Membership
 	 */
 	private $model = null;
 
 	/**
-	 * The active page tab.
+	 * The current active tab in the vertical navigation.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.1.0
+	 *
 	 * @var string
 	 */
-	protected $active_tab;
+	private $active_tab = null;
 
 	/**
 	 * Prepare the Membership manager.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
 
-		$this->add_ajax_action( self::AJAX_ACTION_TOGGLE_MEMBERSHIP, 'ajax_action_toggle_membership' );
-		$this->add_ajax_action( self::AJAX_ACTION_UPDATE_MEMBERSHIP, 'ajax_action_update_membership' );
+		$this->add_ajax_action(
+			self::AJAX_ACTION_TOGGLE_MEMBERSHIP,
+			'ajax_action_toggle_membership'
+		);
+		$this->add_ajax_action(
+			self::AJAX_ACTION_UPDATE_MEMBERSHIP,
+			'ajax_action_update_membership'
+		);
+		$this->add_ajax_action(
+			self::AJAX_ACTION_SET_CUSTOM_FIELD,
+			'ajax_action_set_custom_field'
+		);
+
+		// Tries to auto-detect the currently displayed membership-ID.
+		$this->add_filter(
+			'ms_detect_membership_id',
+			'autodetect_membership'
+		);
 	}
 
 	/**
 	 * Initialize the admin-side functions.
 	 *
-	 * @since 2.0.0
+	 * @since  1.0.0
 	 */
 	public function admin_init() {
 		$hooks = array(
 			MS_Controller_Plugin::admin_page_hook(),
 			MS_Controller_Plugin::admin_page_hook( 'setup' ),
-			MS_Controller_Plugin::admin_page_hook( 'protection' ),
 		);
 
 		foreach ( $hooks as $hook ) {
-			$this->run_action( 'load-' . $hook, 'membership_admin_page_process' );
+			$this->run_action( 'load-' . $hook, 'process_admin_page' );
 			$this->run_action( 'admin_print_scripts-' . $hook, 'enqueue_scripts' );
 			$this->run_action( 'admin_print_styles-' . $hook, 'enqueue_styles' );
+
+			if ( self::TAB_EMAILS == $this->get_active_edit_tab() ) {
+				$this->run_action(
+					'admin_head-' . $hook,
+					array( 'MS_Controller_Communication', 'add_mce_buttons' )
+				);
+			}
 		}
 	}
 
@@ -113,7 +127,7 @@ class MS_Controller_Membership extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_ajax_toggle_membership
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function ajax_action_toggle_membership() {
 		$msg = 0;
@@ -145,7 +159,7 @@ class MS_Controller_Membership extends MS_Controller {
 	 * Related Action Hooks:
 	 * - wp_ajax_update_membership
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function ajax_action_update_membership() {
 		$msg = 0;
@@ -156,7 +170,7 @@ class MS_Controller_Membership extends MS_Controller {
 			&& self::validate_required( $required, 'POST', false )
 			&& $this->is_admin_user()
 		) {
-			lib2()->array->strip_slashes( $_POST, 'value' );
+			lib2()->array->strip_slashes( $_POST, 'value', 'field' );
 
 			$msg = $this->save_membership(
 				array( $_POST['field'] => $_POST['value'] )
@@ -173,9 +187,46 @@ class MS_Controller_Membership extends MS_Controller {
 	}
 
 	/**
+	 * Ajax handler to update a custom field of the membership.
+	 *
+	 * Related Action Hooks:
+	 * - wp_ajax_membership_set_custom_field
+	 *
+	 * @since  1.0.1.0
+	 */
+	public function ajax_action_set_custom_field() {
+		$msg = 0;
+
+		$required = array( 'membership_id', 'field', 'value' );
+
+		if ( $this->verify_nonce()
+			&& self::validate_required( $required, 'POST', false )
+			&& $this->is_admin_user()
+		) {
+			lib2()->array->strip_slashes( $_POST, 'value', 'field' );
+			$membership = MS_Factory::load(
+				'MS_Model_Membership',
+				intval( $_POST['membership_id'] )
+			);
+			$membership->set_custom_data( $_POST['field'], $_POST['value'] );
+			$membership->save();
+
+			$msg = MS_Helper_Membership::MEMBERSHIP_MSG_UPDATED;
+		}
+
+		do_action(
+			'ms_controller_membership_ajax_action_update_membership',
+			$msg,
+			$this
+		);
+
+		wp_die( $msg );
+	}
+
+	/**
 	 * Load membership from request.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return MS_Model_Membership The membership model object.
 	 */
@@ -193,8 +244,6 @@ class MS_Controller_Membership extends MS_Controller {
 						)
 					);
 				}
-			} elseif ( MS_Controller_Plugin::is_page( 'protection' ) ) {
-				$membership_id = MS_Model_Membership::get_base()->id;
 			}
 
 			$this->model = MS_Factory::load(
@@ -213,14 +262,80 @@ class MS_Controller_Membership extends MS_Controller {
 	}
 
 	/**
+	 * Tries to auto-detect the currently displayed membership-ID.
+	 *
+	 * Use this function by calling the filter `ms_detect_membership_id`
+	 *
+	 * Detection logic:
+	 * 1. If a valid preferred value was specified then this value is used.
+	 * 2. Examine REQUEST data and look for membership/subscription/invoice.
+	 * 3. Check currently logged in user and use the top-priority subscription.
+	 *
+	 * @since  1.0.1.0
+	 * @param  int $preferred The preferred ID is only used if it is a valid ID.
+	 * @param  bool $no_member_check If set to true the member subscriptions are
+	 *         not checked, which means only REQUEST data is examined.
+	 * @return int A valid Membership ID or 0 if all tests fail.
+	 */
+	public function autodetect_membership( $preferred = 0, $no_member_check = false ) {
+		$membership_id = 0;
+
+		// Check 1: If the preferred value is correct use it.
+		if ( $preferred ) {
+			$membership = MS_Factory::load( 'MS_Model_Membership', $preferred );
+			if ( $membership->id == $preferred ) {
+				$membership_id = $membership->id;
+			}
+		}
+
+		// Check 2: Examine the REQUEST parameters to find a valid ID.
+		if ( ! $membership_id ) {
+			if ( ! $membership_id ) {
+				if ( isset( $_REQUEST['membership_id'] ) ) {
+					$membership_id = $_REQUEST['membership_id'];
+				} elseif ( isset( $_REQUEST['subscription_id'] ) ) {
+					$sub_id = $_REQUEST['subscription_id'];
+					$subscription = MS_Factory::load( 'MS_Model_Relationship', $sub_id );
+					$membership_id = $subscription->memberhip_id;
+				} elseif ( isset( $_REQUEST['ms_relationship_id'] ) ) {
+					$sub_id = $_REQUEST['ms_relationship_id'];
+					$subscription = MS_Factory::load( 'MS_Model_Relationship', $sub_id );
+					$membership_id = $subscription->memberhip_id;
+				} elseif ( isset( $_REQUEST['invoice_id'] ) ) {
+					$inv_id = $_REQUEST['invoice_id'];
+					$invoice = MS_Factory::load( 'MS_Model_Invoice', $inv_id );
+					$membership_id = $invoice->memberhip_id;
+				}
+				$membership_id = intval( $membership_id );
+			}
+		}
+
+		// Check 3: Check subscriptions of the current user.
+		if ( ! $no_member_check && ! $membership_id && is_user_logged_in() ) {
+			$member = MS_Model_Member::get_current_member();
+			$subscription = $member->get_subscription( 'priority' );
+			if ( $subscription ) {
+				$membership_id = $subscription->membership_id;
+			}
+		}
+
+		return apply_filters(
+			'ms_controller_membership_autodetect_membership',
+			$membership_id,
+			$preferred,
+			$no_member_check
+		);
+	}
+
+	/**
 	 * Process membership pages requests
 	 *
 	 * Verifies GET and POST requests to manage memberships.
 	 * Redirect to next step after processing.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function membership_admin_page_process() {
+	public function process_admin_page() {
 		$msg = 0;
 		$next_step = null;
 		$step = $this->get_step();
@@ -232,7 +347,7 @@ class MS_Controller_Membership extends MS_Controller {
 		$save_data = array();
 
 		// Check if user came from WPMU Dashboard plugin
-		if ( ! MS_Plugin::is_wizard() ) {
+		if ( ! $is_wizard && isset( $_SERVER['HTTP_REFERER'] ) ) {
 			$referer = $_SERVER['HTTP_REFERER'];
 			$params = parse_url( $referer, PHP_URL_QUERY );
 			$fields = array();
@@ -246,10 +361,7 @@ class MS_Controller_Membership extends MS_Controller {
 		}
 
 		// MS_Controller_Rule is executed using this action.
-		do_action(
-			'ms_controller_membership_admin_page_process_' . $step,
-			$this->get_active_tab()
-		);
+		do_action( 'ms_controller_membership_admin_page_process_' . $step );
 
 		// Only accessible to admin users
 		if ( ! $this->is_admin_user() ) { return false; }
@@ -310,11 +422,6 @@ class MS_Controller_Membership extends MS_Controller {
 						$msg = $this->mark_setup_completed();
 						$completed = true;
 					}
-
-					if ( $is_wizard ) {
-						// End the wizard!
-						$this->wizard_tracker( $next_step, true );
-					}
 					break;
 
 				case self::STEP_PAYMENT:
@@ -323,6 +430,10 @@ class MS_Controller_Membership extends MS_Controller {
 					$next_step = self::STEP_MS_LIST;
 					$msg = $this->mark_setup_completed();
 					$completed = true;
+					break;
+
+				case self::STEP_EDIT:
+					$this->process_edit_page();
 					break;
 			}
 
@@ -364,77 +475,52 @@ class MS_Controller_Membership extends MS_Controller {
 				}
 				exit;
 			}
-		} elseif ( $this->verify_nonce( 'bulk' ) ) {
-			// Bulk-edit
-
-			lib2()->array->equip_post( 'action', 'action2', 'item', 'rule_type' );
-			$action = $_POST['action'];
-			if ( empty( $action ) || $action == '-1' ) {
-				$action = $_POST['action2'];
-			}
-			$items = $_POST['item'];
-			$rule_type = $_POST['rule_type'];
-
-			/*
-			 * The Bulk-Edit action is built like 'cmd-id'
-			 * e.g. 'add-123' will add membership 123 to the selected items.
-			 */
-			if ( empty( $action ) ) {
-				$cmd = array();
-			} elseif ( empty( $items ) ) {
-				$cmd = array();
-			} elseif ( empty( $rule_type ) ) {
-				$cmd = array();
-			} elseif ( '-1' == $action ) {
-				$cmd = array();
-			} else {
-				$cmd = explode( '-', $action );
-			}
-
-			if ( 2 == count( $cmd ) ) {
-				$action = $cmd[0];
-				$action_id = $cmd[1];
-
-				// Get a list of specified memberships...
-				if ( is_numeric( $action_id ) ) {
-					// ... either a single membership.
-					$memberships = array(
-						MS_Factory::load( 'MS_Model_Membership', $action_id ),
-					);
-				} elseif ( 'all' == $action_id ) {
-					// ... or all memberships.
-					$memberships = MS_Model_Membership::get_memberships();
-				}
-
-				// Loop specified memberships and add the selected items.
-				foreach ( $memberships as $membership ) {
-					$rule = $membership->get_rule( $rule_type );
-					foreach ( $items as $item ) {
-						switch ( $action ) {
-							case 'add':
-								$rule->give_access( $item );
-								break;
-
-							case 'rem':
-								$rule->remove_access( $item );
-								break;
-						}
-					}
-					$membership->set_rule( $rule_type, $rule );
-					$membership->save();
-				}
-			}
 		} else {
 			// No action request found.
 		}
 	}
 
 	/**
+	 * Process form data submitted via the edit page.
+	 *
+	 * When this function is called the nonce is already confirmed.
+	 *
+	 * @since  1.0.1.0
+	 */
+	protected function process_edit_page() {
+		$redirect = false;
+
+		switch ( $this->get_active_edit_tab() ) {
+			case self::TAB_TYPE:
+				$fields_type = array( 'membership_id', 'type' );
+
+				if ( self::validate_required( $fields_type ) ) {
+					$id = intval( $_POST['membership_id'] );
+					$membership = MS_Factory::load( 'MS_Model_Membership', $id );
+
+					if ( $membership->id == $id && ! $membership->is_system() ) {
+						$membership->type = $_POST['type'];
+						$membership->save();
+					}
+				}
+				break;
+
+			case self::TAB_MESSAGES:
+				break;
+		}
+
+		if ( $redirect ) {
+			wp_safe_redirect( $redirect );
+			exit();
+		}
+	}
+
+	/**
 	 * Route page request to handling method.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function membership_admin_page_router() {
+	public function admin_page_router() {
 		$this->wizard_tracker();
 		$step = $this->get_step();
 
@@ -469,7 +555,7 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Mark membership setup as complete.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return int $msg The action status message code.
 	 */
@@ -479,10 +565,40 @@ class MS_Controller_Membership extends MS_Controller {
 
 		if ( $membership->setup_completed() ) {
 			$msg = MS_Helper_Membership::MEMBERSHIP_MSG_ADDED;
+
+			/**
+			 * Action run after a new membership was created.
+			 *
+			 * @since  1.0.1.0
+			 * @param  MS_Model_Membership $membership The new membership.
+			 */
 			do_action(
-				'ms_controller_membership_setup_completed',
+				'ms_controller_membership_created',
 				$membership
 			);
+
+			if ( MS_Plugin::is_wizard() ) {
+				$this->wizard_tracker( null, true );
+
+				/**
+				 * Action run after the first membership was created and the
+				 * setup wizard is completed.
+				 *
+				 * This hook is used by M2 to auto-setup some settings according
+				 * to the first membership that was created (e.g. create menu
+				 * items, enable Automatic Email Responses, etc.)
+				 *
+				 * This filter is only executed ONCE! To perform actions always
+				 * when a membership was created use the '_created' action above.
+				 *
+				 * @since  1.0.0
+				 * @param  MS_Model_Membership $membership The new membership.
+				 */
+				do_action(
+					'ms_controller_membership_setup_completed',
+					$membership
+				);
+			}
 		}
 
 		return apply_filters(
@@ -493,24 +609,9 @@ class MS_Controller_Membership extends MS_Controller {
 	}
 
 	/**
-	 * Display Setup Membership2 page.
-	 *
-	 * @since 1.0.0
-	 */
-	public function page_protected_content() {
-		$data = array();
-		$data['tabs'] = $this->get_available_tabs();
-		$data['active_tab'] = $this->get_active_tab();
-
-		$view = MS_Factory::create( 'MS_View_Membership_ProtectedContent' );
-		$view->data = apply_filters( 'ms_view_membership_protectedcontent_data', $data, $this );
-		$view->render();
-	}
-
-	/**
 	 * Display Choose Membership Type page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function page_add() {
 		$data = array();
@@ -526,9 +627,9 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Display Membership List page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function page_ms_list() {
+	public function page_list() {
 		$membership = $this->load_membership();
 
 		$data = array();
@@ -546,9 +647,57 @@ class MS_Controller_Membership extends MS_Controller {
 	}
 
 	/**
+	 * Display Membership Edit page.
+	 *
+	 * @since  1.0.0
+	 */
+	public function page_edit() {
+		$membership = $this->load_membership();
+
+		$data = array();
+		$data['tabs'] = $this->get_edit_tabs();
+		$data['settings'] = MS_Plugin::instance()->settings;
+		$data['membership'] = $membership;
+
+		switch ( $this->get_active_edit_tab() ) {
+			case self::TAB_EMAILS:
+				$default_type = MS_Model_Communication::COMM_TYPE_REGISTRATION;
+				if ( ! empty( $_REQUEST['membership_id'] ) ) {
+					$membership_id = intval( $_REQUEST['membership_id'] );
+					$comm_types = array_keys(
+						MS_Model_Communication::get_communication_type_titles(
+							$membership_id
+						)
+					);
+					$default_type = reset( $comm_types );
+				}
+
+				$temp_type = isset( $_GET['comm_type'] ) ? $_GET['comm_type'] : '';
+				if ( MS_Model_Communication::is_valid_communication_type( $temp_type ) ) {
+					$type = $temp_type;
+				} else {
+					$type = $default_type;
+				}
+
+				$comm = MS_Model_Communication::get_communication(
+					$type,
+					$membership,
+					true
+				);
+
+				$data['comm'] = $comm;
+				break;
+		}
+
+		$view = MS_Factory::create( 'MS_View_Membership_Edit' );
+		$view->data = apply_filters( 'ms_view_membership_edit_data', $data, $this );
+		$view->render();
+	}
+
+	/**
 	 * Display Setup Payment page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function page_payment() {
 		$membership = $this->load_membership();
@@ -570,7 +719,7 @@ class MS_Controller_Membership extends MS_Controller {
 			);
 		}
 
-		$view = MS_Factory::create( 'MS_View_Membership_Payment' );
+		$view = MS_Factory::create( 'MS_View_Membership_PaymentSetup' );
 		$view->data = apply_filters( 'ms_view_membership_payment_data', $data, $this );
 		$view->render();
 	}
@@ -578,9 +727,9 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Display Membership Overview page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function page_ms_overview() {
+	public function page_overview() {
 		$membership = $this->load_membership();
 		$membership_id = $membership->id;
 
@@ -591,12 +740,12 @@ class MS_Controller_Membership extends MS_Controller {
 		$data['bread_crumbs'] = $this->get_bread_crumbs();
 
 		$data['members'] = array();
-		$ms_relationships = MS_Model_Relationship::get_subscriptions(
+		$subscriptions = MS_Model_Relationship::get_subscriptions(
 			array( 'membership_id' => $membership->id )
 		);
 
-		foreach ( $ms_relationships as $ms_relationship ) {
-			$data['members'][] = $ms_relationship->get_member();
+		foreach ( $subscriptions as $subscription ) {
+			$data['members'][] = $subscription->get_member();
 		}
 
 		switch ( $membership->type ) {
@@ -619,24 +768,24 @@ class MS_Controller_Membership extends MS_Controller {
 		);
 		$data['events'] = MS_Model_Event::get_events( $args );
 
-		$view = apply_filters( 'ms_view_membership_ms_overview', $view );
-		$view->data = apply_filters( 'ms_view_membership_ms_overview_data', $data, $this );
+		$view = apply_filters( 'ms_view_membership_overview', $view );
+		$view->data = apply_filters( 'ms_view_membership_overview_data', $data, $this );
 		$view->render();
 	}
 
 	/**
 	 * Display Membership News page.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
-	public function page_ms_news() {
+	public function page_news() {
 		$data = array();
 		$data['step'] = $this->get_step();
 		$data['action'] = '';
 		$data['membership'] = $this->load_membership();
 
 		$args = apply_filters(
-			'ms_controller_membership_page_ms_news_event_args',
+			'ms_controller_membership_page_news_event_args',
 			array( 'posts_per_page' => -1 )
 		);
 		$data['events'] = MS_Model_Event::get_events( $args );
@@ -649,7 +798,7 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Display a welcome screen.
 	 *
-	 * @since 1.1.0
+	 * @since  1.0.0
 	 */
 	public function page_welcome() {
 		$data = array();
@@ -664,38 +813,38 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Get Membership setup steps.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return string[] The existing steps.
 	 */
 	public static function get_steps() {
-		static $steps;
+		static $Steps;
 
-		if ( empty( $steps ) ) {
-			$steps = array(
+		if ( empty( $Steps ) ) {
+			$Steps = array(
 				self::STEP_MS_LIST,
 				self::STEP_OVERVIEW,
+				self::STEP_EDIT,
 				self::STEP_NEWS,
-				self::STEP_PROTECTED_CONTENT,
 				self::STEP_ADD_NEW,
 				self::STEP_PAYMENT,
 			);
 
 			if ( MS_Plugin::is_wizard() ) {
-				$steps[] = self::STEP_WELCOME_SCREEN;
+				$Steps[] = self::STEP_WELCOME_SCREEN;
 			}
 		}
 
 		return apply_filters(
 			'ms_controller_membership_get_steps',
-			$steps
+			$Steps
 		);
 	}
 
 	/**
 	 * Validate Membership setup step.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param string $step The step name to validate.
 	 * @return boolean True if valid step.
@@ -755,11 +904,6 @@ class MS_Controller_Membership extends MS_Controller {
 			}
 		}
 
-		// Hack to use same page in two different menus
-		if ( MS_Controller_Plugin::is_page( 'protection' ) ) {
-			$step = self::STEP_PROTECTED_CONTENT;
-		}
-
 		// Can't modify membership type
 		if ( self::STEP_ADD_NEW == $step && $membership->is_valid() ) {
 			$step = self::STEP_OVERVIEW;
@@ -768,6 +912,121 @@ class MS_Controller_Membership extends MS_Controller {
 		return apply_filters(
 			'ms_controller_membership_get_next_step',
 			$step,
+			$this
+		);
+	}
+
+	/**
+	 * Get available tabs for Membership2 page.
+	 *
+	 * @since  1.0.0
+	 *
+	 * @return array The tabs configuration.
+	 */
+	public function get_edit_tabs() {
+		static $Tabs = null;
+
+		if ( null === $Tabs ) {
+			$membership = $this->load_membership();
+
+			$args = array( 'include_guest' => false );
+			$count = MS_Model_Membership::get_membership_count( $args );
+
+			$Tabs = array(
+				self::TAB_DETAILS => array(
+					'title' => __( 'Details', MS_TEXT_DOMAIN ),
+				),
+				self::TAB_TYPE => array(
+					'title' => __( 'Membership Type', MS_TEXT_DOMAIN ),
+				),
+				self::TAB_PAYMENT => array(
+					'title' => __( 'Payment options', MS_TEXT_DOMAIN ),
+				),
+				/*
+				PRO FEATURE => array(
+					'title' => __( 'Upgrade paths', MS_TEXT_DOMAIN ),
+				),
+				Not yet finished... will be added soon.
+				self::TAB_PAGES => array(
+					'title' => __( 'Membership Pages', MS_TEXT_DOMAIN ),
+				),
+				PRO FEATURE => array(
+					'title' => __( 'Protection Messages', MS_TEXT_DOMAIN ),
+				),
+
+				PRO FEATURE => array(
+					'title' => __( 'Automated Email Responses', MS_TEXT_DOMAIN ),
+				),
+				*/
+			);
+
+			if ( $membership->is_system() ) {
+				unset( $Tabs[self::TAB_TYPE] );
+				unset( $Tabs[self::TAB_PAYMENT] );
+				unset( $Tabs[self::TAB_EMAILS] );
+				unset( $Tabs[ self::TAB_UPGRADE ] );
+			} elseif ( $membership->is_free ) {
+				$Tabs[self::TAB_PAYMENT]['title'] = __( 'Access options', MS_TEXT_DOMAIN );
+			}
+
+			if ( $count < 2 ) {
+				unset( $Tabs[ self::TAB_UPGRADE ] );
+			}
+
+			// Allow Add-ons to add or remove rule tabs
+			$Tabs = apply_filters(
+				'ms_controller_membership_tabs',
+				$Tabs
+			);
+
+			foreach ( $Tabs as $key => $tab ) {
+				if ( ! empty( $Tabs['key']['url'] ) ) { continue; }
+
+				$url = sprintf(
+					'%1$s?page=%2$s&step=%3$s&tab=%4$s&membership_id=%5$s',
+					admin_url( 'admin.php' ),
+					esc_attr( $_REQUEST['page'] ),
+					MS_Controller_Membership::STEP_EDIT,
+					$key,
+					$membership->id
+				);
+
+				$Tabs[$key]['url'] = $url;
+			}
+		}
+
+		return $Tabs;
+	}
+
+	/**
+	 * Get the current active settings page/tab.
+	 *
+	 * @since  1.0.1.0
+	 */
+	public function get_active_edit_tab() {
+		if ( null === $this->active_tab ) {
+			if ( self::STEP_EDIT != $this->get_step() ) {
+				$this->active_tab = '';
+			} else {
+				$tabs = $this->get_edit_tabs();
+
+				reset( $tabs );
+				$first_key = key( $tabs );
+
+				// Setup navigation tabs.
+				lib2()->array->equip_get( 'tab' );
+				$active_tab = sanitize_html_class( $_GET['tab'], $first_key );
+
+				if ( ! array_key_exists( $active_tab, $tabs ) ) {
+					$active_tab = $first_key;
+				}
+				$this->active_tab = $active_tab;
+			}
+		}
+
+		return apply_filters(
+			'ms_controller_membership_get_active_edit_tab',
+			$this->active_tab,
 			$this
 		);
 	}
@@ -784,7 +1043,7 @@ class MS_Controller_Membership extends MS_Controller {
 	 * @return string The current step.
 	 */
 	public function wizard_tracker( $step = null, $end_wizard = false ) {
-		$settings = MS_Factory::load( 'MS_Model_Settings' );
+		$settings = MS_Plugin::instance()->settings;
 
 		if ( empty( $step ) ) {
 			$step = $this->get_step();
@@ -809,189 +1068,9 @@ class MS_Controller_Membership extends MS_Controller {
 	}
 
 	/**
-	 * Get available tabs for Membership2 page.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array The tabs configuration.
-	 */
-	public function get_available_tabs() {
-		static $Tabs = null;
-
-		if ( null === $Tabs ) {
-			$membership = $this->load_membership();
-			$membership_id = $membership->id;
-			$is_base = $membership->is_base();
-			$settings = MS_Factory::load( 'MS_Model_Settings' );
-
-			// First create a list including all possible tabs.
-			$tabs = array(
-				MS_Rule_Page::RULE_ID => true,
-				MS_Rule_Post::RULE_ID => true,
-				MS_Rule_Category::RULE_ID => true,
-				MS_Rule_Content::RULE_ID => true,
-				MS_Rule_MenuItem::RULE_ID => true,
-				MS_Rule_ReplaceMenu::RULE_ID => true,
-				MS_Rule_ReplaceLocation::RULE_ID => true,
-				MS_Rule_Shortcode::RULE_ID => true,
-				MS_Rule_Url::RULE_ID => true,
-				MS_Rule_Special::RULE_ID => true,
-				MS_Rule_MemberCaps::RULE_ID => true,
-				MS_Rule_MemberRoles::RULE_ID => true,
-			);
-
-			// Now remove items from the list that are not available.
-
-			// Optionally show "Posts"
-			if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_POST_BY_POST ) ) {
-				$tabs[MS_Rule_Post::RULE_ID] = false;
-			}
-
-			// Optionally show "Category"
-			if ( ! MS_Model_Addon::is_enabled( MS_Addon_Category::ID ) ) {
-				$tabs[MS_Rule_Category::RULE_ID] = false;
-			}
-
-			// Either "Menu Item" or "Menus" or "Menu Location"
-			switch ( $settings->menu_protection ) {
-				case 'menu':
-					$tabs[MS_Rule_MenuItem::RULE_ID] = false;
-					$tabs[MS_Rule_ReplaceLocation::RULE_ID] = false;
-					break;
-
-				case 'location':
-					$tabs[MS_Rule_MenuItem::RULE_ID] = false;
-					$tabs[MS_Rule_ReplaceMenu::RULE_ID] = false;
-					break;
-
-				case 'item':
-				default:
-					$tabs[MS_Rule_ReplaceMenu::RULE_ID] = false;
-					$tabs[MS_Rule_ReplaceLocation::RULE_ID] = false;
-					break;
-			}
-
-			// Maybe "Special Pages".
-			if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_SPECIAL_PAGES ) ) {
-				$tabs[MS_Rule_Special::RULE_ID] = false;
-			}
-
-			// Maybe "URLs"
-			if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_URL_GROUPS ) ) {
-				$tabs[MS_Rule_Url::RULE_ID] = false;
-			}
-
-			// Maybe "Shortcodes"
-			if ( ! MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_SHORTCODE ) ) {
-				$tabs[MS_Rule_Shortcode::RULE_ID] = false;
-			}
-
-			// Maybe "Membercaps"
-			if ( MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MEMBERCAPS ) ) {
-				if ( MS_Model_Addon::is_enabled( MS_Model_Addon::ADDON_MEMBERCAPS_ADV ) ) {
-					$tabs[MS_Rule_MemberRoles::RULE_ID] = false;
-				} else {
-					$tabs[MS_Rule_MemberCaps::RULE_ID] = false;
-				}
-			} else {
-				$tabs[MS_Rule_MemberRoles::RULE_ID] = false;
-				$tabs[MS_Rule_MemberCaps::RULE_ID] = false;
-			}
-
-			lib2()->array->equip( $_GET, 'page' );
-
-			// Allow Add-ons to add or remove rule tabs
-			$tabs = apply_filters(
-				'ms_controller_membership_tabs',
-				$tabs,
-				$membership_id
-			);
-
-			$url = admin_url( 'admin.php' );
-			$page = sanitize_html_class( $_GET['page'], MS_Controller_Plugin::MENU_SLUG . '-memberships' );
-			$rule_titles = MS_Model_Rule::get_rule_type_titles();
-
-			$result = array();
-			foreach ( $tabs as $rule_type => $state ) {
-				if ( ! $state ) { continue; }
-
-				$url .= sprintf(
-					'?page=%s&tab=%s',
-					$page,
-					$rule_type
-				);
-
-				// Try to keep the selected Membership and Status filter.
-				if ( ! empty( $_REQUEST['membership_id'] ) ) {
-					$url = esc_url_raw(
-						add_query_arg(
-							array( 'membership_id' => $_REQUEST['membership_id'] ),
-							$url
-						)
-					);
-				}
-				if ( ! empty( $_REQUEST['status'] ) ) {
-					$url = esc_url_raw(
-						add_query_arg(
-							array( 'status' => $_REQUEST['status'] ),
-							$url
-						)
-					);
-				}
-
-				$result[ $rule_type ] = array(
-					'title' => $rule_titles[ $rule_type ],
-					'url' => $url,
-				);
-			}
-
-			$Tabs = apply_filters(
-				'ms_controller_membership_get_protection_tabs',
-				$result,
-				$membership_id,
-				$this
-			);
-		}
-
-		return $Tabs;
-	}
-
-	/**
-	 * Get the current membership page's active tab.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The active tab.
-	 */
-	public function get_active_tab() {
-		$step = $this->get_step();
-		$tabs = array();
-
-		$tabs = $this->get_available_tabs();
-
-		reset( $tabs );
-		$first_key = key( $tabs );
-
-		// Setup navigation tabs.
-		$active_tab = isset( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : '';
-		$active_tab = sanitize_html_class( $active_tab, $first_key );
-
-		if ( ! array_key_exists( $active_tab, $tabs ) ) {
-			$active_tab = $first_key;
-		}
-
-		$this->active_tab = apply_filters(
-			'ms_controller_membership_get_active_tab',
-			$active_tab
-		);
-
-		return $this->active_tab;
-	}
-
-	/**
 	 * Execute action in Membership model.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @todo There is no more bulk actions. Deprecate this method and create a specific one.
 	 *
@@ -1042,7 +1121,7 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Get Membership page bread crumbs.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @return array The bread crumbs array.
 	 */
@@ -1102,7 +1181,7 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Save membership general tab fields
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 *
 	 * @param mixed[] $fields
 	 */
@@ -1119,7 +1198,8 @@ class MS_Controller_Membership extends MS_Controller {
 					$key = false;
 
 					// Very basic support for array updates.
-					// We only support updating arrays when one key is
+					// We only support updating 1-dimensional arrays with a
+					// specified key value.
 					if ( strpos( $field, '[' ) ) {
 						$field = str_replace( ']', '', $field );
 						list( $field, $key ) = explode( '[', $field, 2 );
@@ -1128,6 +1208,7 @@ class MS_Controller_Membership extends MS_Controller {
 					try {
 						$the_value = $membership->$field;
 						if ( $key ) {
+							$the_value = lib2()->array->get( $the_value );
 							$the_value[$key] = $value;
 						} else {
 							$the_value = $value;
@@ -1163,14 +1244,10 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Load Membership manager specific styles.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_styles() {
-		switch ( $this->get_active_tab() ) {
-			default:
-				lib2()->ui->add( 'jquery-ui' );
-				break;
-		}
+		lib2()->ui->add( 'jquery-ui' );
 
 		do_action( 'ms_controller_membership_enqueue_styles', $this );
 	}
@@ -1178,18 +1255,9 @@ class MS_Controller_Membership extends MS_Controller {
 	/**
 	 * Load Membership manager specific scripts.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 */
 	public function enqueue_scripts() {
-		/*
-		 * Get a list of the dripped memberships:
-		 * We need this info in the javascript
-		 */
-		$dripped = array();
-		foreach ( MS_Model_Membership::get_dripped_memberships() as $item ) {
-			$dripped[ $item->id ] = $item->name;
-		}
-
 		$data = array(
 			'ms_init' => array(),
 			'lang' => array(
@@ -1198,7 +1266,6 @@ class MS_Controller_Membership extends MS_Controller {
 				'btn_cancel' => __( 'Cancel', MS_TEXT_DOMAIN ),
 				'quickedit_error' => __( 'Error while saving changes.', MS_TEXT_DOMAIN ),
 			),
-			'dripped' => $dripped,
 		);
 
 		$step = $this->get_step();
@@ -1216,28 +1283,38 @@ class MS_Controller_Membership extends MS_Controller {
 				$data['ms_init'][] = 'view_membership_overview';
 				break;
 
-			case self::STEP_PROTECTED_CONTENT:
-				$data['ms_init'][] = 'view_protected_content';
-
-				switch ( $this->get_active_tab() ) {
-					case 'url':
-						$data['valid_rule_msg'] = __( 'Valid', MS_TEXT_DOMAIN );
-						$data['invalid_rule_msg'] = __( 'Invalid', MS_TEXT_DOMAIN );
-						$data['empty_msg'] = __( 'Before testing you have to first enter one or more Page URLs above.', MS_TEXT_DOMAIN );
-						$data['ms_init'][] = 'view_membership_urlgroup';
-						break;
-
-					default:
-						wp_enqueue_script( 'jquery-ui-datepicker' );
-						wp_enqueue_script( 'jquery-validate' );
-						break;
-				}
-				break;
-
 			case self::STEP_PAYMENT:
 				$data['ms_init'][] = 'view_membership_payment';
 				$data['ms_init'][] = 'view_settings_payment';
-				wp_enqueue_script( 'jquery-validate' );
+				break;
+
+			case self::STEP_EDIT:
+				$data['ms_init'][] = 'view_membership_payment';
+				$tab = $this->get_active_edit_tab();
+
+				switch ( $tab ) {
+					case self::TAB_TYPE:
+						add_thickbox();
+						$data['ms_init'][] = 'view_membership_add';
+						break;
+
+					case self::TAB_UPGRADE:
+						$data['ms_init'][] = 'view_membership_upgrade';
+						break;
+
+					case self::TAB_MESSAGES:
+						$data['ms_init'][] = 'view_settings_protection';
+						break;
+
+					case self::TAB_EMAILS:
+						$data['ms_init'][] = 'view_settings_automated_msg';
+						break;
+				}
+
+				do_action(
+					'ms_controller_membership_enqueue_scripts_tab-' . $tab,
+					$this
+				);
 				break;
 
 			case self::STEP_MS_LIST:
@@ -1248,8 +1325,16 @@ class MS_Controller_Membership extends MS_Controller {
 
 		lib2()->ui->data( 'ms_data', $data );
 		wp_enqueue_script( 'ms-admin' );
+		wp_enqueue_script( 'jquery-validate' );
 
-		do_action( 'ms_controller_membership_enqueue_scripts', $this );
+		do_action(
+			'ms_controller_membership_enqueue_scripts',
+			$this
+		);
+		do_action(
+			'ms_controller_membership_enqueue_scripts-' . $step,
+			$this
+		);
 	}
 
 }
