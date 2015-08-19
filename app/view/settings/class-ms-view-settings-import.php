@@ -127,9 +127,6 @@ class MS_View_Settings_Import extends MS_View {
 
 			switch ( $item->pay_type ) {
 				case 'recurring':
-					$payment_type = MS_Model_Membership::PAYMENT_TYPE_RECURRING;
-					break;
-
 				case 'finite':
 					$payment_type = MS_Model_Membership::PAYMENT_TYPE_FINITE;
 					break;

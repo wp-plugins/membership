@@ -24,8 +24,8 @@ class MS_Gateway_Paypalstandard_View_Cancel extends MS_View {
 			$subscription = $this->data['ms_relationship'];
 			$membership = $subscription->get_membership();
 
-			if ( MS_Model_Membership::PAYMENT_TYPE_RECURRING == $membership->payment_type
-				|| $membership->has_trial()
+			if ( /* RECURRING is PRO ONLY */
+				$membership->has_trial()
 			) {
 				if ( MS_Gateway::MODE_LIVE == $gateway->mode ) {
 					$cancel_url = 'https://www.paypal.com/cgi-bin/webscr';

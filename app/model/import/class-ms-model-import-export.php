@@ -231,12 +231,7 @@ class MS_Model_Import_Export extends MS_Model {
 					$obj->period_end = $src->period_date_end;
 					break;
 
-				case MS_Model_Membership::PAYMENT_TYPE_RECURRING:
-					$obj->pay_type = 'recurring';
-					$obj->period_unit = $src->pay_cycle_period['period_unit'];
-					$obj->period_type = $src->pay_cycle_period['period_type'];
-					$obj->period_repetition = $src->pay_cycle_repetition;
-					break;
+				// RECURRING is PRO ONLY
 
 				default:
 					$obj->pay_type = 'permanent';

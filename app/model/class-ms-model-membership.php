@@ -1372,23 +1372,7 @@ class MS_Model_Membership extends MS_Model_CustomPostType {
 				);
 				break;
 
-			case self::PAYMENT_TYPE_RECURRING:
-				$desc = __( 'Each %1$s', MS_TEXT_DOMAIN );
-
-				if ( $has_payment ) {
-					if ( 1 == $this->pay_cycle_repetitions ) {
-						$desc = __( 'Single payment', MS_TEXT_DOMAIN );
-					} elseif ( $this->pay_cycle_repetitions > 1 ) {
-						$desc .= ', ' . __( '%2$s payments', MS_TEXT_DOMAIN );
-					}
-				}
-
-				$desc = sprintf(
-					$desc,
-					MS_Helper_Period::get_period_desc( $this->pay_cycle_period ),
-					$this->pay_cycle_repetitions
-				);
-				break;
+			// RECURRING is PRO ONLY
 
 			case self::PAYMENT_TYPE_PERMANENT:
 			default:

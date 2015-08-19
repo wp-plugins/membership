@@ -109,6 +109,9 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
+= 4.0.0.4 =
+* Fix several fatal errors (last update did copy some wrong files, sorry for this!)
+
 = 4.0.0.3 =
 * Add a dedicated Edit Membership page with improved layout
 * Add a new Add/Edit Member page where subscription details can be modified

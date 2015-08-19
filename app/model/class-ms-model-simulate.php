@@ -122,7 +122,7 @@ class MS_Model_Simulate extends MS_Model_Transient {
 		if ( is_a( $subscription, 'MS_Model_Relationship' ) ) {
 			$membership = $subscription->get_membership();
 			if ( MS_Model_Membership::PAYMENT_TYPE_PERMANENT == $membership->payment_type
-				|| MS_Model_Membership::PAYMENT_TYPE_RECURRING == $membership->payment_type
+				/* RECURRING is PRO ONLY */
 			) {
 				$subscription->expire_date = '2999-12-31';
 			}
@@ -236,7 +236,7 @@ class MS_Model_Simulate extends MS_Model_Transient {
 		if ( MS_Model_Membership::TYPE_DRIPPED === $m_type ) { $date_specific = true; }
 		elseif ( MS_Model_Membership::PAYMENT_TYPE_FINITE === $p_type ) { $date_specific = true; }
 		elseif ( MS_Model_Membership::PAYMENT_TYPE_DATE_RANGE === $p_type ) { $date_specific = true; }
-		elseif ( MS_Model_Membership::PAYMENT_TYPE_RECURRING === $p_type && $rep_end ) { $date_specific = true; }
+		/* RECURRING is PRO ONLY */
 
 		$this->datepicker = $date_specific;
 

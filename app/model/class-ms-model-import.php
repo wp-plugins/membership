@@ -297,25 +297,13 @@ class MS_Model_Import extends MS_Model {
 
 		switch ( $obj->pay_type ) {
 			case 'finite':
+			case 'recurring':
 				$membership->payment_type = MS_Model_Membership::PAYMENT_TYPE_FINITE;
 				if ( isset( $obj->period_unit ) ) {
 					$membership->period_unit = $obj->period_unit;
 				}
 				if ( isset( $obj->period_type ) ) {
 					$membership->period_type = $obj->period_type;
-				}
-				break;
-
-			case 'recurring':
-				$membership->payment_type = MS_Model_Membership::PAYMENT_TYPE_RECURRING;
-				if ( isset( $obj->period_unit ) ) {
-					$membership->pay_cycle_period_unit = $obj->period_unit;
-				}
-				if ( isset( $obj->period_type ) ) {
-					$membership->pay_cycle_period_type = $obj->period_type;
-				}
-				if ( isset( $obj->period_repetitions ) ) {
-					$membership->pay_cycle_repetitions = $obj->period_repetitions;
 				}
 				break;
 

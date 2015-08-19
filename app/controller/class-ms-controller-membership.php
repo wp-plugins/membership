@@ -1298,17 +1298,11 @@ class MS_Controller_Membership extends MS_Controller {
 						$data['ms_init'][] = 'view_membership_add';
 						break;
 
-					case self::TAB_UPGRADE:
-						$data['ms_init'][] = 'view_membership_upgrade';
-						break;
+					// UPGRADE PATHS is PRO ONLY
 
-					case self::TAB_MESSAGES:
-						$data['ms_init'][] = 'view_settings_protection';
-						break;
+					// MESSAGE OVERRIDE is PRO ONLY
 
-					case self::TAB_EMAILS:
-						$data['ms_init'][] = 'view_settings_automated_msg';
-						break;
+					// EMAIL OVERRIDE id PRO ONLY
 				}
 
 				do_action(
