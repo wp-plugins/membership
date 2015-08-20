@@ -2,7 +2,7 @@
 /**
 Plugin Name: Membership 2
 Plugin URI:  https://wordpress.org/plugins/membership
-Version:     4.0.0.4
+Version:     4.0.0.5
 Description: The most powerful, easy to use and flexible membership plugin for WordPress sites available.
 Author:      WPMU DEV
 Author URI:  http://premium.wpmudev.org/
@@ -67,7 +67,7 @@ function membership2_init_free_app() {
 	 *
 	 * @since  1.0.0
 	 */
-	define( 'MS_PLUGIN_VERSION', '4.0.0.4' );
+	define( 'MS_PLUGIN_VERSION', '4.0.0.5' );
 
 	/**
 	 * Plugin text domain.

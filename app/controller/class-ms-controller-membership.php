@@ -963,15 +963,13 @@ class MS_Controller_Membership extends MS_Controller {
 			if ( $membership->is_system() ) {
 				unset( $Tabs[self::TAB_TYPE] );
 				unset( $Tabs[self::TAB_PAYMENT] );
-				unset( $Tabs[self::TAB_EMAILS] );
-				unset( $Tabs[ self::TAB_UPGRADE ] );
+				// EMAIL OVERRIDES is PRO ONLY
+				// UPGRADE PATHS is PRO ONLY
 			} elseif ( $membership->is_free ) {
 				$Tabs[self::TAB_PAYMENT]['title'] = __( 'Access options', MS_TEXT_DOMAIN );
 			}
 
-			if ( $count < 2 ) {
-				unset( $Tabs[ self::TAB_UPGRADE ] );
-			}
+			// UPGRADE PATHS is PRO ONLY
 
 			// Allow Add-ons to add or remove rule tabs
 			$Tabs = apply_filters(

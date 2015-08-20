@@ -82,17 +82,17 @@ if ( ! class_exists( 'WDev_Frash' ) ) {
 			}
 
 			// A list of all plugins with timestamp of first registration.
-			if ( empty( $data['plugins'] ) || ! is_array( $data['plugins'] ) ) {
+			if ( ! isset( $data['plugins'] ) || ! is_array( $data['plugins'] ) ) {
 				$data['plugins'] = array();
 			}
 
 			// A list with pending messages and earliest timestamp for display.
-			if ( empty( $data['queue'] ) || ! is_array( $data['queue'] ) ) {
+			if ( ! isset( $data['queue'] ) || ! is_array( $data['queue'] ) ) {
 				$data['queue'] = array();
 			}
 
 			// A list with all messages that were handles already.
-			if ( empty( $data['done'] ) || ! is_array( $data['done'] ) ) {
+			if ( ! isset( $data['done'] ) || ! is_array( $data['done'] ) ) {
 				$data['done'] = array();
 			}
 

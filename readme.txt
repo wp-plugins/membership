@@ -109,6 +109,11 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
+= 4.0.0.5 =
+* Fix an fatal error in membership editor screen
+* Fix displayed payment method for subscriptions in Member editor screen
+* Small improvements and fixed php notices
+
 = 4.0.0.4 =
 * Fix several fatal errors (last update did copy some wrong files, sorry for this!)
 

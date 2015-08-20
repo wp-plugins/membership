@@ -120,10 +120,10 @@ class TheLib_2_0_3_Core extends TheLib_2_0_3 {
 	 * @param  string $rel_dir Path to the dictionary folder; relative to WP_PLUGIN_DIR.
 	 */
 	public function translate_plugin( $domain, $rel_dir ) {
-		if ( did_action( 'plugins_loaded' ) ) {
+		if ( did_action( 'plugins_loaded' ) && 'plugins_loaded' != current_filter() ) {
 			_doing_it_wrong(
 				'translate_plugin',
-				'This function must be called before the hook "plugins_loaded" is fired.',
+				'This function must be called before/inside the hook "plugins_loaded".',
 				'2.0.3'
 			);
 		}

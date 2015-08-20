@@ -1661,7 +1661,7 @@ class MS_View_Help extends MS_View {
 		</p>
 		<p>
 			<strong><?php _ex( 'Stop Emails', 'help', MS_TEXT_DOMAIN ); ?></strong><br />
-			<?php _ex( 'In wp-config.php add the line <code>define( "MS_STOP_EMAILS", true );</code> to force Procted Content to <em>not</em> send any emails to Members. This can be used when testing to prevent your users from getting email notifications.', 'help', MS_TEXT_DOMAIN ); ?>
+			<?php _ex( 'In wp-config.php add the line <code>define( "MS_STOP_EMAILS", true );</code> to force Membership 2 to <em>not</em> send any emails to Members. This can be used when testing to prevent your users from getting email notifications.', 'help', MS_TEXT_DOMAIN ); ?>
 		</p>
 		<p>
 			<strong><?php _ex( 'Reduce Emails', 'help', MS_TEXT_DOMAIN ); ?></strong><br />

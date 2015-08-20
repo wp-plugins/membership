@@ -1647,7 +1647,12 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 		$total_price = MS_Helper_Billing::format_price( $total_price );
 		$trial_price = MS_Helper_Billing::format_price( $trial_price );
 
-		switch ( $membership->payment_type ){
+		$payment_type = $this->payment_type;
+		if ( ! $payment_type ) {
+			$payment_type = $membership->payment_type;
+		}
+
+		switch ( $payment_type ) {
 			case MS_Model_Membership::PAYMENT_TYPE_PERMANENT:
 				if ( 0 == $total_price ) {
 					if ( $short ) {
@@ -1749,7 +1754,8 @@ class MS_Model_Relationship extends MS_Model_CustomPostType {
 		return apply_filters(
 			'ms_model_relationship_get_payment_description',
 			$desc,
-			$membership
+			$membership,
+			$payment_type
 		);
 	}
 
